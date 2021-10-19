@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.23 (TeX Live 2021/W32TeX) (preloaded format=pdflatex 2021.10.18)  19 OCT 2021 10:19
+This is pdfTeX, Version 3.141592653-2.6-1.40.23 (TeX Live 2021/W32TeX) (preloaded format=pdflatex 2021.10.18)  19 OCT 2021 21:50
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -721,168 +721,169 @@ LaTeX Font Info:    Trying to load font information for U+msb on input line 86.
 
 (c:/Users/piotr/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
-) (./figures_and_tables.toc)
+) (./figures_and_tables.toc
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <10> on input line 2.
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <7> on input line 2.
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <5> on input line 2.
+)
 \tf@toc=\write4
 \openout4 = `figures_and_tables.toc'.
 
 [1
 
 {c:/Users/piotr/AppData/Roaming/TinyTeX/texmf-var/fonts/map/pdftex/updmap/pdfte
-x.map}]
-Overfull \hbox (1.59483pt too wide) in paragraph at lines 99--99
+x.map}] [2] [3] [4] [5]
+Overfull \hbox (1.59483pt too wide) in paragraph at lines 165--165
 []|\T1/lmr/m/n/10 Test|  
  []
 
 
-Overfull \hbox (17.65535pt too wide) in alignment at lines 96--101
+Overfull \hbox (17.65535pt too wide) in alignment at lines 162--167
  [] [] [] [] [] [] 
  []
 
 
-Overfull \hbox (1.59483pt too wide) in paragraph at lines 104--104
+Overfull \hbox (1.59483pt too wide) in paragraph at lines 170--170
 []|\T1/lmr/m/n/10 Test|  
  []
 
 
-Overfull \hbox (17.65535pt too wide) in alignment at lines 101--106
+Overfull \hbox (17.65535pt too wide) in alignment at lines 167--172
  [] [] [] [] [] [] 
  []
 
 
-Overfull \hbox (17.65535pt too wide) in alignment at lines 106--108
+Overfull \hbox (17.65535pt too wide) in alignment at lines 172--174
  [] [] [] [] [] [] 
  []
 
 
-Overfull \hbox (17.65535pt too wide) in alignment at lines 108--110
+Overfull \hbox (17.65535pt too wide) in alignment at lines 174--176
  [] [] [] [] [] [] 
  []
 
-LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <10> on input line 111.
-LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <7> on input line 111.
-LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <5> on input line 111.
 
-Overfull \hbox (0.98415pt too wide) in paragraph at lines 113--113
+Overfull \hbox (0.98415pt too wide) in paragraph at lines 179--179
 []|\T1/lmr/m/n/10 KW|  
  []
 
 
-Overfull \hbox (0.98415pt too wide) in paragraph at lines 121--121
+Overfull \hbox (0.98415pt too wide) in paragraph at lines 187--187
 []|\T1/lmr/m/n/10 KW|  
  []
 
 
-Overfull \hbox (8.08633pt too wide) in paragraph at lines 133--133
+Overfull \hbox (8.08633pt too wide) in paragraph at lines 199--199
 []|\T1/lmr/m/n/10 Hypercholesterolemia|  
  []
 
 
-Overfull \hbox (0.98415pt too wide) in paragraph at lines 141--141
+Overfull \hbox (0.98415pt too wide) in paragraph at lines 207--207
 []|\T1/lmr/m/n/10 KW|  
  []
 
 
-Overfull \hbox (17.65535pt too wide) in alignment at lines 110--142
+Overfull \hbox (17.65535pt too wide) in alignment at lines 176--208
  [] [] [] [] [] [] 
  []
 
-[2] [3]
-Overfull \hbox (1.59483pt too wide) in paragraph at lines 149--149
+[6] [7]
+Overfull \hbox (1.59483pt too wide) in paragraph at lines 215--215
 []|\T1/lmr/m/n/10 Test|  
  []
 
 
-Overfull \hbox (1.59483pt too wide) in paragraph at lines 154--154
+Overfull \hbox (1.59483pt too wide) in paragraph at lines 220--220
 []|\T1/lmr/m/n/10 Test|  
  []
 
-[4] [5]
+[8] [9]
 <C:/Users/piotr/Desktop/Hyposmia/paper/figures_and_tables_files/figure-latex/fi
-g-consort-1.pdf, id=47, 511.9125pt x 284.06125pt>
+g-consort-1.pdf, id=159, 511.9125pt x 284.06125pt>
 File: C:/Users/piotr/Desktop/Hyposmia/paper/figures_and_tables_files/figure-lat
 ex/fig-consort-1.pdf Graphic file (type pdf)
 <use C:/Users/piotr/Desktop/Hyposmia/paper/figures_and_tables_files/figure-late
 x/fig-consort-1.pdf>
 Package pdftex.def Info: C:/Users/piotr/Desktop/Hyposmia/paper/figures_and_tabl
-es_files/figure-latex/fig-consort-1.pdf  used on input line 205.
+es_files/figure-latex/fig-consort-1.pdf  used on input line 271.
 (pdftex.def)             Requested size: 469.75449pt x 260.66766pt.
-[6 <c:/Users/piotr/Desktop/Hyposmia/paper/figures_and_tables_files/figure-latex
-/fig-consort-1.pdf>]
+[10 <c:/Users/piotr/Desktop/Hyposmia/paper/figures_and_tables_files/figure-late
+x/fig-consort-1.pdf>]
 <C:/Users/piotr/Desktop/Hyposmia/paper/figures_and_tables_files/figure-latex/fi
-g-kinetic-1.pdf, id=61, 511.9125pt x 468.75125pt>
+g-kinetic-1.pdf, id=172, 511.9125pt x 468.75125pt>
 File: C:/Users/piotr/Desktop/Hyposmia/paper/figures_and_tables_files/figure-lat
 ex/fig-kinetic-1.pdf Graphic file (type pdf)
 <use C:/Users/piotr/Desktop/Hyposmia/paper/figures_and_tables_files/figure-late
 x/fig-kinetic-1.pdf>
 Package pdftex.def Info: C:/Users/piotr/Desktop/Hyposmia/paper/figures_and_tabl
-es_files/figure-latex/fig-kinetic-1.pdf  used on input line 215.
+es_files/figure-latex/fig-kinetic-1.pdf  used on input line 281.
 (pdftex.def)             Requested size: 469.75449pt x 430.14772pt.
-[7 <c:/Users/piotr/Desktop/Hyposmia/paper/figures_and_tables_files/figure-latex
-/fig-kinetic-1.pdf>]
+[11 <c:/Users/piotr/Desktop/Hyposmia/paper/figures_and_tables_files/figure-late
+x/fig-kinetic-1.pdf>]
 <C:/Users/piotr/Desktop/Hyposmia/paper/figures_and_tables_files/figure-latex/fi
-g-hyposmia-kinetic-1.pdf, id=83, 511.9125pt x 426.59375pt>
+g-hyposmia-kinetic-1.pdf, id=192, 511.9125pt x 426.59375pt>
 File: C:/Users/piotr/Desktop/Hyposmia/paper/figures_and_tables_files/figure-lat
 ex/fig-hyposmia-kinetic-1.pdf Graphic file (type pdf)
 <use C:/Users/piotr/Desktop/Hyposmia/paper/figures_and_tables_files/figure-late
 x/fig-hyposmia-kinetic-1.pdf>
 Package pdftex.def Info: C:/Users/piotr/Desktop/Hyposmia/paper/figures_and_tabl
-es_files/figure-latex/fig-hyposmia-kinetic-1.pdf  used on input line 231.
+es_files/figure-latex/fig-hyposmia-kinetic-1.pdf  used on input line 297.
 (pdftex.def)             Requested size: 469.75449pt x 391.46207pt.
-[8 <c:/Users/piotr/Desktop/Hyposmia/paper/figures_and_tables_files/figure-latex
-/fig-hyposmia-kinetic-1.pdf>]
+[12 <c:/Users/piotr/Desktop/Hyposmia/paper/figures_and_tables_files/figure-late
+x/fig-hyposmia-kinetic-1.pdf>]
 <C:/Users/piotr/Desktop/Hyposmia/paper/figures_and_tables_files/figure-latex/fi
-g-hyposmia-overlap-1.pdf, id=104, 511.9125pt x 653.44125pt>
+g-hyposmia-overlap-1.pdf, id=212, 511.9125pt x 653.44125pt>
 File: C:/Users/piotr/Desktop/Hyposmia/paper/figures_and_tables_files/figure-lat
 ex/fig-hyposmia-overlap-1.pdf Graphic file (type pdf)
 <use C:/Users/piotr/Desktop/Hyposmia/paper/figures_and_tables_files/figure-late
 x/fig-hyposmia-overlap-1.pdf>
 Package pdftex.def Info: C:/Users/piotr/Desktop/Hyposmia/paper/figures_and_tabl
-es_files/figure-latex/fig-hyposmia-overlap-1.pdf  used on input line 243.
+es_files/figure-latex/fig-hyposmia-overlap-1.pdf  used on input line 309.
 (pdftex.def)             Requested size: 469.75449pt x 599.62779pt.
-[9 <c:/Users/piotr/Desktop/Hyposmia/paper/figures_and_tables_files/figure-latex
-/fig-hyposmia-overlap-1.pdf>] [10]
+[13 <c:/Users/piotr/Desktop/Hyposmia/paper/figures_and_tables_files/figure-late
+x/fig-hyposmia-overlap-1.pdf>] [14]
 <C:/Users/piotr/Desktop/Hyposmia/paper/figures_and_tables_files/figure-latex/fi
-g-clustering-1.pdf, id=131, 511.9125pt x 653.44125pt>
+g-clustering-1.pdf, id=239, 511.9125pt x 653.44125pt>
 File: C:/Users/piotr/Desktop/Hyposmia/paper/figures_and_tables_files/figure-lat
 ex/fig-clustering-1.pdf Graphic file (type pdf)
 <use C:/Users/piotr/Desktop/Hyposmia/paper/figures_and_tables_files/figure-late
 x/fig-clustering-1.pdf>
 Package pdftex.def Info: C:/Users/piotr/Desktop/Hyposmia/paper/figures_and_tabl
-es_files/figure-latex/fig-clustering-1.pdf  used on input line 258.
+es_files/figure-latex/fig-clustering-1.pdf  used on input line 324.
 (pdftex.def)             Requested size: 469.75449pt x 599.62779pt.
-[11 <c:/Users/piotr/Desktop/Hyposmia/paper/figures_and_tables_files/figure-late
-x/fig-clustering-1.pdf>] [12]
+[15 <c:/Users/piotr/Desktop/Hyposmia/paper/figures_and_tables_files/figure-late
+x/fig-clustering-1.pdf>] [16]
 <C:/Users/piotr/Desktop/Hyposmia/paper/figures_and_tables_files/figure-latex/fi
-g-risk-1.pdf, id=158, 511.9125pt x 511.9125pt>
+g-risk-1.pdf, id=263, 511.9125pt x 511.9125pt>
 File: C:/Users/piotr/Desktop/Hyposmia/paper/figures_and_tables_files/figure-lat
 ex/fig-risk-1.pdf Graphic file (type pdf)
 <use C:/Users/piotr/Desktop/Hyposmia/paper/figures_and_tables_files/figure-late
 x/fig-risk-1.pdf>
 Package pdftex.def Info: C:/Users/piotr/Desktop/Hyposmia/paper/figures_and_tabl
-es_files/figure-latex/fig-risk-1.pdf  used on input line 274.
+es_files/figure-latex/fig-risk-1.pdf  used on input line 340.
 (pdftex.def)             Requested size: 469.75449pt x 469.75449pt.
-[13 <c:/Users/piotr/Desktop/Hyposmia/paper/figures_and_tables_files/figure-late
-x/fig-risk-1.pdf>] (./figures_and_tables.aux)
+[17 <c:/Users/piotr/Desktop/Hyposmia/paper/figures_and_tables_files/figure-late
+x/fig-risk-1.pdf>] [18] (./figures_and_tables.aux)
 
 LaTeX Warning: There were multiply-defined labels.
 
 Package rerunfilecheck Info: File `figures_and_tables.out' has not changed.
-(rerunfilecheck)             Checksum: 854AAFF299BB174F5531E81C855B07A2;153.
+(rerunfilecheck)             Checksum: 2C5746A33E29F08715C154AF940CB1BA;3166.
  ) 
 Here is how much of TeX's memory you used:
- 13248 strings out of 480559
- 204284 string characters out of 5901779
- 544544 words of memory out of 5000000
- 30586 multiletter control sequences out of 15000+600000
- 450086 words of font info for 66 fonts, out of 8000000 for 9000
+ 13318 strings out of 480559
+ 205801 string characters out of 5901779
+ 546297 words of memory out of 5000000
+ 30610 multiletter control sequences out of 15000+600000
+ 456076 words of font info for 68 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 60i,10n,66p,1092b,471s stack positions out of 5000i,500n,10000p,200000b,80000s
-{c:/Users/piotr/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-math
-sy.enc}{c:/Users/piotr/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm
--ec.enc}{c:/Users/piotr/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/l
+ 60i,10n,66p,1608b,471s stack positions out of 5000i,500n,10000p,200000b,80000s
+{c:/Users/piotr/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ec.e
+nc}{c:/Users/piotr/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mat
+hsy.enc}{c:/Users/piotr/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/l
 m-rm.enc}{c:/Users/piotr/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/
 lm-mathit.enc}<c:/Users/piotr/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/pu
 blic/lm/lmbx10.pfb><c:/Users/piotr/AppData/Roaming/TinyTeX/texmf-dist/fonts/typ
@@ -893,11 +894,12 @@ dist/fonts/type1/public/lm/lmr12.pfb><c:/Users/piotr/AppData/Roaming/TinyTeX/te
 xmf-dist/fonts/type1/public/lm/lmr17.pfb><c:/Users/piotr/AppData/Roaming/TinyTe
 X/texmf-dist/fonts/type1/public/lm/lmr7.pfb><c:/Users/piotr/AppData/Roaming/Tin
 yTeX/texmf-dist/fonts/type1/public/lm/lmri10.pfb><c:/Users/piotr/AppData/Roamin
-g/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy10.pfb>
-Output written on figures_and_tables.pdf (13 pages, 706140 bytes).
+g/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy10.pfb><c:/Users/piotr/AppData/R
+oaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy7.pfb>
+Output written on figures_and_tables.pdf (18 pages, 760003 bytes).
 PDF statistics:
- 231 PDF objects out of 1000 (max. 8388607)
- 167 compressed objects within 2 object streams
- 27 named destinations out of 1000 (max. 500000)
- 47 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 392 PDF objects out of 1000 (max. 8388607)
+ 317 compressed objects within 4 object streams
+ 72 named destinations out of 1000 (max. 500000)
+ 135 words of extra memory for PDF output out of 10000 (max. 10000000)
 

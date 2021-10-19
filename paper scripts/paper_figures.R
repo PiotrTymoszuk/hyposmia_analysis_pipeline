@@ -369,6 +369,37 @@
                      h = 210)
   
   
+# Supplementary Figure S7: differences in hyposmia resolution between males and females -----
+  
+  insert_msg('Figure S7: gender and hyposmia resolution in the HACT cohort')
+  
+  suppl_figures$gender$top_panel <- kinet_sex$plots %>% 
+    map(function(x) x + theme(legend.position = 'none')) %>% 
+    plot_grid(plotlist = ., 
+              ncol = 2, 
+              align = 'hv', 
+              labels = 'A', 
+              label_size = 10)
+  
+  suppl_figures$gender$bottom_panel <- plot_grid(kinet_sex$beta_plot + 
+                                                   theme(plot.subtitle = element_blank()), 
+                                                 kinet_sex$duration$plots$survey_at + 
+                                                   theme(plot.tag = element_blank()), 
+                                                 kinet_sex$duration$plots$survey_it + 
+                                                   theme(plot.tag = element_blank()), 
+                                                 ncol = 3, 
+                                                 rel_widths = c(1.8, 0.6, 0.6), 
+                                                 labels = c('B', 'C', ''), 
+                                                 label_size = 10)
+  
+  suppl_figures$gender <- plot_grid(suppl_figures$gender$top_panel, 
+                                    suppl_figures$gender$bottom_panel, 
+                                    nrow = 2, 
+                                    rel_heights = c(1.8, 1)) %>% 
+    as_figure_object(figure_label = 'figure_s7_hyposmia_gender', 
+                     w = 180, 
+                     h = 200)
+  
 # Saving the figures on the disc -----
   
   insert_msg('Saving the figures on the disc')

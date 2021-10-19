@@ -17,7 +17,8 @@
     './analysis scripts/hyposmia_overlap.R', 
     './analysis scripts/hyposmia_uni_modeling.R', 
     './analysis scripts/time_to_recovery.R', 
-    './analysis scripts/chronicity_phenotypes.R') %>% 
+    './analysis scripts/chronicity_phenotypes.R', 
+    './analysis scripts/symptom_kinetic_gender.R') %>% 
     walk(source)
   
 # END ----

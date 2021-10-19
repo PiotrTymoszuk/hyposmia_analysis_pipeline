@@ -103,7 +103,9 @@
   ## n numbers and plot tags
   
   pheno$n_numbers <- pheno$analysis_tbl %>% 
-    map(count, clust_name)
+    map(count, clust_name) %>% 
+    map(mutate, 
+        percent = n/sum(n) * 100)
   
   pheno$plot_tags <- pheno$n_numbers %>% 
     map(function(x) map2_chr(x$clust_name, 
