@@ -1,0 +1,237 @@
+---
+title: "Hyposmia as a standalone persistent symptom of long COVID"
+subtitle: "Supplementary Material"
+author: "Health after COVID-19 in Tyrol study team"
+date: "`r format(Sys.time(), '%Y-%m-%d')`"
+
+output: 
+  pdf_document:
+    latex_engine: xelatex
+bibliography: cov_biblio.bib
+csl: american-medical-association.csl
+header-includes:
+  \usepackage{longtable}
+  \usepackage{tabu}
+  \usepackage{caption}
+  \usepackage{makecell}
+  \usepackage{pdflscape}
+  \usepackage{array}
+  \usepackage{booktabs}
+  \usepackage{threeparttable}
+  \usepackage{threeparttablex}
+  \usepackage{wrapfig}
+  \usepackage{multirow}
+  \usepackage[normalem]{ulem}
+  \usepackage{colortbl}
+  \usepackage{xcolor}
+  \usepackage{float} \floatplacement{figure}{H} \floatplacement{table}{H}
+  \newcommand{\beginsupplement}{\setcounter{table}{0}  \renewcommand{\thetable}{S\arabic{table}}       \setcounter{figure}{0} \renewcommand{\thefigure}{S\arabic{figure}}}
+---
+
+```{r, setup, include = FALSE}
+
+library(bookdown)
+
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE, dev = "cairo_pdf")
+
+
+```
+
+\newpage
+\beginsupplement
+
+# Supplementary Methods
+
+## Study design and participants
+
+In the current project, the data obtained in the 'Health After COVID-19 in Tyrol' (HACT) online survey [@Sahanic2021; @Hufner2021] and during acute COVID-19, 60-, 100- and 180-day post-COVID-19 follow-up of the CovILD study [@Sonnweber2021; @Sonnweber2020; @Rass2021] were analyzed.
+
+The HACT study collective encompassed two independently recruited cohorts of ambulatory COVID-19 convalescents in the Tyrol state in Austria and the South Tyrol province in Italy. The study inclusion criteria were laboratory-confirmed SARS-CoV-2 infection (PCR or seropositivity), adult age (Austria: $\geq$ 16 years, Italy: $\geq$ 18 years) and residence in the study regions [@Sahanic2021; @Hufner2021]. The analysis inclusion criterion was a minimal observation time of 90 days between the positive SARS-CoV-2 test and the survey completion (__Figure 1__). A total of `r nrow(hyposmia$survey_at) + nrow(hyposmia$survey_it)` questionnaires was eligible for the current analysis (Austria: n = `r nrow(hyposmia$survey_at)`, Italy: `r nrow(hyposmia$survey_it)`). All participants gave digitally signed informed consent before the survey start. The study was approved by the institutional review boards of the Medical University of Innsbruck (Austria, approval
+number: 1257/2020) and of the Autonomous Province of Bolzano - South Tyrol (Italy, 0150701). The HACT study was registered at ClinicalTrials.gov (NCT: NCT04661462)
+
+The CovILD cohort included a longitudinally investigated multi-center collective of convalescents of ambulatory (WHO categories 1 - 3, n = `r unique(kinet$analysis_tbl$covild$A$ID) %>% length`), moderate (WHO categories 4 - 5, n = `r unique(kinet$analysis_tbl$covild$HM$ID) %>% length`) and severe COVID-19 (WHO categories 6 - 9, n = `r unique(kinet$analysis_tbl$covild$HS$ID) %>% length`) recruited at the Department of Internal Medicine II at the Medical University of Innsbruck (Austria), St. Vinzenz Hospital in Zams (Austria) and the acute rehabilitation facility in Muenster (Austria) (__Figure 1__) [@Sonnweber2021; @Sonnweber2020; @Rass2021]. The study was approved by the institutional review board at the Medical University of Innsbruck (approval number: 1103/2020), and registered at ClinicalTrials.gov (NCT04416100).
+
+## Measures, definitions and data transformation
+
+In the HACT study, `r length(globals$symptoms)` symptoms of COVID-19 were surveyed. The participants were asked to classify them as 'absent', 'present for 1 - 3 days', 'present for up to 1 week', 'present for up to 2 weeks', 'present for up to 3 months', 'present for up to 6 months' or 'present for more than 6 months'. Based on that responses, individual symptom duration was calculated [@Sahanic2021]. In the CovILD study, `r length(kinet$variables$covild[kinet$variables$covild != 'sympt_present'])` self-reported symptoms were surveyed at each follow-up visit [@Sonnweber2020]. For both studies, detailed characteristic of demography, socioeconomic status, medical history before COVID-19 as well as the disease course and recovery was recorded as described [@Sonnweber2021; @Sonnweber2020; @Rass2021; @Sahanic2021; @Hufner2021]. The full list of the variables available for the current analysis is provided in __Supplementary Table \@ref(tab:tab-study-vars)__.
+
+Self-reported symptoms were classified as acute when present in the fist weeks after clinical manifestation of COVID-19, persistent when lasting for at least 28 days and long-term persistent complaints when present for longer than 3 months (HACT) or present at the 100-day follow-up visit. For analysis, symptom counts and anti-SARS-CoV-2 S1/S2 antibody levels were stratified by quartiles [@Sahanic2021; @Sonnweber2021]. Laboratory readouts of inflammation, iron metabolism and hematopoiesis in the CovILD cohort were longitudinally determined by the local hospital laboratory and binarized with standard cutoffs [@Sonnweber2021; @Sonnweber2020]. Lung function and lung CT abnormality assessment in the CovILD cohort were performed as described [@Sonnweber2020; @Sonnweber2021]. Assessment of hyposmia by the 16 point sniffing stick test at the 100-day visit in the CovILD collective was done essentially as described before [@Rass2021]. For variable stratification scheme, see __Supplementary Table \@ref(tab:tab-study-vars)__.
+
+## Statistical analysis
+### Data transformation, visualization, descriptive statistic, hypothesis testing and symptom co-occurrence
+
+Data transformation, analysis and visualization was accomplished with R 4.0.5, _tidyverse_ environment and _cowplot_ package [@Wickham2019; @Wickham2016; @Wilke2019]. As most of the investigated numeric variables were non-normally distributed as assessed by Shapiro-Wilk test, non-parametric tests: Mann-Whitney U and Kruskal-Wallis tests were used to determine statistical significance between analysis groups. Statistical significance for differences in frequency of categorical variables between analysis groups, $\chi^2$ test was applied. 
+
+The concordance of sniffing stick test-measured and self-reported hyposmia, was investigated with the Cohen's $\kappa$ statistic (package _vcd_, function _Kappa()_) [@Fleiss1969]. Co-occurrence of self-reported hyposmia and other symptoms (re-coded as 0: absent, 1: present) was measured by cosine similarity coefficient and cosine distance (package _philentropy_, function _distance_) [@Drost2018]. 
+
+Test and modeling p values for each analysis task and cohort were corrected for multiple testing with Benjamini-Hochberg method [@Benjamini1995].
+
+### Kinetic modeling
+
+Symptom recovery kinetics was modeled by mixed-effect logistic regression (fixed terms: first and second time term, random term: individual, packages _lme4_ and _lmerTest_) [@Bates2015; @Kuznetsova2017] with the following general model formula:
+
+$$Symptom \sim \beta_0 + \beta_1 \times t + \beta_2 \times t^2$$
+
+where $t$ stands for time since symptom onset, $\beta_1$ was interpreted as the estimate of linear recovery and $\beta_2$ was interpreted as a parabolic 'plateau' term [@Box1978]. Significance of the 2^nd^ and 1^st^ order model terms was assessed by step-wise likelihood ratio test versus the lower order model (function _anova()_). Significance of the _beta_ estimates was determined by Wald Z test.
+
+### Definition of the long-term COVID-19 recovery phenotypes
+
+Clusters of HACT study participants with COVID-19 complaints present for at least 3 months (Austria: n = `r nrow(pheno$analysis_tbl$survey_at)`, Italy: n = `r nrow(pheno$analysis_tbl$survey_it)`) were defined in respect to the most frequent persistent features (present in at least 25% of participants for at least 28 days[@Sudre2021; @Sahanic2021]: impaired concentration, tachypnea, hyposmia, hypogeusia, fatigue, tiredness and forgetfulness; re-coded as 0: absent, 1: present). The clustering procedure employed a combined self-organizing map (SOM, `r pheno$som_grid$xdim` $\times$ `r pheno$som_grid$ydim` hexagonal grid, gaussian neighborhood function, Jaccard distance between the symptoms) and hierarchical clustering (HCL, Ward D2 algorithm, manhattan distance between the SOM nodes) [@Kohonen1995; @Vesanto2000; @Vesanto1999; @Hufner2021]. The clustering was accomplished with tools provided by _kohonen_ package [@Wehrens2018] and home-developed functions (https://github.com/PiotrTymoszuk/SOM_tools). The optimal number of final clusters was determined by the bend of the within-sum-of-square curve. Graphical representation of the clustering procedure training and cluster dentition in presented in __Supplementary Figure \@ref(fig:fig-clustering)__,
+
+### Univariable modeling
+
+To identify factors correlating with the risk of persistent long-term self-reported hyposmia (3 months or longer in the HACT study or present at the 100-day follow-up visit in the CovILD cohort) within the set of candidate parameters recorded during acute COVID-19 or, for the CovILD study, at the 60-day follow-up visit as well, a series of univariable logistic models was used. for the HACT study, the models were weighted for age and sex weights based on the age and sex distribution of the general COVID-19 convalescent population in Tyrol/Austria and Italy [@Sahanic2021; @IstitutoSuperiorediSanitaISS; @AustrianAgencyforHealthandFoodSafetyAGES]. To account for the effects of varying diagnosis - survey time in the HACT study, the stratified observation time variable was included as a confounder in each model [@Sahanic]. Odds ratio significance was determined by Wald Z test. Logistic modeling and visual model quality control was accomplished with home-developed wrappers (https://github.com/PiotrTymoszuk/lm_qc_tools) around base R modeling tools and diagnostic functions provided by _broom_ package [@Robinson2014].
+
+# Data availability
+
+The study data is available at reasonable request to the corresponding authors. The source code of the R analysis pipeline is available at GitHub (https://github.com/PiotrTymoszuk/hyposmia_analsis_pipeline).
+
+\newpage
+
+# Supplementary Tables {#sec:tables}
+
+```{r tab-study-vars}
+
+suppl_tables$study_vars[1, 1] %>% 
+  mutate(`Variable in R code` = '') %>% 
+  kable(caption = '\\textbf{Study variables.}\\\\Variable in R code: variable name in the analyis pipeline, Label: variable name used in plots and tables, Independent modeling variable: indicator if the variable was used for univariable hyposmia risk modeling.\\\\The table is available online.', 
+        format = 'latex', 
+        escape = T, 
+        booktabs = T, 
+        longtable = F, 
+        col.names = '')
+
+```
+
+```{r tab-kinetic}
+
+suppl_tables$kinetic_modeling[1, 1] %>% 
+  mutate(Study = '') %>% 
+  kable(caption = '\\textbf{Results of symptom kinetic modeling.}\\\\OR: odds ratio with 95$\\%$ confidence interval, Significance OR: significance of the OR estimate obtained by Benjamini-Hochberg-corrected Wald Z test, Significance LRT: model term significance obtained by Benjamini-Hochberg-corrected likelihood ratio test.\\\\The table is available online.', 
+        format = 'latex', 
+        escape = T, 
+        booktabs = T, 
+        longtable = F, 
+        col.names = '')
+
+```
+
+```{r tab-similarity}
+
+suppl_tables$hyposmia_similarity[1, 1] %>% 
+  mutate(Symptom = '') %>% 
+  kable(caption = '\\textbf{Values of cosine similarity coefficients for self-reported hyposmia and other COVID-19 symptoms.}\\\\The table is available online.', 
+        format = 'latex', 
+        escape = T, 
+        booktabs = T, 
+        longtable = F, 
+        col.names = '')
+
+```
+
+```{r tab-uni-modeling}
+
+suppl_tables$uni_modeling[1, 1] %>% 
+  mutate(Study = '') %>% 
+  kable(caption = '\\textbf{Univariable modeling of long-term persistent hyposmia risk.}\\\\OR: odds ratio with 95$\\%$ confidence interval, Significance OR: significance of the OR estimate obtained by Benjamini-Hochberg-corrected Wald Z test.\\\\The table is available online.', 
+        format = 'latex', 
+        escape = T, 
+        booktabs = T, 
+        longtable = F, 
+        col.names = '')
+
+```
+
+\newpage
+
+# Supplementary Figures {#sec:figures}
+
+```{r fig-beta, fig.width = mm_inch(suppl_figures$kinetic_beta$w), fig.height = mm_inch(suppl_figures$kinetic_beta$h), dpi = 600, fig.cap = 'Symptom recovery and chronicity term estimates obtained by kinetic modeling in the HACT study.'}
+
+suppl_figures$kinetic_beta$plot
+
+```
+
+__Supplementary Figure \@ref(fig:fig-beta). Symptom recovery and chronicity term estimates obtained by kinetic modeling in the HACT study.__
+
+Symptom frequency during acute COVID-19 and recovery (0, 7, 14, 28 and 90 days post symptom onset) in the Austria (`r kinet$models$survey$survey_at %>% map_dbl(length) %>% paste_range`) and Italy (`r kinet$models$survey$survey_at %>% map_dbl(length) %>% paste_range`) HACT cohorts were modeled with mixed-effect logistic regression (__Supplementary Table \@ref(tab:tab-kinetic)__). Significance of the OR estimates was determined by Wald Z test. P values were corrected for multiple comparisons with Benjamini-Hochberg method. OR estimate values with 95% confidence intervals for the top 10 symptoms with the most significant second order terms as candidate long-term persistent features are presented as points and whiskers in the Forest plots. Dim.: diminished, imp.: impaired.
+
+\newpage
+
+```{r fig-low-chronicity, fig.width = mm_inch(suppl_figures$low_chronicity$w), fig.height = mm_inch(suppl_figures$low_chronicity$h), dpi = 600, fig.cap = 'Actual and predicted frequency of self-reported shivering and fever as symptoms characterized by an instant recovery in the HACT study.'}
+
+suppl_figures$low_chronicity$plot
+
+```
+
+__Supplementary Figure \@ref(fig:fig-low-chronicity). Actual and predicted frequency of self-reported shivering and fever as symptoms characterized by an instant recovery in the HACT study.__
+
+Frequencies of self-reported shivering (__A__) and fever (__B__) during acute COVID-19 and recovery in the HACT study (0, 7, 14, 28 and 90 days post symptom onset) were modeled with mixed-effect logistic regression (__Supplementary Table \@ref(tab:tab-kinetic)__). Points and solid lines represent the actual frequencies. The model predictions are displayed as dashed lines. The numbers of complete observations are shown under the plots.
+
+\newpage
+
+```{r fig-high-chronicity, fig.width = mm_inch(suppl_figures$high_chronicity$w), fig.height = mm_inch(suppl_figures$high_chronicity$h), dpi = 600, fig.cap = 'Actual and predicted frequency of self-reported fatigue, tiredness and taste disorders as symptoms characterized by a protracted recovery in the HACT study.'}
+
+suppl_figures$high_chronicity$plot
+
+```
+
+__Supplementary Figure \@ref(fig:fig-high-chronicity). Actual and predicted frequency of self-reported fatigue, tiredness and taste disorders as symptoms characterized by a protracted recovery in the HACT study.__
+
+Frequencies of self-reported fatigue (__A__), tiredness (__B__) and hypo- or ageusia (__C__) during acute COVID-19 and recovery in the HACT study (0, 7, 14, 28 and 90 days post symptom onset) were modeled with mixed-effect logistic regression (__Supplementary Table \@ref(tab:tab-kinetic)__). Points and solid lines represent the actual frequencies. The model predictions are displayed as dashed lines. The numbers of complete observations are shown under the plots.
+
+\newpage
+
+```{r fig-hypo-sniffing, fig.width = mm_inch(suppl_figures$hypo_sniffing$w), fig.height = mm_inch(suppl_figures$hypo_sniffing$h), dpi = 600, fig.cap = 'Frequencies and co-occurrence of self-reported and sniffing stick test hyposmia in the CovILD study.'}
+
+suppl_figures$hypo_sniffing$plot
+
+```
+
+__Supplementary Figure \@ref(fig:fig-hypo-sniffing). Frequencies and co-occurrence of self-reported and sniffing stick test hyposmia in the CovILD study.__
+
+Frequencies of self-reported hyposmia, moderate-to-severe (< 13 points) and severe hyposmia (< 8 points) detected by the sniffing stick test in the CovILD study at the 100-day follow-up visit were compared for the convalescents of ambulatory, moderate and severe COVID-19.
+
+__(A, B)__ Frequencies of moderate-to-severe and severe sniffing test hyposmia in the participants declaring self-reported hyposmia or claiming hyposmia-free. Bars are labeled with the frequencies within the investigated subset.
+
+__(C)__ Values of Cohen's $\kappa$ statistic for the concordance of self-reported and sniffing-test hyposmia in the COVID-19 severity strata and the entire CovILD cohort. Whiskers represent 95$\%$ confidence intervals.
+
+\newpage
+
+
+```{r fig-hypo-knn, fig.width = mm_inch(suppl_figures$hyposmia_knn$w), fig.height = mm_inch(suppl_figures$hyposmia_knn$h), dpi = 600, fig.cap = 'Five closest co-occurring symptoms of the self-reported hyposmia during COVID-19 recovery.'}
+
+suppl_figures$hyposmia_knn$plot
+
+```
+
+__Supplementary Figure \@ref(fig:fig-hypo-knn). Five closest co-occurring symptoms of the self-reported hyposmia during COVID-19 recovery.__
+
+Cosine similarity distances (1 - Cosine similarity coefficient) between hyposmia and other self-reported symptoms of COVID-19 in the HACT 
+(__A__, `r length(hypo_overlap$variables$survey) + 1` symptoms in total, Austria: n = `r hypo_overlap$analysis_tbl$survey$survey_at$ID %>% unique %>% length`, Italy: `r hypo_overlap$analysis_tbl$survey$survey_it$ID %>% unique %>% length`) 
+and COVILD study 
+(__B__, `r length(hypo_overlap$variables$covild) + 1` symptoms, ambulatory: n = `r hypo_overlap$analysis_tbl$covild$A$ID %>% unique %>% length`, moderate: n = `r hypo_overlap$analysis_tbl$covild$HM$ID %>% unique %>% length`, severe COVID-19: `r hypo_overlap$analysis_tbl$covild$HS$ID %>% unique %>% length`) were calculated for the indicated time points (__Supplementary Table \@ref(tab:tab-similarity)__). Cosine distances for five closest co-occurring symptoms of the self-reported hyposmia at the particular time points are presented in radial plots. Line length, point and label color code for cosine distance. Dashed lines represent cosine similarity coefficient of 0.5.
+
+\newpage
+
+```{r fig-clustering, fig.width = mm_inch(suppl_figures$clustering$w), fig.height = mm_inch(suppl_figures$clustering$h), dpi = 600, fig.cap = 'Development of long-term recovery clusters.'}
+
+suppl_figures$clustering$plot
+
+```
+
+__Supplementary Figure \@ref(fig:fig-hypo-knn). Development of long-term recovery clusters.__
+
+HACT participants with COVID-19 symptoms present for at least three months post clinical onset (Austria: n = `r nrow(pheno$analysis_tbl$survey_at)`, Italy: n = `r nrow(pheno$analysis_tbl$survey_it)`) were clustered in respect to manifestations present in at least 25% of the cohort for 28 days or longer with a combined algorithm employing self-organizing map (SOM, `r pheno$som_grid$xdim` $\times$ `r pheno$som_grid$ydim` hexagonal units, Jaccard distance) and hierarchical clustering (HCL, Ward D2 algorithm, Euclidean distance).
+
+__(A)__ Progress of the SOM training procedure visualized as the drop of the mean distance to the winning unit
+with the algorithm iterations.
+
+__(B)__ Determination of the optimal cluster number in hierarchical clustering of the SOM nodes by finding the
+bend of the total within sum of square curve.
+
+__(C)__ Assignment of the SOM nodes to the clusters defined by hierarchical clustering presented in dendrograms.
+
+\newpage
+
+# References
