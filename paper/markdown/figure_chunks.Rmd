@@ -1,0 +1,78 @@
+```{r fig-consort, fig.width = 7.086614166, fig.height = 4.330708657, fig.cap = 'Flow diagram of the analysis inclusion process for the CovILD and HACT studies.'}
+
+figures$consort$plot
+
+```
+
+__Figure \@ref(fig:fig-consort). Flow diagram of the analysis inclusion process for the CovILD and HACT studies.__
+
+
+
+```{r fig-sympt-recovery, fig.width = 7.086614166, fig.height = 8.661417314, fig.cap = 'Symptom-specific recovery times in ambulatory COVID-19.'}
+
+figures$sympt_recovery$plot
+
+```
+
+__Figure \@ref(fig:fig-sympt-recovery). Symptom-specific recovery times in ambulatory COVID-19.__
+
+
+
+```{r fig-sympt-mds, fig.width = 7.086614166, fig.height = 7.086614166, fig.cap = 'Self-reported smell and taste disorders are isolated symptoms of long COVID and PASC.'}
+
+figures$sympt_mds$plot
+
+```
+
+__Figure \@ref(fig:fig-sympt-mds). Self-reported smell and taste disorders are isolated symptoms of long COVID and PASC.__
+
+
+
+```{r fig-apriori, fig.width = 7.086614166, fig.height = 7.480314953, fig.cap = 'High extent of co-occurrence of smell and taste disorders in long COVID and PASC.'}
+
+figures$apriori$plot
+
+```
+
+__Figure \@ref(fig:fig-apriori). High extent of co-occurrence of smell and taste disorders in long COVID and PASC.__
+
+
+
+```{r fig-clustering, fig.width = 7.086614166, fig.height = 7.086614166, fig.cap = 'Clustering of ambulatory COVID-19 individuals by symptom-specific recovery times.'}
+
+figures$clustering$plot
+
+```
+
+__Figure \@ref(fig:fig-clustering). Clustering of ambulatory COVID-19 individuals by symptom-specific recovery times.__
+
+
+
+```{r fig-sympt-clusters, fig.width = 7.086614166, fig.height = 7.086614166, fig.cap = 'Duration of neurocognitive and respiratory symptoms, fatigue, smell and taste disorders differs between the COVID-19 recovery clusters.'}
+
+figures$sympt_clusters$plot
+
+```
+
+__Figure \@ref(fig:fig-sympt-clusters). Duration of neurocognitive and respiratory symptoms, fatigue, smell and taste disorders differs between the COVID-19 recovery clusters.__
+
+
+
+```{r fig-base-clusters, fig.width = 7.086614166, fig.height = 8.267716527, fig.cap = 'COVID-19 recovery clusters differ in sex distribution, comorbidity and daily medication rates.'}
+
+figures$base_clusters$plot
+
+```
+
+__Figure \@ref(fig:fig-base-clusters). COVID-19 recovery clusters differ in sex distribution, comorbidity and daily medication rates.__
+
+
+
+```{r fig-recovery-clusters, fig.width = 7.086614166, fig.height = 4.724409444, fig.cap = 'Good clinical, mental and psychosocial recovery in individuals with persistent smell and taste disorders'}
+
+figures$recovery_clusters$plot
+
+```
+
+__Figure \@ref(fig:fig-recovery-clusters). Good clinical, mental and psychosocial recovery in individuals with persistent smell and taste disorders__
+

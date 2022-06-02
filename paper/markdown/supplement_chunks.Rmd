@@ -1,0 +1,138 @@
+```{r fig-hact-freq, fig.width = 7.086614166, fig.height = 7.480314953, fig.cap = 'Frequency of COVID-19 symptoms in acute COVID-19, long COVID and PASC in the HACT study.'}
+
+suppl$hact_freq$plot
+
+```
+
+__Figure \@ref(fig:fig-hact-freq). Frequency of COVID-19 symptoms in acute COVID-19, long COVID and PASC in the HACT study.__
+
+
+
+```{r fig-hact-recovery, fig.width = 7.086614166, fig.height = 7.086614166, fig.cap = 'Kinetic of recovery from leading acute COVID-19 symptoms in the HACT study.'}
+
+suppl$hact_recovery$plot
+
+```
+
+__Figure \@ref(fig:fig-hact-recovery). Kinetic of recovery from leading acute COVID-19 symptoms in the HACT study.__
+
+
+
+```{r fig-covild-freq, fig.width = 7.086614166, fig.height = 8.661417314, fig.cap = 'Symptom frequency in ambulatory, moderate and severe COVID-19 subsets of the CovILD study.'}
+
+suppl$covild_freq$plot
+
+```
+
+__Figure \@ref(fig:fig-covild-freq). Symptom frequency in ambulatory, moderate and severe COVID-19 subsets of the CovILD study.__
+
+
+
+```{r fig-covild-recovery, fig.width = 7.086614166, fig.height = 7.086614166, fig.cap = 'Kinetic of recovery from smell disorders, reduced performance and dyspnea in ambulatory, moderate and severe COVID-19 subsets of the CovILD study.'}
+
+suppl$covild_recovery$plot
+
+```
+
+__Figure \@ref(fig:fig-covild-recovery). Kinetic of recovery from smell disorders, reduced performance and dyspnea in ambulatory, moderate and severe COVID-19 subsets of the CovILD study.__
+
+
+
+```{r fig-hyposmia-rater100, fig.width = 7.086614166, fig.height = 6.299212592, fig.cap = 'Rates of self-reported hyposmia and hyposmia in sniffing stick test at 3-month post COVID-19 follow-up in the ambulatory, moderate and severe COVID-19 subsets of the CovILD study.'}
+
+suppl$hyposmia_rater100$plot
+
+```
+
+__Figure \@ref(fig:fig-hyposmia-rater100). Rates of self-reported hyposmia and hyposmia in sniffing stick test at 3-month post COVID-19 follow-up in the ambulatory, moderate and severe COVID-19 subsets of the CovILD study.__
+
+
+
+```{r fig-hyposmia-rater360, fig.width = 7.086614166, fig.height = 6.299212592, fig.cap = 'Rates of self-reported hyposmia and hyposmia in sniffing stick test at 1-year post COVID-19 follow-up in the ambulatory, moderate and severe COVID-19 subsets of the CovILD study.'}
+
+suppl$hyposmia_rater360$plot
+
+```
+
+__Figure \@ref(fig:fig-hyposmia-rater360). Rates of self-reported hyposmia and hyposmia in sniffing stick test at 1-year post COVID-19 follow-up in the ambulatory, moderate and severe COVID-19 subsets of the CovILD study.__
+
+
+
+```{r fig-mds-acute, fig.width = 7.086614166, fig.height = 3.93700787, fig.cap = 'Multi-dimensional scaling analysis of acute COVID-19 symptoms in the HACT study.'}
+
+suppl$mds_acute$plot
+
+```
+
+__Figure \@ref(fig:fig-mds-acute). Multi-dimensional scaling analysis of acute COVID-19 symptoms in the HACT study.__
+
+
+
+```{r fig-clust-devel, fig.width = 7.086614166, fig.height = 7.086614166, fig.cap = 'Definition of the COVID-19 recovery clusters and clustering feature importance in the HACT study.'}
+
+suppl$clust_devel$plot
+
+```
+
+__Figure \@ref(fig:fig-clust-devel). Definition of the COVID-19 recovery clusters and clustering feature importance in the HACT study.__
+
+
+
+```{r fig-cov-clusters, fig.width = 7.086614166, fig.height = 5.511811018, fig.cap = 'Numbers of acute COVID-19 and long COVID symptoms in the HACT study recovery clusters.'}
+
+suppl$cov_clusters$plot
+
+```
+
+__Figure \@ref(fig:fig-cov-clusters). Numbers of acute COVID-19 and long COVID symptoms in the HACT study recovery clusters.__
+
+
+
+```{r fig-anosmia-clusters, fig.width = 7.086614166, fig.height = 7.086614166, fig.cap = 'Recovery from fatigue, tiredness and tachypnea in the HACT study recovery clusters.'}
+
+suppl$fatigue_clsters$plot
+
+```
+
+__Figure \@ref(fig:fig-anosmia-clusters). Recovery from fatigue, tiredness and tachypnea in the HACT study recovery clusters.__
+
+
+
+```{r fig-fatigue-clsters, fig.width = 7.086614166, fig.height = 7.086614166, fig.cap = 'Recovery from neurocognitive symptoms of COVID-19 in the HACT study recovery clusters.'}
+
+suppl$neurocog_clusters$plot
+
+```
+
+__Figure \@ref(fig:fig-fatigue-clsters). Recovery from neurocognitive symptoms of COVID-19 in the HACT study recovery clusters.__
+
+
+
+```{r fig-neurocog-clusters, fig.width = 7.086614166, fig.height = 4.724409444, fig.cap = 'Recovery from smell and taste disorders in the HACT study recovery clusters'}
+
+suppl$anosmia_clusters$plot
+
+```
+
+__Figure \@ref(fig:fig-neurocog-clusters). Recovery from smell and taste disorders in the HACT study recovery clusters__
+
+
+
+```{r fig-rec-clusters, fig.width = 7.086614166, fig.height = 8.267716527, fig.cap = 'Physical performance loss, impairment of quality of life and self-perceived complete convalescence in the HACT study recovery clusters.'}
+
+suppl$rec_clusters$plot
+
+```
+
+__Figure \@ref(fig:fig-rec-clusters). Physical performance loss, impairment of quality of life and self-perceived complete convalescence in the HACT study recovery clusters.__
+
+
+
+```{r fig-psych-clusters, fig.width = 7.086614166, fig.height = 9.055118101, fig.cap = 'Rating of anxiety, depression, overall mental health impairment and stress in the HACT study recovery clusters.'}
+
+suppl$psych_clusters$plot
+
+```
+
+__Figure \@ref(fig:fig-psych-clusters). Rating of anxiety, depression, overall mental health impairment and stress in the HACT study recovery clusters.__
+
