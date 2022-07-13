@@ -25,12 +25,14 @@
   ap_sympt$hact_trasactions <- ap_sympt$hact_tbl %>% 
     map(as, 'transactions')
   
-# Calculating the rules -----
-  
-  insert_msg('Rule calculation')
+  ## parallel backend
   
   plan('multisession')
   
+# Calculating the rules -----
+  
+  insert_msg('Rule calculation')
+
   ap_sympt$rules <- ap_sympt$hact_trasactions %>% 
     future_map(apriori, 
                parameter = list(support = 0.1, 
@@ -49,9 +51,7 @@
     future_map(DATAFRAME, 
                .options = furrr_options(seed = TRUE)) %>% 
     future_map(clear_rule_tbl)
-  
-  plan('sequential')
-  
+
 # Plotting the confidence versus support ------
   
   insert_msg('Confidence versus support plots')
@@ -61,12 +61,12 @@
                                          trans_lab = stri_replace(trans_lab, 
                                                                   fixed = ' \u2192 ', 
                                                                   replacement = '\u2192\n')), 
-                                   plot_title = rep(c('Acute CoV', 
-                                                      'Sub-acute CoV', 
-                                                      'Long CoV', 
-                                                      'PASC'), 2), 
-                                   plot_subtitle = c(rep('AT, HACT study', 4), 
-                                                     rep('IT, HACT study', 4))) %>% 
+                                   plot_title = rep(c('0 - 14 days', 
+                                                      '14 days', 
+                                                      '28 days', 
+                                                      '3 months'), 2), 
+                                   plot_subtitle = c(rep('AT, survey study', 4), 
+                                                     rep('IT, survey study', 4))) %>% 
     pmap(draw_conf_supp, 
          by = 'support',
          top_transactions = 7, 
@@ -81,12 +81,12 @@
   
   ap_sympt$top_support_plots <- list(data = ap_sympt$rules_tbl %>% 
                                        map(filter, stri_detect(signature, fixed = 'anosmia')), 
-                                     plot_title = rep(c('Acute CoV: top support', 
-                                                        'Sub-acute CoV: top support', 
-                                                        'Long CoV: top support', 
-                                                        'PASC: top support'), 2), 
-                                     plot_subtitle = c(rep('AT, HACT study', 4), 
-                                                       rep('IT, HACT study', 4)), 
+                                     plot_title = rep(c('0 - 14 days: top support', 
+                                                        '14 days: top support', 
+                                                        '28 days: top support', 
+                                                        '38 days: top support'), 2), 
+                                     plot_subtitle = c(rep('AT, survey study', 4), 
+                                                       rep('IT, survey study', 4)), 
                                      fill_scale = as.list(c(rep(globals$hact_colors[1], 4), 
                                                             rep(globals$hact_colors[2], 4)))) %>% 
     pmap(plot_top, 
@@ -100,12 +100,12 @@
   
   ap_sympt$top_confidence_plots <- list(data = ap_sympt$rules_tbl %>% 
                                           map(filter, stri_detect(signature, fixed = 'anosmia')), 
-                                        plot_title = rep(c('Acute CoV: top confidence', 
-                                                           'Sub-acute CoV: top confidence', 
-                                                           'Long CoV: top confidence', 
-                                                           'PASC: top confidence'), 2), 
-                                        plot_subtitle = c(rep('AT, HACT study', 4), 
-                                                          rep('IT, HACT study', 4)), 
+                                        plot_title = rep(c('0 - 14 days: top confidence', 
+                                                           '14 days: top confidence', 
+                                                           '28 days: top confidence', 
+                                                           '3 months: top confidence'), 2), 
+                                        plot_subtitle = c(rep('AT, survey study', 4), 
+                                                          rep('IT, survey study', 4)), 
                                         fill_scale = as.list(c(rep(globals$hact_colors[1], 4), 
                                                                rep(globals$hact_colors[2], 4)))) %>% 
     pmap(plot_top, 
@@ -119,12 +119,12 @@
   
   ap_sympt$top_lift_plots <- list(data = ap_sympt$rules_tbl %>% 
                                     map(filter, stri_detect(signature, fixed = 'anosmia')), 
-                                  plot_title = rep(c('Acute CoV: top lift', 
-                                                     'Sub-acute CoV: top lift', 
-                                                     'Long CoV: top lift', 
-                                                     'PASC: top lift'), 2), 
-                                  plot_subtitle = c(rep('AT, HACT study', 4), 
-                                                    rep('IT, HACT study', 4)), 
+                                  plot_title = rep(c('0 - 14 days: top lift', 
+                                                     '14 days: top lift', 
+                                                     '28 days: top lift', 
+                                                     '3 months: top lift'), 2), 
+                                  plot_subtitle = c(rep('AT, survey study', 4), 
+                                                    rep('IT, survey study', 4)), 
                                   fill_scale = as.list(c(rep(globals$hact_colors[1], 4), 
                                                          rep(globals$hact_colors[2], 4)))) %>% 
     pmap(plot_top, 
@@ -137,5 +137,7 @@
     map(~.x + theme(legend.position = 'none'))
   
 # END -----
+  
+  plan('sequential')
   
   insert_tail()

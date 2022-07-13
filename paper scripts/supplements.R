@@ -23,6 +23,8 @@
               labels = LETTERS, 
               label_size = 10) %>% 
     as_figure('figure_s1_hact_symp_frequency', 
+              ref_name = 'hact_freq', 
+              caption = 'Frequency of COVID-19 symptoms in the survey study.', 
               w = 180, 
               h = 190)
   
@@ -53,6 +55,8 @@
                          'F', ''), 
               label_size = 10) %>% 
     as_figure('figure_s2_hact_kinetic', 
+              ref_name = 'hact_recovery', 
+              caption = 'Kinetic of recovery from leading acute COVID-19 symptoms in the survey study.', 
               w = 180, 
               h = 180)
   
@@ -74,6 +78,8 @@
               labels = LETTERS, 
               label_size = 10) %>% 
     as_figure('figure_s3_covild_symp_frequency', 
+              ref_name = 'covild_freq', 
+              caption = 'Symptom frequency in ambulatory, moderate and severe COVID-19 subsets of the CovILD study.', 
               w = 180, 
               h = 220)
   
@@ -96,6 +102,8 @@
                          'C', '', ''), 
               label_size = 10) %>% 
     as_figure('figure_s4_covild_kinetic', 
+              ref_name = 'covild_recovery', 
+              caption = 'Kinetic of recovery from smell disorders, reduced performance and dyspnea in ambulatory, moderate and severe COVID-19 subsets of the CovILD study.', 
               w = 180, 
               h = 180)
   
@@ -118,6 +126,8 @@
               labels = LETTERS, 
               label_size = 10) %>% 
     as_figure('figure_s5_hyposmia_rater100', 
+              re_name = 'hyposmia_rater100', 
+              caption = 'Rates of self-reported hyposmia and hyposmia in sniffing stick test at 3-month post COVID-19 follow-up in the ambulatory, moderate and severe COVID-19 subsets of the CovILD study.', 
               w = 180, 
               h = 160)
   
@@ -140,6 +150,8 @@
               labels = LETTERS, 
               label_size = 10) %>% 
     as_figure('figure_s6_hyposmia_rater360', 
+              ref_name = 'hyposmia_rater360', 
+              caption = 'Rates of self-reported hyposmia and hyposmia in sniffing stick test at 1-year post COVID-19 follow-up in the ambulatory, moderate and severe COVID-19 subsets of the CovILD study.', 
               w = 180, 
               h = 160)
   
@@ -158,6 +170,8 @@
               align = 'hv', 
               axis = 'tblr') %>% 
     as_figure('figure_s7_mds_hact_acute_cov', 
+              ref_name = 'mds_acute', 
+              caption = 'Multi-dimensional scaling analysis of acute COVID-19 symptoms in the survey study.', 
               w = 180, 
               h = 100)
   
@@ -179,154 +193,136 @@
               labels = c('', 'C'), 
               label_size = 10) %>% 
     as_figure('figure_s8_cluster_development', 
+              ref_name = 'clust_devel', 
+              caption = 'Definition of the COVID-19 recovery clusters and clustering feature importance in the survey study.', 
               w = 180, 
               h = 180)
   
-# Figure S9: symptom count, phys.perf and perceived recovery, clusters -----
+# Figure S9: clustering of the participants ------
   
-  insert_msg('Figure S9: Symptoms, performance and recovery in the clusters')
+  insert_msg('Figure S9: clustering')
+  
+  suppl$clustering <- part_clust$feature_hm %>% 
+    map(~.x + 
+          scale_y_discrete(labels = function(x) embolden_scale(x, 
+                                                               c('anosmia', 'taste_loss'), 
+                                                               translate = TRUE), 
+                           limits = globals$hact_symptom_order) + 
+          theme(axis.text.y = element_markdown(), 
+                legend.position = 'none')) %>% 
+    plot_grid(plotlist = ., 
+              ncol = 2, 
+              align = 'hv', 
+              axis = 'tblr') %>% 
+    plot_grid(get_legend(part_clust$feature_hm[[1]] + 
+                           theme(legend.position = 'bottom')), 
+              nrow = 2, 
+              rel_heights = c(0.92, 0.08)) %>% 
+    as_figure('figure_s9_recovery_clusters', 
+              ref_name = 'clustering', 
+              caption = 'Clustering of ambulatory COVID-19 individuals by symptom-specific recovery times.', 
+              w = 180, 
+              h = 180)  
+  
+# Figure S10: symptom count, clusters -----
+  
+  insert_msg('Figure S10: Symptom count in the clusters')
   
   suppl$cov_clusters <- clust_chara$plots %>% 
     map(~.x[c('sum_symptoms_acute', 
               'sum_symptoms_long')]) %>% 
     transpose %>% 
     unlist(recursive = FALSE) %>% 
-    map(~.x + theme(legend.position = 'none')) %>% 
+    map2(.,
+         c('# symptoms, 0 - 14 days, AT', 
+           '# symptoms, 0 - 14 days, IT', 
+           '# symptoms, 28 days, AT', 
+           '# symptoms, 28 days, IT'), 
+         ~.x +
+           labs(title = .y) + 
+           theme(legend.position = 'none')) %>% 
     plot_grid(plotlist = ., 
               ncol = 2, 
               align = 'hv', 
               axis = 'tblr', 
               labels = c('A', '', 'B', ''), 
               label_size = 10) %>% 
-    as_figure('figure_s9_cov_clusters', 
+    as_figure('figure_s10_cov_clusters', 
+              ref_name = 'cov_clusters', 
+              caption = 'Numbers of COVID-19 symptoms in the HACT study recovery clusters.', 
               w = 180, 
               h = 140)
-  
-  
-# Figure S10: hyposmia and hypogeusia in the recovery clusters ------
-  
-  insert_msg('Figure S9: hyposmia and hypogeusia in the clusters')
-  
-  suppl$anosmia_clusters <- clust_ft$clust_ft_plots %>% 
-    map(~.x[c('anosmia', 'taste_loss')]) %>% 
-    transpose %>% 
-    unlist(recursive = FALSE) %>% 
-    map(~.x + theme(legend.position = 'none')) %>% 
-    plot_grid(plotlist = .,
-              ncol = 2, 
-              align = 'hv',
-              axis = 'tblr', 
-              labels = c('A', '', 'B', ''), 
-              label_size = 10) %>% 
-    as_figure('figure_s10_hyposmia_clusters', 
-              w = 180, 
-              h = 120)
-  
-# Figure S11: duration of key symptoms in the recovery clusters -----
-  
-  insert_msg('Figure S11: fatigue, tiredness and tachypnea in the clusters')
-  
-  suppl$fatigue_clsters <- clust_ft$clust_ft_plots %>% 
-    map(~.x[c('fatigue_day', 'fatigue', 'breath_short')]) %>% 
-    transpose %>% 
-    unlist(recursive = FALSE) %>% 
-    map(~.x + theme(legend.position = 'none')) %>% 
-    plot_grid(plotlist = .,
-              ncol = 2, 
-              align = 'hv',
-              axis = 'tblr', 
-              labels = c('A', '', 'B', '', 'C'), 
-              label_size = 10) %>% 
-    as_figure('figure_s11_fatigue_clusters', 
-              w = 180, 
-              h = 180)
-  
-# Figure S12: duration of neurocognitive symptoms in the recovery clusters -----
-  
-  insert_msg('Figure S12: neurocognitive features in the clusters')
-  
-  suppl$neurocog_clusters <- clust_ft$clust_ft_plots %>% 
-    map(~.x[c('forgetfulness', 'imp_concentration', 'confusion')]) %>% 
-    transpose %>% 
-    unlist(recursive = FALSE) %>% 
-    map(~.x + theme(legend.position = 'none')) %>% 
-    plot_grid(plotlist = .,
-              ncol = 2, 
-              align = 'hv',
-              axis = 'tblr', 
-              labels = c('A', '', 'B', '', 'C'), 
-              label_size = 10) %>% 
-    as_figure('figure_s12_neurocognitive_clusters', 
-              w = 180, 
-              h = 180)
 
-# Figure S13: physical performance, life quality and complete recovery, clusters -----
+# Supplementary Figure S11: baseline features in the recovery clusters -----  
   
-  insert_msg('Figure S13: performance, QoL and perceived recovery, clusters')
+  insert_msg('Figure S11: Baseline features in the recovery clusters')
   
-  suppl$rec_clusters$upper_panel <- clust_chara$plots %>% 
-    map(~.x[c('perf_impairment', 
-              'life_quality_score')]) %>% 
-    transpose %>% 
-    unlist(recursive = FALSE) %>% 
+  suppl$base_clusters <- clust_chara$plots %>% 
+    map(~.x[c('sex', 'comorb_present', 'daily_medication')]) %>% 
+    transpose
+  
+  ## color adjustment
+  
+  suppl$base_clusters$sex <- suppl$base_clusters$sex %>% 
+    map(~.x + 
+          scale_fill_manual(values = c(male = 'steelblue', 
+                                       female = 'coral3')))
+  
+  suppl$base_clusters$comorb_present <- 
+    suppl$base_clusters$comorb_present %>% 
+    map(~.x + scale_fill_manual(values = c(no = 'steelblue', yes = 'coral3')))
+  
+  suppl$base_clusters$daily_medication <- 
+    suppl$base_clusters$daily_medication %>% 
+    map(~.x + 
+          scale_fill_manual(values = c('steelblue', 'cornsilk3', 'coral3')))
+  
+  ## panels
+  
+  suppl$base_clusters$upper_panel <-  suppl$base_clusters$sex %>% 
     map(~.x + theme(legend.position = 'none')) %>% 
-    plot_grid(plotlist = ., 
-              ncol = 2, 
-              align = 'hv', 
-              axis = 'tblr', 
-              labels = c('A', '', 'B', ''), 
-              label_size = 10)
-  
-  suppl$rec_clusters$bottom_panel <- clust_chara$plots %>% 
-    map(~.x$incomplete_covelescence + 
-          theme(legend.position = 'none') + 
-          scale_fill_manual(values = c(no = 'steelblue', 
-                                       yes = 'coral3'))) %>% 
-    c(list(get_legend(clust_chara$plots$clust_north$incomplete_covelescence + 
-                        scale_fill_manual(values = c(no = 'steelblue', 
-                                                     yes = 'coral3'))))) %>% 
+    c(list(get_legend(suppl$base_clusters$sex[[1]]))) %>% 
     plot_grid(plotlist = ., 
               ncol = 3, 
-              rel_widths = c(1.3, 1.3, 0.4), 
-              labels = 'C', 
-              label_size = 10)
+              align = 'hv', 
+              axis = 'tblr')
   
-  suppl$rec_clusters <- plot_grid(suppl$rec_clusters$upper_panel, 
-                                  suppl$rec_clusters$bottom_panel, 
-                                  nrow = 2, 
-                                  rel_heights = c(2, 1)) %>% 
-    as_figure('figure_s13_recovery_clusters', 
+  suppl$base_clusters$middle_panel <- suppl$base_clusters$comorb_present %>% 
+    map(~.x + theme(legend.position = 'none')) %>% 
+    c(list(get_legend(suppl$base_clusters$comorb_present[[1]]))) %>% 
+    plot_grid(plotlist = ., 
+              ncol = 3, 
+              align = 'hv', 
+              axis = 'tblr')
+  
+  suppl$base_clusters$bottom_panel <-  suppl$base_clusters$daily_medication %>% 
+    map(~.x + theme(legend.position = 'none')) %>% 
+    c(list(get_legend(suppl$base_clusters$daily_medication[[1]]))) %>% 
+    plot_grid(plotlist = ., 
+              ncol = 3, 
+              align = 'hv', 
+              axis = 'tblr')
+  
+  ## entire figure
+  
+  suppl$base_clusters <- plot_grid(suppl$base_clusters$upper_panel, 
+                                   suppl$base_clusters$middle_panel, 
+                                   suppl$base_clusters$bottom_panel, 
+                                   nrow = 3, 
+                                   labels = LETTERS, 
+                                   label_size = 10) %>% 
+    as_figure('figure_s11_baseline_clusters', 
+              ref_name = 'base_clusters', 
+              caption = 'COVID-19 recovery clusters differ in sex distribution, comorbidity and daily medication rates.', 
               w = 180, 
               h = 210)
-  
-# Figure S14: psychosocial health in the clusters -----
-  
-  insert_msg('Figure S14: psychosocial health in the clusters')
-  
-  suppl$psych_clusters <- clust_chara$plots %>% 
-    map(~.x[c('phq_anxiety_score', 
-              'phq_depression_score', 
-              'stress_score', 
-              'mental_health_score')]) %>% 
-    transpose %>% 
-    unlist(recursive = FALSE) %>% 
-    map(~.x + theme(legend.position = 'none')) %>% 
-    plot_grid(plotlist = ., 
-              ncol = 2, 
-              align = 'hv', 
-              axis = 'tblr', 
-              labels = c('A', '', 'B', '', 'C', '', 'D'), 
-              label_size = 10) %>% 
-    as_figure('figure_s14_psych_clusters', 
-              w = 180, 
-              h = 230)
   
 # Saving the figures ------
   
   insert_msg('Saving the figures')
   
   suppl %>% 
-    walk(save_figure, 
+    walk(pickle, 
          path = './paper/supplementary figures', 
          format = 'pdf', 
          device = cairo_pdf)

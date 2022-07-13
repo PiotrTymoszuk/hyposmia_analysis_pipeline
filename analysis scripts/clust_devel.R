@@ -26,51 +26,61 @@
   
   ## hierarchical clustering
   
+  plan('multisession')
+  
   cl_devel$algos[paste0('hcl_', cl_devel$test_dist)] <- 
     cl_devel$test_dist %>% 
-    map(~hcluster(data = cl_devel$analysis_tbl$north, 
+    future_map(~hcluster(data = cl_devel$analysis_tbl$north, 
                   distance_method = .x, 
                   hc_method = 'ward.D2', 
                   k = 3, 
-                  seed = 1234))
+                  seed = 1234), 
+               .options = furrr_options(seed = TRUE))
   
   ## K-Means
   
   cl_devel$algos[paste0('kmeans_', cl_devel$test_dist)] <- 
     cl_devel$test_dist %>% 
-    map(~kcluster(data = cl_devel$analysis_tbl$north, 
-                  distance_method = .x, 
-                  clust_fun = 'kmeans', 
-                  k = 3, 
-                  seed = 1234))
+    future_map(~kcluster(data = cl_devel$analysis_tbl$north, 
+                         distance_method = .x, 
+                         clust_fun = 'kmeans', 
+                         k = 3, 
+                         seed = 1234), 
+               .options = furrr_options(seed = TRUE))
   
   ## PAM
   
   cl_devel$algos[paste0('pam_', cl_devel$test_dist)] <- 
     cl_devel$test_dist %>% 
-    map(~kcluster(data = cl_devel$analysis_tbl$north, 
-                  distance_method = .x, 
-                  clust_fun = 'pam', 
-                  k = 3, 
-                  seed = 1234))
+    future_map(~kcluster(data = cl_devel$analysis_tbl$north, 
+                         distance_method = .x, 
+                         clust_fun = 'pam', 
+                         k = 3, 
+                         seed = 1234),
+               .options = furrr_options(seed = TRUE))
   
   ## combi SOM + HCl clustering
   
   cl_devel$algos[paste0('combi_', cl_devel$test_dist)] <- 
     cl_devel$test_dist %>% 
-    map(~combi_cluster(data = cl_devel$analysis_tbl$north, 
-                       distance_som = .x, 
-                       xdim = cl_devel$som_x, 
-                       ydim = cl_devel$som_x, 
-                       topo = 'hexagonal', 
-                       neighbourhood.fct = 'gaussian', 
-                       toroidal = FALSE, 
-                       rlen = 1500, 
-                       node_clust_fun = hcluster, 
-                       distance_nodes = 'euclidean', 
-                       k = 3, 
-                       seed = 1234))
+    future_map(~combi_cluster(data = cl_devel$analysis_tbl$north, 
+                              distance_som = .x, 
+                              xdim = cl_devel$som_x, 
+                              ydim = cl_devel$som_x, 
+                              topo = 'hexagonal', 
+                              neighbourhood.fct = 'gaussian', 
+                              toroidal = FALSE, 
+                              rlen = 1500, 
+                              node_clust_fun = hcluster, 
+                              distance_nodes = 'euclidean', 
+                              k = 3, 
+                              seed = 1234), 
+               .options = furrr_options(seed = TRUE, 
+                                        packages = c('clustTools', 
+                                                     'somKernels')))
 
+  plan('sequential')
+  
 # Calculating the clustering variances ----
   
   insert_msg('Clustering variances')
@@ -131,7 +141,7 @@
     globals$common_theme + 
     theme(axis.title.y = element_blank()) + 
     labs(title = 'Performance of clustering algorithms', 
-         subtitle = 'AT, HACT study', 
+         subtitle = 'training AT, survey study', 
          x = 'Statistic value')
   
 # END -----

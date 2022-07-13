@@ -44,16 +44,19 @@
     map(paste, collapse = ', ') %>% 
     map(~paste0('\n', .x))
   
+  plan('multisession')
+  
 # Descriptive stats ----
   
   insert_msg('Descriptive stats')
 
   clust_ft$clust_ft_stats <- clust_ft$analysis_tbl %>% 
-    map(~explore(.x, 
-                 split_factor = 'clust_id', 
-                 variables = globals$hact_symptoms, 
-                 what = 'table', 
-                 pub_styled = TRUE)) %>% 
+    future_map(~explore(.x, 
+                        split_factor = 'clust_id', 
+                        variables = globals$hact_symptoms, 
+                        what = 'table', 
+                        pub_styled = TRUE), 
+               .options = furrr_options(seed = TRUE)) %>% 
     map(reduce, left_join, by = 'variable') %>% 
     map(set_names, c('variable', 'clust_1', 'clust_2', 'clust_3'))
   
@@ -62,14 +65,15 @@
   insert_msg('Serial testing')
   
   clust_ft$clust_ft_test <- clust_ft$analysis_tbl %>% 
-    map(~compare_variables(.x, 
-                           split_factor = 'clust_id', 
-                           variables = globals$hact_symptoms, 
-                           what = 'test', 
-                           types = 'kruskal_test', 
-                           ci = FALSE, 
-                           pub_styled = TRUE, 
-                           adj_method = 'BH')) %>% 
+    future_map(~compare_variables(.x, 
+                                  split_factor = 'clust_id', 
+                                  variables = globals$hact_symptoms, 
+                                  what = 'test', 
+                                  types = 'kruskal_test', 
+                                  ci = FALSE, 
+                                  pub_styled = TRUE, 
+                                  adj_method = 'BH'), 
+               .options = furrr_options(seed = TRUE)) %>% 
     map(mutate, plot_cap = paste(eff_size, significance, sep = ', '))
   
 # Violin plots for all features -----
@@ -105,14 +109,15 @@
   insert_msg('Plots with summary test results')
   
   clust_ft$clust_ft_summ <- clust_ft$analysis_tbl %>% 
-    map(~compare_variables(.x, 
-                           split_factor = 'clust_id', 
-                           variables = globals$hact_symptoms, 
-                           what = 'test', 
-                           types = 'kruskal_test', 
-                           ci = FALSE, 
-                           pub_styled = FALSE, 
-                           adj_method = 'BH')) %>% 
+    future_map(~compare_variables(.x, 
+                                  split_factor = 'clust_id', 
+                                  variables = globals$hact_symptoms, 
+                                  what = 'test', 
+                                  types = 'kruskal_test', 
+                                  ci = FALSE, 
+                                  pub_styled = FALSE, 
+                                  adj_method = 'BH'), 
+               .options = furrr_options(seed = TRUE)) %>% 
     map(arrange, p_adjusted) %>% 
     map(~mutate(.x, 
                 top_rank = 1:nrow(.x), 
@@ -120,8 +125,8 @@
                 plot_lab = ifelse(top_rank %in% 1:10, variable, NA)))
   
   clust_ft$clust_ft_summ <- list(x = clust_ft$clust_ft_summ, 
-                                 plot_subtitle = c('AT, HACT study', 
-                                                   'IT, HACT study'), 
+                                 plot_subtitle = c('AT, survey study', 
+                                                   'IT, survey study'), 
                                  point_color = list(c('gray60', globals$hact_colors[1]), 
                                                     c('gray60', globals$hact_colors[2]))) %>% 
     pmap(plot, 
@@ -145,8 +150,8 @@
   insert_msg('Ribbon plots with the symptom frequencies')
   
   clust_ft$ribbon_panels <- list(data = clust_ft$analysis_tbl, 
-                                 plot_subtitle = c('AT, HACT cohort', 
-                                                   'IT, HACT cohort'), 
+                                 plot_subtitle = c('AT, survey cohort', 
+                                                   'IT, survey cohort'), 
                                  plot_tag = clust_ft$n_tags) %>% 
     pmap(draw_stat_panel, 
          variables = globals$hact_symptoms, 
@@ -169,5 +174,7 @@
                            limits = globals$hact_symptom_order))
 
 # END -----
+  
+  plan('sequential')
   
   insert_tail()

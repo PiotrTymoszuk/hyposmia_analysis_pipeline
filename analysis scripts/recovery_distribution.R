@@ -13,17 +13,20 @@
   rec_dist$tbl_hact <- rec_time[c('north', 'south')] %>% 
     map2_dfr(., c('AT', 'IT'), ~mutate(.x, cohort = .y))
   
+  plan('multisession')
+  
 # descriptive stats of the recovery: individuals with the symptom present -----  
   
   insert_msg('Distribution stats for the rec. times, symptomatic  participants')
   
   rec_dist$stats_hact <- globals$hact_symptoms %>% 
-    map_dfr(~explore(rec_dist$tbl_hact[c('cohort', .x)] %>% 
-                       filter(.data[[.x]] != 0), 
-                     split_factor = 'cohort', 
-                     variables = .x, 
-                     what = 'table', 
-                     pub_styled = TRUE)) %>% 
+    future_map_dfr(~explore(rec_dist$tbl_hact[c('cohort', .x)] %>% 
+                              filter(.data[[.x]] != 0), 
+                            split_factor = 'cohort', 
+                            variables = .x, 
+                            what = 'table', 
+                            pub_styled = TRUE), 
+                   .options = furrr_options(seed = TRUE)) %>% 
     reduce(left_join, by = 'variable') %>% 
     set_names(c('variable', 'north', 'south'))
   
@@ -43,15 +46,16 @@
   insert_msg('Testing for the differences between the cohorts or severity')
   
   rec_dist$test_hact <- globals$hact_symptoms %>% 
-    map(~safely(compare_variables)(rec_dist$tbl_hact[c('cohort', .x)] %>% 
-                                     filter(.data[[.x]] != 0), 
-                                   split_factor = 'cohort', 
-                                   variables = .x, 
-                                   what = 'eff_size', 
-                                   types = 'wilcoxon_r', 
-                                   ci = FALSE, 
-                                   pub_styled = TRUE, 
-                                   adj_method = 'none')) %>% 
+    future_map(~safely(compare_variables)(rec_dist$tbl_hact[c('cohort', .x)] %>% 
+                                            filter(.data[[.x]] != 0), 
+                                          split_factor = 'cohort', 
+                                          variables = .x, 
+                                          what = 'eff_size', 
+                                          types = 'wilcoxon_r', 
+                                          ci = FALSE, 
+                                          pub_styled = TRUE, 
+                                          adj_method = 'none'), 
+               .options = furrr_options(seed = TRUE)) %>% 
     map_dfr(~.x$result) %>% 
     re_adjust('BH')
 
@@ -134,8 +138,8 @@
                                     map(~set_names(.x, 
                                                    translate_var(names(.x), 
                                                                  dict = hact$dict))), 
-                                  plot_subtitle = map2(c('AT, HACT study', 
-                                                         'IT, HACT study'), 
+                                  plot_subtitle = map2(c('AT, survey study', 
+                                                         'IT, survey study'), 
                                                        rec_time[c('north', 
                                                                   'south')], 
                                                        ~paste(.x, nrow(.y), 

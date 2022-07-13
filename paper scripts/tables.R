@@ -31,6 +31,12 @@
     select(variable, north, south, significance, eff_size) %>% 
     set_names(c('Variable', 'AT', 'IT', 'Significance', 'Effect size'))
   
+  paper_tbl$hact_baseline <- 
+    as_mdtable(paper_tbl$hact_baseline, 
+                                        label = 'table_1_hact_baseline', 
+                                        ref_name = 'hact', 
+                                        caption = 'Baseline characteristic of the Austria (AT) and Italy (IT) survey study cohorts.')
+  
 # Table 2: baseline characteristic of the CovILD cohort ------
   
   insert_msg('Table 2: baseline, CovILD')
@@ -54,6 +60,11 @@
                 'Severe CoV subset', 
                 'Significance', 
                 'Effect size'))
+  
+  paper_tbl$covild_baseline  <- as_mdtable(paper_tbl$covild_baseline, 
+                                           label = 'table_2_hact_baseline', 
+                                           ref_name = 'covild', 
+                                           caption = 'Baseline characteristic of the CovILD study cohort and the study participants stratified by COVID-19 severity.')
   
 # Supplementary Table S1: HACT study variables ------
   
@@ -82,6 +93,12 @@
                 'Stratification', 
                 'Description'))
   
+  suppl_tbl$hact_vars <- 
+    as_mdtable(suppl_tbl$hact_vars, 
+               label = 'table_s1_hact_vars', 
+               ref_name = 'hact_vars', 
+               caption = 'Survey study variables.')
+  
 # Supplementary Table S2: CovILD study variables -----
   
   insert_msg('Table S2: CovILD study variables')
@@ -97,31 +114,14 @@
     select(variable, label, unit) %>% 
     set_names(c('Variable name', 'Variable label', 'Unit'))
   
-# Supplementary Table S3: Apriori results, long CoV -----
+  suppl_tbl$covild_vars <- as_mdtable(suppl_tbl$covild_vars, 
+                                      label = 'table_s2_covild_vars', 
+                                      ref_name = 'covild_vars', 
+                                      caption = 'CovILD study variables.')
   
-  insert_msg('Table S3: apriori results, long COVID')
+# Supplementary Table S3 - S4: demographic/clinical characteristic, recovery clusters ------
   
-  suppl_tbl$apriori_long <- ap_sympt$rules_tbl[c('north.28', 'south.28')] %>% 
-    map2_dfr(., c('AT', 'IT'), ~mutate(.x, cohort = .y, time = 'long COVID')) %>% 
-    select(cohort, time, trans_lab, support, confidence, lift) %>% 
-    map_dfc(function(x) if(is.numeric(x)) signif(x, 3) else x) %>% 
-    arrange(-support) %>% 
-    set_names(c('Cohort', 'Time', 'Symptoms', 'Support', 'Confidence', 'Lift'))
-  
-# Supplementary Table S4: Apriori results, PASC -----
-  
-  insert_msg('Table S4: apriori results, PASC')
-  
-  suppl_tbl$apriori_pasc <- ap_sympt$rules_tbl[c('north.90', 'south.90')] %>% 
-    map2_dfr(., c('AT', 'IT'), ~mutate(.x, cohort = .y, time = 'PASC')) %>% 
-    select(cohort, time, trans_lab, support, confidence, lift) %>% 
-    map_dfc(function(x) if(is.numeric(x)) signif(x, 3) else x) %>% 
-    arrange(-support) %>% 
-    set_names(c('Cohort', 'Time', 'Symptoms', 'Support', 'Confidence', 'Lift')) 
-
-# Supplementary Table S5 - S6: demographic/clinical characteristic, recovery clusters ------
-  
-  insert_msg('Supplementary Table S5 - S6, baseline of the clusters')
+  insert_msg('Supplementary Table S3 - S4, baseline of the clusters')
   
   suppl_tbl[c('baseline_clusters_north', 
               'baseline_clusters_south')] <- clust_chara$summ_tbl %>% 
@@ -134,21 +134,42 @@
         variable = ifelse(!is.na(unit), 
                           paste(variable, unit, sep = ', '), 
                           variable)) %>% 
-    map(select, variable, starts_with('clust'), significance, eff_size) %>% 
+    map(select, 
+        variable, all_of(names(globals$clust_colors)), 
+        significance, eff_size) %>% 
     map(set_names, c('Variable', 
-                     'Cluster #1', 'Cluster #2', 'Cluster #3', 
+                     names(globals$clust_colors), 
                      'Significance', 'Effect size'))
   
-# Supplementary Table S7 - S8: acute coV and recovery, recovery clusters -----
+  suppl_tbl[c('baseline_clusters_north', 
+              'baseline_clusters_south')] <- 
+    list(x = suppl_tbl[c('baseline_clusters_north', 
+                         'baseline_clusters_south')], 
+         label = c('table_s3_clust_base_north', 
+                   'table_s4_clust_base_south'), 
+         ref_name = c('clust_base_at', 
+                      'clust_base_it'), 
+         caption = c('Demographic and baseline clinical characteristic at the COVID-19 onset of the survey study participants assigned to the recovery clusters, Austria (AT) cohort.', 
+                     'Demographic and baseline clinical characteristic at the COVID-19 onset of the survey study participants assigned to the recovery clusters, Italy (IT) cohort.')) %>% 
+    pmap(as_mdtable)
   
-  insert_msg('Supplementary Table S7 - S8, recovery in the clusters')
+# Supplementary Table S5 - S6: acute coV and recovery, recovery clusters -----
+  
+  insert_msg('Supplementary Table S5 - S6, recovery in the clusters')
   
   suppl_tbl[c('cov_clusters_north', 
               'cov_clusters_south')] <- clust_chara$summ_tbl %>% 
     map(mutate, 
         var_r = variable, 
         variable = factor(variable, 
-                          c(globals$cov_vars, globals$psych_var))) %>% 
+                          c('cov_outbreak', 
+                            'weight_loss_kg', 
+                            'hair_loss', 
+                            'incomplete_covelescence', 
+                            'perf_impairment', 
+                            'new_medication_fup', 
+                            'rehabilitation_fup_needed', 
+                            globals$psych_var))) %>% 
     map(filter, !is.na(variable)) %>% 
     map(arrange, variable) %>% 
     map(format_summ_tbl, dict = hact$dict) %>% 
@@ -158,10 +179,24 @@
         variable = ifelse(!is.na(unit), 
                           paste(variable, unit, sep = ', '), 
                           variable)) %>% 
-    map(select, variable, starts_with('clust'), significance, eff_size) %>% 
+    map(select, 
+        variable, all_of(names(globals$clust_colors)), 
+        significance, eff_size) %>% 
     map(set_names, c('Variable', 
-                     'Cluster #1', 'Cluster #2', 'Cluster #3', 
+                     names(globals$clust_colors), 
                      'Significance', 'Effect size'))
+  
+  suppl_tbl[c('cov_clusters_north', 
+              'cov_clusters_south')] <- 
+    list(x = suppl_tbl[c('cov_clusters_north', 
+                         'cov_clusters_south')], 
+         label = c('table_s5_clust_cov_north', 
+                   'table_s6_clust_cov_south'), 
+         ref_name = c('clust_reco_at', 
+                      'clust_reco_it'), 
+         caption = c('COVID-19 course and recovery in the survey study participants assigned to the recovery clusters, Austria (AT) cohort.', 
+                     'COVID-19 course and recovery in the survey study participants assigned to the recovery clusters, Italy (IT) cohort.')) %>% 
+    pmap(as_mdtable)
   
 # Saving the tables -----
   

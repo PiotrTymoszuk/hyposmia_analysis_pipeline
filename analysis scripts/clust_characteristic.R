@@ -50,32 +50,38 @@
                             'phq_depression_score', 
                             'stress_score')
   
+  ## parallel backend
+  
+  plan('multisession')
+  
 # descriptive stats -------
   
   insert_msg('Descriptive stats')
   
   clust_chara$desc_stats <- clust_chara$analysis_tbl %>% 
-    map(~explore(.x, 
-                 split_factor = 'clust_id', 
-                 variables = clust_chara$var_types$variable, 
-                 what = 'table', 
-                 pub_styled = TRUE)) %>% 
+    future_map(~explore(.x, 
+                        split_factor = 'clust_id', 
+                        variables = clust_chara$var_types$variable, 
+                        what = 'table', 
+                        pub_styled = TRUE), 
+               .options = furrr_options(seed = TRUE)) %>% 
     map(reduce, left_join, by = 'variable') %>% 
-    map(set_names, c('variable', 'clust_1', 'clust_2', 'clust_3'))
+    map(set_names, c('variable', names(globals$clust_colors)))
   
 # testing ------
   
   insert_msg('Testing for differences between the clusters')
   
   clust_chara$test_results <- clust_chara$analysis_tbl %>% 
-    map(~compare_variables(.x, 
-                           split_factor = 'clust_id', 
-                           variables = clust_chara$var_types$variable, 
-                           what = 'test', 
-                           types = clust_chara$var_types$type_test, 
-                           ci = FALSE, 
-                           pub_styled = TRUE, 
-                           adj_method = 'BH')) %>% 
+    future_map(~compare_variables(.x, 
+                                  split_factor = 'clust_id', 
+                                  variables = clust_chara$var_types$variable, 
+                                  what = 'test', 
+                                  types = clust_chara$var_types$type_test, 
+                                  ci = FALSE, 
+                                  pub_styled = TRUE, 
+                                  adj_method = 'BH'), 
+               .options = furrr_options(seed = TRUE)) %>% 
     map(mutate, 
         plot_cap = paste(eff_size, significance, sep = ', '))
   
@@ -96,14 +102,15 @@
   insert_msg('Summary plots, significance and effect size')
   
   clust_chara$summ_plots <- clust_chara$analysis_tbl %>% 
-    map(~compare_variables(.x, 
-                           split_factor = 'clust_id', 
-                           variables = clust_chara$var_types$variable, 
-                           what = 'test', 
-                           types = clust_chara$var_types$type_test, 
-                           ci = FALSE, 
-                           pub_styled = FALSE, 
-                           adj_method = 'BH'))
+    future_map(~compare_variables(.x, 
+                                  split_factor = 'clust_id', 
+                                  variables = clust_chara$var_types$variable, 
+                                  what = 'test', 
+                                  types = clust_chara$var_types$type_test, 
+                                  ci = FALSE, 
+                                  pub_styled = FALSE, 
+                                  adj_method = 'BH'), 
+               .options = furrr_options(seed = TRUE))
   
   clust_chara$summ_plots <- clust_chara$summ_plots %>% 
     map(function(cohort) globals[c('demo_vars', 
@@ -119,8 +126,8 @@
                                                     'Medical history', 
                                                     'COVID-19 course and recovery', 
                                                     'Psychosocial rating'), 2), 
-                                 plot_subtitle = c(rep('AT, HACT study', 4), 
-                                                   rep('IT, HACT study', 4)), 
+                                 plot_subtitle = c(rep('AT, survey study', 4), 
+                                                   rep('IT, survey study', 4)), 
                                  point_color = list(c('gray60', globals$hact_colors[1]), 
                                                     c('gray60', globals$hact_colors[1]), 
                                                     c('gray60', globals$hact_colors[1]), 
@@ -175,7 +182,7 @@
     map(~.x + 
           scale_fill_manual(values = globals$clust_colors))
   
-# Ribbon plots with the min/max scaled recovery paramaters in the clusters -----
+# Ribbon plots with the min/max scaled recovery parameters in the clusters -----
   
   insert_msg('Ribbon plots')
   
@@ -198,11 +205,29 @@
     map(paste, collapse = ', ') %>% 
     map(~paste0('\n', .))
   
+  ## labels of the axes with p values included
+  
+  clust_chara$ribbon_labs <- clust_chara$test_results %>% 
+    map(filter, variable %in% clust_chara$rec_vars) %>% 
+    map(mutate, 
+        var_lab = translate_var(variable, 
+                                out_value = 'label_short', 
+                                dict = hact$dict), 
+        var_lab = stri_replace(var_lab, 
+                               fixed = ' ', 
+                               replacement = '\n'), 
+        var_lab = paste(var_lab, 
+                        significance, 
+                        sep = '\n'))
+  
+  clust_chara$ribbon_labs <- clust_chara$ribbon_labs %>% 
+    map(~set_names(.x$var_lab, .x$variable))
+
   ## plots
   
   clust_chara$ribbon_recovery <- list(data = clust_chara$ribbon_recovery, 
-                                      plot_subtitle = c('AT, HACT study, min/max normalized', 
-                                                        'IT, HACT study, min/max normalized'), 
+                                      plot_subtitle = c('AT, survey study, min/max normalized', 
+                                                        'IT, survey study, min/max normalized'), 
                                       plot_tag = clust_chara$n_tags) %>% 
     pmap(draw_stat_panel, 
          variables = clust_chara$rec_vars, 
@@ -212,27 +237,25 @@
          cust_theme = globals$common_theme, 
          form = 'line', 
          plot_title = 'Clinical and psychosocial CoV recovery') %>% 
-    map(~.x + 
-          scale_fill_manual(values = globals$clust_colors, 
-                            name = 'Recovery\ncluster') + 
-          scale_color_manual(values = globals$clust_colors, 
+    map2(., clust_chara$ribbon_labs, 
+         ~.x + 
+           scale_fill_manual(values = globals$clust_colors, 
                              name = 'Recovery\ncluster') + 
-          scale_y_discrete(labels = translate_var(clust_chara$rec_vars, 
-                                                  out_value = 'label_short', 
-                                                  dict = hact$dict) %>% 
-                             stri_replace(fixed = ' ', replacement = '\n'), 
-                           limits = clust_chara$rec_vars) + 
-          scale_x_continuous(breaks = seq(0.1, 0.8, by = 0.1)) + 
-          theme(axis.title = element_blank(), 
-                axis.line = element_blank(), 
-                axis.ticks = element_blank(), 
-                axis.text.y = element_blank()) + 
-          coord_polar(theta = 'y', 
-                      clip = 'off'))
+           scale_color_manual(values = globals$clust_colors, 
+                              name = 'Recovery\ncluster') + 
+           scale_y_discrete(labels = .y, 
+                            limits = clust_chara$rec_vars) + 
+           scale_x_continuous(breaks = seq(0.1, 0.8, by = 0.1)) + 
+           theme(axis.title = element_blank(), 
+                 axis.line = element_blank(), 
+                 axis.ticks = element_blank(), 
+                 axis.text.y = element_blank()) + 
+           coord_polar(theta = 'y', 
+                       clip = 'off'))
   
   ## adding the breaks
   
-  for(i in seq(0.2, 0.8, by = 0.2)) {
+  for(i in seq(0, 0.8, by = 0.2)) {
     
     clust_chara$ribbon_recovery$clust_north  <- 
       clust_chara$ribbon_recovery$clust_north + 
@@ -255,6 +278,8 @@
   }
 
 # END -----
+  
+  plan('sequential')
   
   rm(i)
   

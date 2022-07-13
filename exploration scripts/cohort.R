@@ -6,7 +6,7 @@
 # container list ------
   
   eda_cohort <- list()
-  
+
 # globals ------
   
   insert_msg('Globals setup')
@@ -117,5 +117,5 @@
     format_summ_tbl(dict = covild$dict)
   
 # END -----
-  
+
   insert_tail()

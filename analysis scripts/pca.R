@@ -18,6 +18,10 @@
     map(~filter(.x, complete.cases(.x))) %>% 
     map(column_to_rownames, 'ID')
   
+  ## parallel backend
+  
+  plan('multisession')
+  
 # PCA -----
   
   insert_msg('PCA and visualizations')
@@ -40,15 +44,15 @@
     pmap(plot,
          type = 'scree', 
          cust_theme = globals$common_theme) %>% 
-    map2(c('AT, HACT study', 
-           'IT, HACT study'), 
+    map2(c('AT, survey study', 
+           'IT, survey study'), 
          ~.x + labs(subtitle = .y))
   
   ## loadings
   
   pca$pca_loadings_plot <- list(x = pca$pca_obj, 
-                                plot_subtitle = c('AT, HACT study', 
-                                                  'IT, HACT study'), 
+                                plot_subtitle = c('AT, survey study', 
+                                                  'IT, survey study'), 
                                 point_color = globals$hact_colors) %>% 
     pmap(plot,
          type = 'loadings', 
@@ -58,8 +62,8 @@
   ## score plots
   
   pca$pca_score_plot <- list(x = pca$pca_obj, 
-                             plot_subtitle = c('AT, HACT study', 
-                                               'IT, HACT study'), 
+                             plot_subtitle = c('AT, survey study', 
+                                               'IT, survey study'), 
                              point_color = globals$hact_colors) %>% 
     pmap(plot,
          type = 'scores', 
@@ -72,8 +76,8 @@
     map(mutate, len = sqrt(comp_1^2 + comp_2^2 + comp_3^2 + comp_4^2 + comp_5^2 + comp_6^2 + comp_7^2 + comp_8^2))
   
   pca$pca_imp_plot <- list(data = pca$pca_imp_plot, 
-                           plot_subtitle = c('AT, HACT study', 
-                                             'IT, HACT study'), 
+                           plot_subtitle = c('AT, survey study', 
+                                             'IT, survey study'), 
                            fill_scale = as.list(globals$hact_colors)) %>% 
     pmap(plot_top, 
          regulation_variable = 'len', 
@@ -99,8 +103,8 @@
   ## score plot
   
   pca$mds_plot <- list(x = pca$mds_obj, 
-                       plot_subtitle = c('AT, HACT study', 
-                                         'IT, HACT study'), 
+                       plot_subtitle = c('AT, survey study', 
+                                         'IT, survey study'), 
                        point_color = globals$hact_colors) %>% 
     pmap(plot, 
          type = 'scores', 
@@ -119,8 +123,8 @@
   ## score plot
   
   pca$umap_plot <- list(x = pca$umap_obj, 
-                        plot_subtitle = c('AT, HACT study', 
-                                          'IT, HACT study'), 
+                        plot_subtitle = c('AT, survey study', 
+                                          'IT, survey study'), 
                         point_color = globals$hact_colors) %>% 
     pmap(plot, 
          type = 'scores', 
@@ -129,9 +133,7 @@
 # Clustering tendency -----
   
   insert_msg('Investigating the clustering tendency')
-  
-  plan('multisession')
-  
+
   pca$clust_tend <- list(data.north = pca$analysis_tbl$north, 
                          pca.north = pca$pca_obj$north$component_tbl %>% 
                            select(-observation), 
@@ -150,8 +152,8 @@
                n = 200, 
                .options = furrr_options(seed = TRUE))
 
-  plan('sequential')
-  
 # END -----
+  
+  plan('sequential')
   
   insert_tail()

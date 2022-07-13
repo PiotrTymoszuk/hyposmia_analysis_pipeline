@@ -5,6 +5,7 @@
   library(exda)
   library(soucer)
   library(stringi)
+  library(furrr)
   
   insert_head()
   

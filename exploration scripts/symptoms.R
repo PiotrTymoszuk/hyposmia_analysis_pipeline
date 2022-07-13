@@ -40,17 +40,22 @@
                                          nrow) %>% 
                                      unlist)
   
+  ## parallel backend
+  
+  plan('multisession')
+  
 # descriptive stats ------
   
   insert_msg('Descriptive stats')
   
   eda_sympt$hact_stats <- eda_sympt$hact_tbl %>% 
-    map(explore, 
-        split_factor = 'cohort', 
-        variables = globals$hact_symptoms, 
-        what = 'table', 
-        pub_styled = TRUE) %>% 
-    map(reduce, left_join, by = 'variable') %>% 
+    future_map(explore, 
+               split_factor = 'cohort', 
+               variables = globals$hact_symptoms, 
+               what = 'table', 
+               pub_styled = TRUE, 
+               .options = furrr_options(seed = TRUE)) %>% 
+    future_map(reduce, left_join, by = 'variable') %>% 
     map(set_names, c('variable', 'AT', 'IT')) %>% 
     map(map_dfr, stri_replace_all, regex = '0:.*\\n1:\\s{1}', replacement = '') %>% 
     map(map_dfr, stri_replace_all, fixed = '% (', replacement = '% (n = ') %>% 
@@ -73,14 +78,15 @@
   insert_msg('Testing')
   
   eda_sympt$hact_test <- eda_sympt$hact_tbl %>% 
-    map(compare_variables, 
-        split_factor = 'cohort', 
-        variables = globals$hact_symptoms, 
-        what = 'test',
-        types = 'chisq_test', 
-        ci = FALSE, 
-        adj_method = 'BH', 
-        pub_styled = TRUE)
+    future_map(compare_variables, 
+               split_factor = 'cohort', 
+               variables = globals$hact_symptoms, 
+               what = 'test',
+               types = 'chisq_test', 
+               ci = FALSE, 
+               adj_method = 'BH', 
+               pub_styled = TRUE, 
+               .options = furrr_options(seed = TRUE))
   
   eda_sympt$covild_test <- eda_sympt$covild_tbl %>% 
     map(compare_variables, 
@@ -111,10 +117,11 @@
   insert_msg('Summary of the symptom frequencies')
   
   eda_sympt$hact_sympt_freq <- eda_sympt$hact_tbl %>% 
-    map(explore, 
-        split_factor = 'cohort', 
-        variables = globals$hact_symptoms, 
-        what = 'list') %>% 
+    future_map(explore, 
+               split_factor = 'cohort', 
+               variables = globals$hact_symptoms, 
+               what = 'list', 
+               .options = furrr_options(seed = TRUE)) %>% 
     map(~map(.x, ~map2_dfr(.x, names(.x), ~mutate(.x$statistic, variable = .y)))) %>% 
     map(~map(.x, filter, category == 1)) %>% 
     map(~map(.x, select, - category)) %>% 
@@ -149,8 +156,8 @@
     map(left_join, globals$hact_sympt_class, by = 'variable')
   
   eda_sympt$hact_bubble <- list(data = eda_sympt$hact_bubble, 
-                                plot_subtitle = paste(c('AT, HACT study', 
-                                                        'IT, HACT study'), 
+                                plot_subtitle = paste(c('AT, survey study', 
+                                                        'IT, survey study'), 
                                                       '% cohort', sep = ', '), 
                                 plot_tag = eda_sympt$hact_n_tags) %>% 
     pmap(draw_freq_bubble, 
@@ -160,9 +167,9 @@
           scale_y_discrete(labels = translate_var(globals$hact_symptoms, 
                                                   dict = hact$dict)) + 
           scale_size_area(max_size = 4) + 
-          scale_x_discrete(labels = c(acute = 'Acute CoV', 
-                                      long = 'long CoV', 
-                                      pasc = 'PASC')) + 
+          scale_x_discrete(labels = c(acute = '0 - 14 days', 
+                                      long = '28 days', 
+                                      pasc = '3 months')) + 
           scale_fill_gradient2(low = 'steelblue', 
                                mid = 'white', 
                                high = 'firebrick', 
@@ -217,5 +224,7 @@
                  size = FALSE))
   
 # END ----
+  
+  plan('sequential')
   
   insert_tail()

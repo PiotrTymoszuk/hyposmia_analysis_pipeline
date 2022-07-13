@@ -52,7 +52,7 @@
     map(plot, 
         type = 'heat_map', 
         cust_theme = globals$common_theme) %>% 
-    map2(., c('AT, HACT study', 'IT, HACT study'), 
+    map2(., c('AT, survey study', 'IT, survey study'), 
          ~.x + 
            labs(subtitle = paste(.y, .x$labels$subtitle, sep = ', ')) + 
            theme(axis.text.x = element_blank(), 
@@ -69,7 +69,7 @@
         with = 'data', 
         kdim = 2, 
         cust_theme = globals$common_theme) %>% 
-    map2(., c('AT, HACT study', 'IT, HACT study'), 
+    map2(., c('AT, survey study', 'IT, survey study'), 
          ~.x + 
            scale_fill_manual(values = globals$clust_colors) + 
            labs(subtitle = paste(.y, .x$labels$subtitle, sep = ', ')))
@@ -84,7 +84,7 @@
         with = 'data', 
         kdim = 2, 
         cust_theme = globals$common_theme) %>% 
-    map2(., c('AT, HACT study', 'IT, HACT study'), 
+    map2(., c('AT, survey study', 'IT, survey study'), 
          ~.x + 
            scale_fill_manual(values = globals$clust_colors) + 
            labs(subtitle = paste(.y, .x$labels$subtitle, sep = ', ')))
@@ -99,7 +99,7 @@
         with = 'data', 
         kdim = 2, 
         cust_theme = globals$common_theme) %>% 
-    map2(., c('AT, HACT study', 'IT, HACT study'), 
+    map2(., c('AT, survey study', 'IT, survey study'), 
          ~.x + 
            scale_fill_manual(values = globals$clust_colors) + 
            labs(subtitle = paste(.y, .x$labels$subtitle, sep = ', ')))
@@ -117,7 +117,7 @@
                               fill_color = globals$hact_colors[1], 
                               cust_theme = globals$common_theme, 
                               plot_title = 'Importance of clustering variables', 
-                              plot_subtitle = 'AT, HACT study', 
+                              plot_subtitle = 'AT, survey study', 
                               label = FALSE) + 
     scale_y_discrete(labels = translate_var(globals$hact_symptoms, 
                                             dict = hact$dict))
@@ -128,8 +128,8 @@
   
   part_clust$feature_hm <- list(x_object = part_clust[c('clust_north', 
                                                         'clust_south')], 
-                                plot_subtitle = c('AT, HACT study', 
-                                                  'IT, HACT study')) %>% 
+                                plot_subtitle = c('AT, survey study', 
+                                                  'IT, survey study')) %>% 
     pmap(plot_clust_hm, 
          plot_title = 'Recovery time', 
          x_lab = 'Participant', 

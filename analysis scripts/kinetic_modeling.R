@@ -126,7 +126,7 @@
   insert_msg('Recovery kinetic plots, HACT')
 
   kin_mod$plots_hact <- list(mod = kin_mod$models_hact, 
-                             sub = c('AT, HACT study', 'IT, HACT study'), 
+                             sub = c('AT, survey study', 'IT, survey study'), 
                              col = globals$hact_colors) %>% 
     pmap(function(mod, sub, col) list(x = mod, 
                                       plot_title = translate_var(names(mod), 

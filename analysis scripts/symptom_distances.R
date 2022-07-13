@@ -79,12 +79,12 @@
          cust_theme = globals$common_theme)
   
   sympt_dist$mds_plots_hact <- list(x = sympt_dist$mds_plots_hact, 
-                                    y = rep(c('Acute CoV', 
-                                              'Sub-acute CoV', 
-                                              'Long CoV', 
-                                              'PASC'), 2), 
-                                    z = c(rep('AT, HACT study', 4), 
-                                          rep('IT, HACT study', 4))) %>% 
+                                    y = rep(c('0 - 14 days', 
+                                              '14 days', 
+                                              '28 days', 
+                                              '3 months'), 2), 
+                                    z = c(rep('AT, survey study', 4), 
+                                          rep('IT, survey study', 4))) %>% 
     pmap(function(x, y, z) x + 
            labs(title = y, 
                 subtitle = z) + 
@@ -172,8 +172,8 @@
   
   sympt_dist$kNN_plots_hact <- list(data = sympt_dist$mean_kNN_hact, 
                                     highlight_color = globals$hact_colors, 
-                                    plot_subtitle = c('AT, HACT study', 
-                                                      'IT, HACT study'), 
+                                    plot_subtitle = c('AT, survey study', 
+                                                      'IT, survey study'), 
                                     plot_tag = paste('\nn =', sympt_dist$n_numbers_hact)) %>% 
     pmap(draw_knn_course, 
          label_var = 'symptom', 

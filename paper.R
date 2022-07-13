@@ -27,7 +27,8 @@
   c('./paper scripts/tables.R', 
     './paper scripts/figures.R', 
     './paper scripts/supplements.R', 
-    './paper scripts/manuscript.R') %>% 
+    './paper scripts/manuscript.R'
+    ) %>% 
     source_all(message = TRUE, crash = TRUE)
   
 # END ----

@@ -13,6 +13,8 @@
   figures$consort <- plot_grid(ggdraw() + 
     draw_image('./study consort/consort_diagram.png')) %>% 
     as_figure('figure_1_consort', 
+              ref_name = 'consort', 
+              caption = 'Flow diagram of the analysis inclusion process for the longitudinal CovILD cohort and the Health after COVID-19 survey study.', 
               w = 180, 
               h = 110)
   
@@ -50,6 +52,8 @@
                                       labels = c('A', 'B'), 
                                       label_size = 10) %>% 
     as_figure('figure_2_recovery_times', 
+              ref_name = 'sympt_recovery', 
+              caption = 'Symptom-specific recovery times in ambulatory COVID-19 survey study.', 
               w = 180, 
               h = 220)
 
@@ -72,6 +76,8 @@
               labels = c('A', '', 'B', ''), 
               label_size = 10) %>% 
     as_figure('figure_3_symptom_isolation', 
+              ref_name = 'sympt_mds', 
+              caption = 'Self-reported smell and taste disorders are isolated persistent symptoms of COVID-19.', 
               w = 180, 
               h = 180)
 
@@ -104,36 +110,14 @@
               nrow = 2, 
               rel_heights = c(0.92, 0.08)) %>% 
     as_figure('figure_4_apriori_analysis', 
+              ref_name = 'apriori', 
+              caption = 'Co-occurrence of smell and taste disorders in post-acute COVID-19 sequelae.', 
               w = 180, 
               h = 190)
   
-# Figure 5: clustering of the participants ------
+# Figure 5: symptom duration in the recovery clusters -----
   
-  insert_msg('Figure 5: clustering')
-  
-  figures$clustering <- part_clust$feature_hm %>% 
-    map(~.x + 
-          scale_y_discrete(labels = function(x) embolden_scale(x, 
-                                                               c('anosmia', 'taste_loss'), 
-                                                               translate = TRUE), 
-                           limits = globals$hact_symptom_order) + 
-          theme(axis.text.y = element_markdown(), 
-                legend.position = 'none')) %>% 
-    plot_grid(plotlist = ., 
-              ncol = 2, 
-              align = 'hv', 
-              axis = 'tblr') %>% 
-    plot_grid(get_legend(part_clust$feature_hm[[1]] + 
-                           theme(legend.position = 'bottom')), 
-              nrow = 2, 
-              rel_heights = c(0.92, 0.08)) %>% 
-    as_figure('figure_5_recovery_clusters', 
-              w = 180, 
-              h = 180)
-  
-# Figure 6: symptom duration in the recovery clusters -----
-  
-  insert_msg('Figure 6: Symptom duration in the recovery clusters')
+  insert_msg('Figure 5: Symptom duration in the recovery clusters')
   
   figures$sympt_clusters <- clust_ft$ribbon_panels %>% 
     map(~.x + 
@@ -152,75 +136,15 @@
                            theme(legend.position = 'bottom')), 
               nrow = 2, 
               rel_heights = c(0.92, 0.08)) %>% 
-    as_figure('figure_6_symptom_duration_clusters', 
+    as_figure('figure_5_symptom_duration_clusters', 
+              ref_name = 'sympt_clusters', 
+              caption = 'Differing duration of neurocognitive and respiratory symptoms, fatigue, smell and taste disorders defines the COVID-19 recovery clusters.', 
               w = 180, 
               h = 180)
   
-# Figure 7: baseline features in the recovery clusters -----  
+# Figure 6: recovery in the recovery clusters ------
   
-  insert_msg('Figure 7: Baseline features in the recovery clusters')
-  
-  figures$base_clusters <- clust_chara$plots %>% 
-    map(~.x[c('sex', 'comorb_present', 'daily_medication')]) %>% 
-    transpose
-  
-  ## color adjustment
-  
-  figures$base_clusters$sex <- figures$base_clusters$sex %>% 
-    map(~.x + 
-          scale_fill_manual(values = c(male = 'steelblue', 
-                                       female = 'coral3')))
-  
-  figures$base_clusters$comorb_present <- 
-    figures$base_clusters$comorb_present %>% 
-    map(~.x + scale_fill_manual(values = c(no = 'steelblue', yes = 'coral3')))
-  
-  figures$base_clusters$daily_medication <- 
-    figures$base_clusters$daily_medication %>% 
-    map(~.x + 
-          scale_fill_manual(values = c('steelblue', 'cornsilk3', 'coral3')))
-  
-  ## panels
-  
-  figures$base_clusters$upper_panel <-  figures$base_clusters$sex %>% 
-    map(~.x + theme(legend.position = 'none')) %>% 
-    c(list(get_legend(figures$base_clusters$sex[[1]]))) %>% 
-    plot_grid(plotlist = ., 
-              ncol = 3, 
-              align = 'hv', 
-              axis = 'tblr')
-  
-  figures$base_clusters$middle_panel <- figures$base_clusters$comorb_present %>% 
-    map(~.x + theme(legend.position = 'none')) %>% 
-    c(list(get_legend(figures$base_clusters$comorb_present[[1]]))) %>% 
-    plot_grid(plotlist = ., 
-              ncol = 3, 
-              align = 'hv', 
-              axis = 'tblr')
-  
-  figures$base_clusters$bottom_panel <-  figures$base_clusters$daily_medication %>% 
-    map(~.x + theme(legend.position = 'none')) %>% 
-    c(list(get_legend(figures$base_clusters$daily_medication[[1]]))) %>% 
-    plot_grid(plotlist = ., 
-              ncol = 3, 
-              align = 'hv', 
-              axis = 'tblr')
-  
-  ## entire figure
-  
-  figures$base_clusters <- plot_grid(figures$base_clusters$upper_panel, 
-                                     figures$base_clusters$middle_panel, 
-                                     figures$base_clusters$bottom_panel, 
-                                     nrow = 3, 
-                                     labels = LETTERS, 
-                                     label_size = 10) %>% 
-    as_figure('figure_7_baseline_clusters', 
-              w = 180, 
-              h = 210)
-  
-# Figure 8: recovery in the recovery clusters ------
-  
-  insert_msg('Figure 8: recovery in the recovery clusters')
+  insert_msg('Figure 6: recovery in the recovery clusters')
   
   figures$recovery_clusters <- clust_chara$ribbon_recovery %>% 
     map(~.x + theme(legend.position = 'none')) %>% 
@@ -233,7 +157,8 @@
                            guides(fill = FALSE)), 
               nrow = 2, 
               rel_heights = c(0.85, 0.15)) %>% 
-    as_figure('figure_8_recovery_clusters', 
+    as_figure('figure_6_recovery_clusters', 
+              caption = ' Differing duration of neurocognitive and respiratory symptoms, fatigue, smell and taste disorders defines the COVID-19 recovery clusters.', 
               w = 180, 
               h = 120)
   
@@ -242,7 +167,7 @@
   insert_msg('Saving the figures')
   
   figures %>% 
-    walk(save_figure, 
+    walk(pickle, 
          path = './paper/figures', 
          format = 'pdf', 
          device = cairo_pdf)
