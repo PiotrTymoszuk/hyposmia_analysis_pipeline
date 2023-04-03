@@ -19,8 +19,8 @@
   part_clust$clust_north$clust_assignment <- 
     part_clust$clust_north$clust_assignment %>% 
     mutate(clust_id = car::recode(clust_id, 
-                                  "'1' = 'SR'; '2' = 'RR'; '3' = 'STDR'"), 
-           clust_id = factor(clust_id, c('STDR', 'RR', 'SR'))) 
+                                  "'1' = '#3'; '2' = '#2'; '3' = '#1'"), 
+           clust_id = factor(clust_id, c('#1', '#2', '#3'))) 
   
 # cluster projection -----
   
@@ -33,7 +33,7 @@
   
   part_clust$clust_south$clust_assignment <- 
     part_clust$clust_south$clust_assignment %>% 
-    mutate(clust_id = factor(clust_id, c('STDR', 'RR', 'SR'))) 
+    mutate(clust_id = factor(clust_id, c('#1', '#2', '#3'))) 
   
 # Diagnostic of the clustering objects ------
   

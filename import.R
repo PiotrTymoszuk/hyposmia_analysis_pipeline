@@ -212,6 +212,26 @@
               by = 'ID') %>% 
     filter(complete.cases(.))
   
+# manual editing of the variable dictionary -------
+  
+  insert_msg('Manual editing of the variable dictionary')
+  
+  hact$dict <- hact$dict %>% 
+    mutate(label = ifelse(variable == 'anosmia', 
+                          'OD', label), 
+           label_short = ifelse(variable == 'anosmia', 
+                                'OD', label_short), 
+           label = ifelse(variable == 'taste_loss', 
+                          'Hypogeusia/ageusia', label), 
+           label_short = ifelse(variable == 'taste_loss', 
+                                'hypogeusia/ageusia', label_short))
+  
+  covild$dict <- covild$dict %>% 
+    mutate(label = ifelse(variable == 'anosmia_sympt', 
+                          'OD', label), 
+           label_short = ifelse(variable == 'anosmia_sympt', 
+                                'OD', label))
+  
 # END ----
   
   insert_tail()

@@ -138,7 +138,7 @@
         variable, all_of(names(globals$clust_colors)), 
         significance, eff_size) %>% 
     map(set_names, c('Variable', 
-                     names(globals$clust_colors), 
+                     paste('Cluster', names(globals$clust_colors)), 
                      'Significance', 'Effect size'))
   
   suppl_tbl[c('baseline_clusters_north', 
@@ -183,7 +183,7 @@
         variable, all_of(names(globals$clust_colors)), 
         significance, eff_size) %>% 
     map(set_names, c('Variable', 
-                     names(globals$clust_colors), 
+                     paste('Cluster', names(globals$clust_colors)), 
                      'Significance', 'Effect size'))
   
   suppl_tbl[c('cov_clusters_north', 

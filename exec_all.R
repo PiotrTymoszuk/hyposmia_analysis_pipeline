@@ -7,6 +7,6 @@
                      'analysis.R', 
                      'paper.R'), 
                    message = TRUE, 
-                   crash = FALSE))
+                   crash = TRUE))
   
   save.image()

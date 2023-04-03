@@ -26,6 +26,7 @@
   
   c('./analysis scripts/recovery_distribution.R', 
     './analysis scripts/kinetic_modeling.R', 
+    './analysis scripts/kinetic_hyposmia_long.R', 
     './analysis scripts/symptom_distances.R', 
     './analysis scripts/apriori.R', 
     './analysis scripts/pca.R', 

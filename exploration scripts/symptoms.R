@@ -170,11 +170,12 @@
           scale_x_discrete(labels = c(acute = '0 - 14 days', 
                                       long = '28 days', 
                                       pasc = '3 months')) + 
-          scale_fill_gradient2(low = 'steelblue', 
-                               mid = 'white', 
-                               high = 'firebrick', 
-                               midpoint = 50, 
-                               limits = c(0, 100)) + 
+          scale_fill_viridis_c(limits = c(0, 100)) + 
+          #scale_fill_gradient2(low = 'steelblue', 
+            #                   mid = 'white', 
+             #                  high = 'firebrick', 
+              #                 midpoint = 50, 
+               #                limits = c(0, 100)) + 
           facet_grid(class ~ ., 
                      scales = 'free', 
                      space = 'free') + 
@@ -215,11 +216,12 @@
                                           'gastro_sympt', 
                                           'fever_sympt'))) + 
           scale_size_area(max_size = 4) + 
-          scale_fill_gradient2(low = 'steelblue', 
-                               mid = 'white', 
-                               high = 'firebrick', 
-                               midpoint = 50, 
-                               limits = c(0, 100)) + 
+          scale_fill_viridis_c(limits = c(0, 100)) + 
+         # scale_fill_gradient2(low = 'steelblue', 
+           #                    mid = 'white', 
+            #                   high = 'firebrick', 
+            #                   midpoint = 50, 
+             #                  limits = c(0, 100)) + 
           guides(fill = FALSE, 
                  size = FALSE))
   

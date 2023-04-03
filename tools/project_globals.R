@@ -135,9 +135,9 @@
   
 # Clusters -----
   
-  globals$clust_colors <- c('STDR' = 'darkorange3', 
-                            'RR' = 'darkolivegreen3', 
-                            'SR' = 'cadetblue3')
+  globals$clust_colors <- c('#1' = 'darkorange3', 
+                            '#2' = 'darkolivegreen3', 
+                            '#3' = 'cadetblue3')
   
 # demographic and clinical variables,  HACS -----
   

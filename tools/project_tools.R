@@ -132,10 +132,10 @@
     }
     
     data %>% 
-      mutate(LHS_lab = stri_replace(LHS_lab, fixed = ',', replacement = ', '), 
-             RHS_lab = stri_replace(RHS_lab, fixed = ',', replacement = ', '), 
+      mutate(LHS_lab = stri_replace_all(LHS_lab, fixed = ',', replacement = ', '), 
+             RHS_lab = stri_replace_all(RHS_lab, fixed = ',', replacement = ', '), 
              trans_lab = paste(LHS_lab, RHS_lab, sep = ' \u2192 '), 
-             signature = paste(LHS, RHS, sep = ','), 
+             signature = paste(LHS, RHS, sep = ', '), 
              signature = stri_replace_all(signature, regex = '\\{|\\}', replacement = ''), 
              sign_lab = paste(LHS_lab, RHS_lab, sep = ', '), 
              sign_lab = stri_replace_all(sign_lab, regex = '\\{|\\}', replacement = '')) %>% 
@@ -190,7 +190,7 @@
                         point.padding = 0.1, 
                         min.segment.length = 0.2) + 
         scale_alpha_manual(values = c(high = alpha_limits[1], low = alpha_limits[2])) + 
-        guides(alpha = FALSE)
+        guides(alpha = 'none')
       
     } else {
       
@@ -205,7 +205,7 @@
                         point.padding = 0.1, 
                         min.segment.length = 0.2) + 
         scale_alpha_manual(values = c(high = alpha_limits[1], low = alpha_limits[2])) + 
-        guides(alpha = FALSE)
+        guides(alpha = 'none')
       
     }
     

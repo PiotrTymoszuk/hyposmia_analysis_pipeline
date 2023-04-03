@@ -164,9 +164,9 @@
                 split_factor = 'clust_id', 
                 scale = 'percent', 
                 cust_theme = globals$common_theme, 
-                x_lab = 'Recovery cluster') %>% 
+                x_lab = 'Cluster') %>% 
            map(~.x + 
-                 scale_x_discrete(limits = c('STDR', 'RR', 'SR')) + 
+                 scale_x_discrete(limits = c('#1', '#2', '#3')) + 
                  labs(tag = .x$labels$tag %>% 
                         stri_replace_all(fixed = '\n', replacement = ', ') %>% 
                         paste0('\n', .))) %>% 
@@ -240,9 +240,9 @@
     map2(., clust_chara$ribbon_labs, 
          ~.x + 
            scale_fill_manual(values = globals$clust_colors, 
-                             name = 'Recovery\ncluster') + 
+                             name = 'Cluster') + 
            scale_color_manual(values = globals$clust_colors, 
-                              name = 'Recovery\ncluster') + 
+                              name = 'Cluster') + 
            scale_y_discrete(labels = .y, 
                             limits = clust_chara$rec_vars) + 
            scale_x_continuous(breaks = seq(0.1, 0.8, by = 0.1)) + 

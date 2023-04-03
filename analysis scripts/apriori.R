@@ -35,10 +35,10 @@
 
   ap_sympt$rules <- ap_sympt$hact_trasactions %>% 
     future_map(apriori, 
-               parameter = list(support = 0.1, 
+               parameter = list(support = 0.15, 
                                 maxlen = 10, 
                                 minlen = 2, 
-                                confidence = 0.8), 
+                                confidence = 0.6), 
                .options = furrr_options(seed = TRUE)) %>% 
     map(~.x[!is.redundant(.x)]) %>% 
     map(~subset(.x, subset = lift > 2))
@@ -70,8 +70,8 @@
     pmap(draw_conf_supp, 
          by = 'support',
          top_transactions = 7, 
-         embolden = c('{Hypo/ageusia}\u2192\n{Hypo/anosmia}', 
-                      '{Hypo/anosmia}\u2192\n{Hypo/ageusia}'), 
+         embolden = c('{Hypogeusia/ageusia}\u2192\n{OD}', 
+                      '{OD}\u2192\n{Hypogeusia/ageusia}'), 
          label_var = 'trans_lab', 
          cust_theme = globals$common_theme)
   
@@ -84,7 +84,7 @@
                                      plot_title = rep(c('0 - 14 days: top support', 
                                                         '14 days: top support', 
                                                         '28 days: top support', 
-                                                        '38 days: top support'), 2), 
+                                                        '90 days: top support'), 2), 
                                      plot_subtitle = c(rep('AT, survey study', 4), 
                                                        rep('IT, survey study', 4)), 
                                      fill_scale = as.list(c(rep(globals$hact_colors[1], 4), 
@@ -103,7 +103,7 @@
                                         plot_title = rep(c('0 - 14 days: top confidence', 
                                                            '14 days: top confidence', 
                                                            '28 days: top confidence', 
-                                                           '3 months: top confidence'), 2), 
+                                                           '90 days: top confidence'), 2), 
                                         plot_subtitle = c(rep('AT, survey study', 4), 
                                                           rep('IT, survey study', 4)), 
                                         fill_scale = as.list(c(rep(globals$hact_colors[1], 4), 
@@ -122,7 +122,7 @@
                                   plot_title = rep(c('0 - 14 days: top lift', 
                                                      '14 days: top lift', 
                                                      '28 days: top lift', 
-                                                     '3 months: top lift'), 2), 
+                                                     '90 days: top lift'), 2), 
                                   plot_subtitle = c(rep('AT, survey study', 4), 
                                                     rep('IT, survey study', 4)), 
                                   fill_scale = as.list(c(rep(globals$hact_colors[1], 4), 
@@ -135,6 +135,51 @@
          cust_theme = globals$common_theme, 
          x_lab = 'Sympt. combination support') %>% 
     map(~.x + theme(legend.position = 'none'))
+  
+# Plotting transactions with OD for the 28 and 90 day: bar plots -----
+  
+  insert_msg('Plotting bubble plots with OD transactions')
+  
+  ap_sympt$bubble_plots <- 
+    list(data = ap_sympt$rules_tbl %>% 
+           map(filter, 
+               stri_detect(LHS, fixed = 'anosmia')) %>% 
+           map(mutate, 
+               trans_lab = stri_replace(trans_lab, 
+                                        fixed = ' \u2192 ', 
+                                        replacement = '\u2192\n')), 
+         plot_title = rep(c('0 - 14 days', 
+                            '14 days', 
+                            '28 days', 
+                            '3 months'), 2), 
+         plot_subtitle = c(rep('AT, survey study', 4), 
+                           rep('IT, survey study', 4))) %>% 
+    pmap(function(data, plot_title, plot_subtitle) data %>% 
+           ggplot(aes(x = support * 100, 
+                      y = reorder(trans_lab, support), 
+                      fill = confidence * 100, 
+                      size = confidence * 100)) + 
+           geom_point(stat = 'identity', 
+                      color = 'black', 
+                      shape = 21) + 
+           geom_text(aes(label = paste0(signif(confidence * 100, 2), '%')), 
+                     size = 2.75, 
+                     hjust = -0.5) + 
+           scale_size_continuous(breaks = seq(60, 100, by = 10), 
+                                 limits = c(60, 100), 
+                                 range = c(1, 5))  +
+           scale_fill_viridis_c(limits = c(60, 100), 
+                                breaks = seq(60, 100, by = 10), 
+                                guide = 'legend', 
+                                option = 'D') + 
+           scale_x_continuous(limits = c(15, 40)) + 
+           globals$common_theme + 
+           theme(axis.title.y = element_blank()) + 
+           labs(title = plot_title, 
+                subtitle = plot_subtitle, 
+                x = 'Frequency, % of cohort', 
+                fill = 'Co-occurrence, %', 
+                size = 'Co-occurrence, %'))
   
 # END -----
   

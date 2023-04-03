@@ -92,7 +92,7 @@
                 x, 
                 split_factor = 'clust_id', 
                 type = 'violin', 
-                x_lab = 'Recovery cluster', 
+                x_lab = 'Cluster', 
                 y_lab = 'Recovery time, days post CoV', 
                 point_hjitter = 2, 
                 cust_theme = globals$common_theme) %>% 
@@ -166,9 +166,9 @@
     map(~.x + 
           theme(axis.title.y = element_blank()) + 
           scale_fill_manual(values = globals$clust_colors, 
-                            name = 'Recovery\ncluster') + 
+                            name = 'Cluster') + 
           scale_color_manual(values = globals$clust_colors, 
-                             name = 'Recovery\ncluster') + 
+                             name = 'Cluster') + 
           scale_y_discrete(labels = translate_var(globals$hact_symptoms, 
                                                   dict = hact$dict), 
                            limits = globals$hact_symptom_order))

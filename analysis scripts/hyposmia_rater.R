@@ -48,14 +48,14 @@
          variables = c('anosmia_sympt', 'sniff_hyposmia'), 
          scale = 'percent', 
          type = 'bar', 
-         x_lab = 'Hypo/anosmia', 
+         x_lab = 'OD', 
          cust_theme = globals$common_theme) %>% 
     map2(.,map(rater$analysis_tbl, nrow), 
          ~.x + 
            labs(subtitle = paste0(.x$labels$subtitle, ', n = ', .y)) + 
            scale_fill_manual(values = c('bisque3', 'steelblue'), 
                              labels = c('self-reported', 'test'), 
-                             name = 'Hyposmia'))
+                             name = 'OD'))
   
 # Plotting the interrater results, bubble -----
   
@@ -71,14 +71,14 @@
          variables = c('anosmia_sympt', 'sniff_hyposmia'), 
          scale = 'percent', 
          type = 'bubble', 
-         x_lab = 'Hypo/anosmia', 
+         x_lab = 'OD', 
          point_alpha = 1, 
          cust_theme = globals$common_theme) %>% 
     map2(.,map(rater$analysis_tbl, nrow), 
          ~.x + 
            labs(subtitle = paste0(.x$labels$subtitle, ', n = ', .y), 
-                x = 'Self-reported hyposmia', 
-                y = 'Test hyposmia') + 
+                x = 'Self-reported OD', 
+                y = 'Test OD') + 
            scale_size(limits = c(0, 71)) + 
            scale_fill_gradient2(low = 'steelblue', 
                                 mid = 'white', 
