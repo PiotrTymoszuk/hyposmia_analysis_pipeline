@@ -1,7 +1,7 @@
 ---
 title: "Distinct smell and taste disorder phenotype of post-acute COVID-19 sequelae"
 subtitle: "Supplementary Material"
-author: "Hralth after COVID-19 in Tyrol and CovILD study teams"
+author: "Health after COVID-19 in Tyrol and CovILD study teams"
 date: "`r format(Sys.time(), '%Y-%m-%d')`"
 
 output: 
@@ -9,7 +9,7 @@ output:
     reference_docx: ms_template.docx
     
 bibliography: hyposmia_biblio.bib
-csl: frontiers_medical.csl
+csl: european-archives-of-oto-rhino-laryngology.csl
 header-includes:
   \usepackage{longtable}
   \usepackage{tabu}
@@ -49,32 +49,32 @@ set_flextable_defaults(font.family = 'Cambria', font.size = 10)
 # Supplementary Methods
 ## Study procedures and variables
 
-The complete list of study variables and stratification scheme is provided in __Supplementary Table S\@ref(tab:tab-hact-vars)__ for the Health after COVID-19 in Tyrol survey study and in __Supplementary Table S\@ref(tab:tab-covild-vars)__ for the CovILD cohort.
+The complete list of study variables and stratification scheme is provided in __Supplementary Table S\@ref(tab:tab-hact-vars)__ for the Health after COVID-19 in Tyrol survey study and in __Supplementary Table S\@ref(tab:tab-covild-vars)__ for the observatory CovILD cohort.
 
 ### COVID-19 symptoms
 
-A total of `r length(globals$hact_symptoms)` was surveyed in the survey study cohorts (__Supplementary Figure S\@ref(fig:fig-hact-freq)__ and __Supplementary Table S\@ref(tab:tab-hact-vars)__). The symptom duration was coded as follows: absent: 0 days, 1 - 3 days: 3 days, up to 1 week: 7 days, up to 2 weeks: 14 days, up to 4 weeks: 28 days, up to 3 months: 30 moths, up to 6 months: 3 months, over 6 months: 3 months. Acute symptoms were defined as complaints present during the first 14 days after clinical onset of COVID-19.
+A total of self-reported `r length(globals$hact_symptoms)` symptoms were recorded in the survey study cohorts (__Supplementary Figure S\@ref(fig:fig-hact-freq)__ and __Supplementary Table S\@ref(tab:tab-hact-vars)__). The symptom duration was coded as follows: absent: 0 days, 1 - 3 days: 3 days, up to 1 week: 7 days, up to 2 weeks: 14 days, up to 4 weeks: 28 days, up to or greater than 3 months: 3 months. Acute symptoms were defined as complaints present during the first 14 days after clinical onset of COVID-19.
 
-In the CovILD study, a total of `r length(globals$covild_symptoms)` symptoms (reduced physical performance, hyposmia/anosmia, dyspnea, sleep problems, cough, fever, night sweating, gastrointestinal symptoms) were prospectively recorded with a standardized questionnaire at each of 60-, 100-, 180- and 360-day post COVID-19 follow-up (__Supplementary Figure S\@ref(fig:fig-covild-freq)__ and __Supplementary Table S\@ref(tab:tab-covild-vars)__). Acute COVID-19 symptoms were assessed retrospectively [@Sonnweber2020; @Sonnweber2022].
+In the observatory CovILD cohort, a total of self-reported `r length(globals$covild_symptoms)` symptoms (reduced physical performance, olfactory dysfunction, dyspnea, sleep problems, cough, fever, night sweating, gastrointestinal symptoms) were recorded with a standardized questionnaire at each of 60-, 100-, 180- and 360-day post COVID-19 follow-up (__Supplementary Figure S\@ref(fig:fig-covild-freq)__ and __Supplementary Table S\@ref(tab:tab-covild-vars)__). Acute COVID-19 symptoms were assessed retrospectively at the 60-day follow-up [@Sonnweber2020; @Sonnweber2022].
 
 ### Rating of physical recovery, mental health and quality of life in the survey study
 
 Self-perceived complete recovery, rehabilitation need and new medication since COVID-19 at the time of study participation were surveyed as single yes/no items. Percentage of physical performance loss as compared with the time before COVID-19 was rated with a 0 - 100% scale [@Hufner2022; @Sahanic2021]. Quality of life impairment (QoL) and overall mental health impairment (OMH) were rated with a 4 item Likert scale each (possible answers: “excellent,” “good,” “fair,” “poor,” scored: 0, 1, 2, and 3) [@Hufner2022; @Sahanic2021]. Anxiety (ANX) and depression (DPR) were assessed with the Patient Health Questionnaire (PHQ-4) [@Hufner2022; @Sahanic2021; @Lowe2010]. Psychosocial stress was scored with a modified 7 item PHQ stress module as described before [@Hufner2022; @Sahanic2021; @Grafe2004].
 
-### Rating of hyposmia with sniffing stick test
+### Rating of olfactory dysfunction with sniffing stick test
 
-Objective hyposmia at the 100-day and 360-day follow-up in the CovILD study participants was investigated with the 16-item sniffing stick test as described [@Rass2021]. Clinically relevant hyposmia was defined as $\leq$ 12 correct answers [@Rass2021; @Hummel2007]. In the analysis, participants with the complete answers concerning self-reported hyposmia and complete test results were included.
+Objective olfactory dysfunction at the 100-day and 360-day follow-up in the CovILD study participants was investigated with the 16-item sniffing stick test as described [@Rass2021]. Clinically relevant olfactory dysfunction was defined as $\leq$ 12 correct answers [@Rass2021; @Hummel2007]. In the analysis, participants with the complete answers concerning self-reported olfactory dysfunction and complete test results were included.
 
 ## Statistical analysis
 ### Data transformation, descriptive statistic
 
-Data transformation and statistical analysis was done with R version 4.0.5 with _tidyverse_ data science environment [@Wickham2019]. Analysis results were visualized with _ggplot2_ [@Wickham2016], _cowplot_ [@Wilke2019] as well as in-house developed _ExDA_ (https://github.com/PiotrTymoszuk/ExDA) and _figur_ (https://github.com/PiotrTymoszuk/figur) packages.
+Data transformation and statistical analysis was done with R version 4.2.0 with _tidyverse_ data science environment [@Wickham2019]. Analysis results were visualized with _ggplot2_ [@Wickham2016], _cowplot_ [@Wilke2019] as well as in-house developed _ExDA_ (https://github.com/PiotrTymoszuk/ExDA) and _figur_ (https://github.com/PiotrTymoszuk/figur) packages.
 
 Descriptive statistics including median with interquartile ranges and frequency of complete answers for numeric and categorical variables were calculated with base R functions and _ExDA_ package.
 
 ### Statistical hypothesis testing
 
-Since multiple study variables were non-normally distributed as assessed by Shapiro-Wilk test and visual assessment of their distribution (quantile-quantile plots), statistical significance for differences in outcome numeric variables were assessed with Mann-Whitney U test by Wilcoxon r effect size statistic (two groups) or Kruskal-Wallis test with $\eta^2$ effect size statistic. Differences in frequency distribution for categorical outcome variables were assessed by $\chi^2$ test with Cramer V effect size statistic. Interrater assessment of self-reported and sniffing test hyposmia was accomplished with Cohen's $\kappa$ statistic [@Fleiss1969]. $\kappa$ significance ($\kappa\neq0$) was estimated with Wald Z test. P values were adjusted for multiple testing with Benjamini-Hochberg method [@Benjamini1995] separately for each analysis task and cohort. 
+Since multiple study variables were non-normally distributed as assessed by Shapiro-Wilk test and visual assessment of their distribution (quantile-quantile plots), statistical significance for differences in outcome numeric variables were assessed with Mann-Whitney U test with r effect size statistic (two groups) or Kruskal-Wallis test with $\eta^2$ effect size statistic. Differences in frequency distribution for categorical outcome variables were assessed by $\chi^2$ test with Cramer V effect size statistic. Inter-rater assessment of self-reported and sniffing test olfactory dysfunction was accomplished with Cohen's $\kappa$ statistic [@Fleiss1969]. $\kappa$ significance ($\kappa\neq0$) was estimated with Wald Z test. P values were adjusted for multiple testing with Benjamini-Hochberg method [@Benjamini1995] separately for each analysis task and cohort. 
 Packages _rstatix_ [@Kassambara2021], _vcd_ [@Meyer2021] and _Exda_ (https://github.com/PiotrTymoszuk/ExDA) were used for statistical hypothesis testing.
 
 ### Modeling of symptom recovery kinetic
@@ -86,13 +86,13 @@ $$Response \sim time + time^2 + (1|individual)$$
 where $(1|individual)$ indicates the random effect of the individual and $time$ and $time^2$ indicate the first- and second-order time effect terms. The first-order term estimate was interpreted as a measure of the recovery speed and the second-order term estimate was used to assess the plateau/rebound effect. Significance of the accuracy gain of the full second-order model compared with the nested null model was determined by likelihood ratio test (LRT) versus the nested first-order and null models, respectively. Likelihood ratio $\lambda$ statistic (full versus null model) was used as an effect size measure. 
 Individuals from the survey study or the CovILD cohort with the complete longitudinal symptom record were included in the kinetic modeling tasks. Results of the kinetic modeling were adjusted for multiple comparisons with Benjamini-Hochberg method [@Benjamini1995].
 
-## Symptom-symptom distances and multi-dimensional scaling
+### Symptom-symptom distances and multi-dimensional scaling
 
 To assess co-occurrence or exclusivity of symptoms, simple matching distances between manifestations during the first 14 days, at $\geq$ 28 days and at $\geq$ 3 months after clinical onset in the survey study cohorts were calculated (package _scrime_ and development package _clustTools_ [https://github.com/PiotrTymoszuk/clustTools]) [@Boriah2008; @Schwender2018]. Subsequently, the distance matrix was subjected to multi-dimensional scaling (MDS, k = 2 dimensions, package _stats_, function _cmdscale()_). Association of specific symptoms was assessed by visual analysis of MDS coordinate plots.
 
 ### Apriori analysis of COVID-19 symptoms in the survey study
 
-Frequent combinations of symptoms during the first 14 days, at $\geq$ 28 days and at $\geq$ 3 months after clinical onset in the survey study cohorts were identified with the apriori algorithm (package _arules_) [@Agrawal1993; @Hahsler2005] with the minimal support cutoff of 0.1, 2 - 10 item transaction length, confidence > 0.8 and lift > 2. The support statistic were used to estimate the symptom combination frequency. The confidence value was treated as an estimate of conditional probability of the symptom co-occurrence. The lift statistic was interpreted as a measure of the symptom dependence (lift = 1, symptoms are independent).
+Frequent combinations of symptoms during the first 14 days, at $\geq$ 28 days and at $\geq$ 3 months after clinical onset in the survey study cohorts were identified with the apriori algorithm (package _arules_) [@Agrawal1993; @Hahsler2005] with the minimal support cutoff of 0.15, 2 - 10 item transaction length, confidence > 0.6 and lift > 2. The support statistic were used to estimate the symptom combination frequency. The confidence value was treated as an estimate of conditional probability of the symptom co-occurrence. The lift statistic was interpreted as a measure of the symptom dependence (lift = 1, symptoms are independent).
 
 ### Clustering analysis
 
@@ -192,7 +192,7 @@ suppl_tbl$cov_clusters_north %>%
 
 \newpage
 
-```{r tab-clust-reco-it, tab.cap = 'COVID-19 course and recovery in the survey study participants assigned to the recovery clusters, Italy (AT) cohort.'}
+```{r tab-clust-reco-it, tab.cap = 'COVID-19 course and recovery in the survey study participants assigned to the recovery clusters, Italy (IT) cohort.'}
 
 suppl_tbl$cov_clusters_south %>% 
   flextable %>% 
@@ -214,6 +214,16 @@ suppl_tbl$cov_clusters_south %>%
 
 # Supplementary Figures {#sec:figures}
 
+```{r fig-consort, fig.width = mm_inch(suppl$consort$w), fig.height = mm_inch(suppl$consort$h), fig.cap = 'Flow diagram of the analysis inclusion process for the longitudinal CovILD cohort and the Health after COVID-19 survey study.'}
+
+suppl$consort$plot
+
+```
+
+__Supplementary Figure S\@ref(fig:fig-consort). Flow diagram of the analysis inclusion process for the longitudinal CovILD cohort and the Health after COVID-19 survey study.__
+
+\newpage
+
 ```{r fig-hact-freq, fig.width = mm_inch(suppl$hact_freq$w), fig.height = mm_inch(suppl$hact_freq$h), fig.cap = 'Frequency of COVID-19 symptoms in the survey study.'}
 
 suppl$hact_freq$plot
@@ -224,7 +234,7 @@ __Supplementary Figure S\@ref(fig:fig-hact-freq). Frequency of COVID-19 symptoms
 
 _Frequency of symptoms in first 14 days, $\geq$ 28 days and $\geq$ 3 months after clinical onset of COVID-19 in the Austria (AT, A) and Italy (IT, B) survey study cohorts expressed as percentages of the cohort. Point size and color represents the percentage. Numbers of complete observations are indicated under the plot._
 
-_Dim. appetite: diminished appetite, Imp. concentration: impaired concentration, Imp. walk: impaired walk, Imp. FMS: impaired fine motor skills._
+_OD: self-reported olfactory dysfunction, Dim. appetite: diminished appetite, Imp. concentration: impaired concentration, Imp. walk: impaired walk, Imp. FMS: impaired fine motor skills._
 
 \newpage
 
@@ -252,39 +262,39 @@ _Frequency of symptoms during acute COVID-19 and at the 60-, 100-, 180- and 360-
 
 \newpage
 
-```{r fig-covild-recovery, fig.width = mm_inch(suppl$covild_recovery$w), fig.height = mm_inch(suppl$covild_recovery$h), fig.cap = 'Kinetic of recovery from smell disorders, reduced performance and dyspnea in ambulatory, moderate and severe COVID-19 subsets of the CovILD study.'}
+```{r fig-covild-recovery, fig.width = mm_inch(suppl$covild_recovery$w), fig.height = mm_inch(suppl$covild_recovery$h), fig.cap = 'Kinetic of recovery from olfactory dysfunction, reduced performance and dyspnea in ambulatory, moderate and severe COVID-19 subsets of the CovILD study.'}
 
 suppl$covild_recovery$plot
 
 ```
 
-__Supplementary Figure S\@ref(fig:fig-covild-recovery). Kinetic of recovery from smell disorders, reduced performance and dyspnea in ambulatory, moderate and severe COVID-19 subsets of the CovILD study.__
+__Supplementary Figure S\@ref(fig:fig-covild-recovery). Kinetic of recovery from olfactory dysfunction, reduced performance and dyspnea in ambulatory, moderate and severe COVID-19 subsets of the CovILD study.__
 
-_Percentages of individuals with the complete longitudinal data set suffering from smell disorders (A), reduced physical performance (B) and dyspnea (C) in the ambulatory, moderate and severe COVID-19 subsets during acute COVID-19 and at the 60-, 100-, 180- and 360-day follow-ups. Numbers of complete observations are indicated under the plots._
+_Percentages of individuals with the complete longitudinal data set suffering from olfactory dysfunction (OD) (A), reduced physical performance (B) and dyspnea (C) in the ambulatory, moderate and severe COVID-19 subsets during acute COVID-19 and at the 60-, 100-, 180- and 360-day follow-ups. Numbers of complete observations are indicated under the plots._
 
 \newpage
 
-```{r fig-hyposmia-rater100, fig.width = mm_inch(suppl$hyposmia_rater100$w), fig.height = mm_inch(suppl$hyposmia_rater100$h), fig.cap = 'Rates of self-reported hyposmia and hyposmia in sniffing stick test at 3-month post COVID-19 follow-up in the ambulatory, moderate and severe COVID-19 subsets of the CovILD study.'}
+```{r fig-hyposmia-rater100, fig.width = mm_inch(suppl$hyposmia_rater100$w), fig.height = mm_inch(suppl$hyposmia_rater100$h), fig.cap = 'Rates of self-reported olfactory dysfunction and olfactory dysfunction in the sniffing stick test at 3-month post COVID-19 follow-up in the ambulatory, moderate and severe COVID-19 subsets of the CovILD study.'}
 
 suppl$hyposmia_rater100$plot
 
 ```
 
-__Supplementary Figure S\@ref(fig:fig-hyposmia-rater100). Rates of self-reported hyposmia and hyposmia in sniffing stick test at 3-month post COVID-19 follow-up in the ambulatory, moderate and severe COVID-19 subsets of the CovILD study.__
+__Supplementary Figure S\@ref(fig:fig-hyposmia-rater100). Rates of self-reported olfactory dysfunction and olfactory dysfunction in the sniffing stick test at 3-month post COVID-19 follow-up in the ambulatory, moderate and severe COVID-19 subsets of the CovILD study.__
 
-_Association of self-reported and sniffing stick test hyposmia rates was investigated with Cohen's $\kappa$ statistic. Statistical significance was assessed with Wald's Z test corrected for multiple testing with Benjamini-Hochberg method. Percentages of individuals with self-reported and test hyposmia within the entire cohort (A), the ambulatory (B), moderate (C) and severe (D) COVID-19 subsets are presented in bubble plots. Point size and color represents the percentage. $\kappa$ values with 95$\%$ confidence intervals, p values and numbers of complete observations are indicated in the plot captions._
+_Association of self-reported and sniffing stick test rates of olfactory dysfunction (OD) was investigated with Cohen's $\kappa$ statistic. Statistical significance was assessed with Wald's Z test corrected for multiple testing with Benjamini-Hochberg method. Percentages of individuals with self-reported and test OD within the entire cohort (A), the ambulatory (B), moderate (C) and severe (D) COVID-19 subsets are presented in bubble plots. Point size and color represents the percentage. $\kappa$ values with 95$\%$ confidence intervals, p values and numbers of complete observations are indicated in the plot captions._
 
 \newpage
 
-```{r fig-hyposmia-rater360, fig.width = mm_inch(suppl$hyposmia_rater360$w), fig.height = mm_inch(suppl$hyposmia_rater360$h), fig.cap = 'Rates of self-reported hyposmia and hyposmia in sniffing stick test at 1-year post COVID-19 follow-up in the ambulatory, moderate and severe COVID-19 subsets of the CovILD study.'}
+```{r fig-hyposmia-rater360, fig.width = mm_inch(suppl$hyposmia_rater360$w), fig.height = mm_inch(suppl$hyposmia_rater360$h), fig.cap = 'Rates of self-reported olfactory dysfunction and olfactory dysfunction in the sniffing stick test at 1-year post COVID-19 follow-up in the ambulatory, moderate and severe COVID-19 subsets of the CovILD study.'}
 
 suppl$hyposmia_rater360$plot
 
 ```
 
-__Supplementary Figure S\@ref(fig:fig-hyposmia-rater360). Rates of self-reported hyposmia and hyposmia in sniffing stick test at 1-year post COVID-19 follow-up in the ambulatory, moderate and severe COVID-19 subsets of the CovILD study.__
+__Supplementary Figure S\@ref(fig:fig-hyposmia-rater360). Rates of self-reported olfactory dysfunction and olfactory dysfunction in the sniffing stick test at 1-year post COVID-19 follow-up in the ambulatory, moderate and severe COVID-19 subsets of the CovILD study.__
 
-_Association of self-reported and sniffing stick test hyposmia rates was investigated with Cohen's $\kappa$ statistic. Statistical significance was assessed with Wald's Z test corrected for multiple testing with Benjamini-Hochberg method. Percentages of individuals with self-reported and test hyposmia within the entire cohort (A), the ambulatory (B), moderate (C) and severe (D) COVID-19 subsets are presented in bubble plots. Point size and color represents the percentage. $\kappa$ values with 95$\%$ confidence intervals, p values and numbers of complete observations are indicated in the plot captions._
+_Association of self-reported and sniffing stick test rates of olfactory dysfunction (OD) was investigated with Cohen's $\kappa$ statistic. Statistical significance was assessed with Wald's Z test corrected for multiple testing with Benjamini-Hochberg method. Percentages of individuals with self-reported and test OD within the entire cohort (A), the ambulatory (B), moderate (C) and severe (D) COVID-19 subsets are presented in bubble plots. Point size and color represents the percentage. $\kappa$ values with 95$\%$ confidence intervals, p values and numbers of complete observations are indicated in the plot captions._
 
 \newpage
 
@@ -295,7 +305,7 @@ suppl$mds_acute$plot
 ```
 
 __Supplementary Figure S\@ref(fig:fig-mds-acute). Multi-dimensional scaling analysis of acute COVID-19 symptoms in the survey study.__
-_Symptom data for acute COVID-19 (first 14 days after clinical onset) in the Austria (AT) and Italy (IT) survey study cohorts were subjected to two-dimensional multi-dimensional scaling (MDS) with simple matching distance (SMD) between the symptoms. MDS coordinates are presented in point plots. Selected data points are labeled with the symptom names. Percentages of the data set variance associated with the MDS dimensions are indicated in the plot axes. Numbers of complete observations are indicated under the plots._
+_Symptom data for acute COVID-19 (first 14 days after clinical onset) in the Austria (AT) and Italy (IT) survey study cohorts were subjected to two-dimensional multi-dimensional scaling (MDS) with simple matching distance (SMD) between the symptoms. MDS coordinates are presented in point plots. Selected data points are labeled with the symptom names. Percentages of the data set variance associated with the MDS dimensions are indicated in the plot axes. Numbers of complete observations are indicated under the plots. OD: self-reported olfactory dysfunction._
 
 \newpage
 
@@ -313,7 +323,7 @@ _(A) Comparison of performance of various algorithms (HCl: hierarchical clusteri
 
 _(B) Determination of the optimal cluster number in the PAM clustering of the training cohort by the bend of the total within-cluster sum of squares curve._
 
-_(C) Permutation importance of the clustering features (symptoms) for clustering of the training cohort expressed as the difference in clustering variance (ratio of total between-cluster sum of squares to total sum of squares) between the initial clustering object and the clustering object with the given variable reshuffled at random._
+_(C) Permutation importance of the clustering features (symptoms) for clustering of the training cohort expressed as the difference in clustering variance (ratio of total between-cluster sum of squares to total sum of squares) between the initial clustering object and the clustering object with the given variable reshuffled at random. Imp. concentration: impaired concentration, OD: self-reported olfactory dysfunction, Dim. appetite: diminished appetite, Imp. walk: impaired walk, Imp. FMS: impaired fine motor skills._
 
 \newpage
 
@@ -327,19 +337,19 @@ __Supplementary Figure S\@ref(fig:fig-clustering). Clustering of ambulatory COVI
 
 _Individuals of the training Austria (AT) survey study cohort were subjected to clustering in respect to symptom-specific recovery times with the PAM (partitioning around medoids) algorithm and Euclidean distance measure (Supplementary Figure S\@ref(fig:fig-clust-devel)). Cluster assignment in the test Italy (IT) survey cohort was done with k-NN label propagation algorithm. Recovery times for particular COVID-19 symptoms in the COVID-19 recovery clusters are presented as heat maps. Numbers of individuals assigned to the recovery clusters are indicated under the plots._
 
-_Dim. appetite: diminished appetite, Imp. concentration: impaired concentration, Imp. walk: impaired walk, Imp. FMS: impaired fine motor skills._
+_OD: self-reported olfactory dysfunction, Dim. appetite: diminished appetite, Imp. concentration: impaired concentration, Imp. walk: impaired walk, Imp. FMS: impaired fine motor skills._
 
 \newpage
 
-```{r fig-cov-clusters, fig.width = mm_inch(suppl$cov_clusters$w), fig.height = mm_inch(suppl$cov_clusters$h), fig.cap = 'Numbers of COVID-19 symptoms in the survey study recovery clusters.'}
+```{r fig-cov-clusters, fig.width = mm_inch(suppl$cov_clusters$w), fig.height = mm_inch(suppl$cov_clusters$h), fig.cap = 'Numbers of COVID-19 symptoms in the survey study clusters.'}
 
 suppl$cov_clusters$plot
 
 ```
 
-__Supplementary Figure S\@ref(fig:fig-cov-clusters). Numbers of COVID-19 symptoms in the survey study recovery clusters.__
+__Supplementary Figure S\@ref(fig:fig-cov-clusters). Numbers of COVID-19 symptoms in the survey study clusters.__
 
-_The smell and taste disorder recovery (STDR), rapid recovery (RR) and slow recovery (SR) clusters of the survey study participants were identified by semi supervised PAM clustering (partitioning around medoids, Euclidean distance, training cohort: Austria [AT], test cohort: Italy [IT]). Differences in numbers of symptoms in the first 14 days (A) and at $\geq$ 28 days (B) after clinical onset between the clusters were assessed by Kruskal-Wallis test and $\eta^2$ effect size statistic. P values were corrected for multiple testing with Benjamini-Hochberg method. Symptom counts are presented in violin plots. Points represent single observations, orange diamonds with whiskers code for medians and interquartile ranges. Effect size statistics and p values are indicated in the plot caption. Numbers of complete observations are displayed under the plots._
+_Clustering of the survey study participants in respect to symptom-specific recovery times was done by the semi-supervised PAM algorithm (partitioning around medoids, Euclidean distance, training cohort: Austria [AT], test cohort: Italy [IT]). Differences in numbers of symptoms in the first 14 days (A) and at $\geq$ 28 days (B) after clinical onset between the clusters were assessed by Kruskal-Wallis test and $\eta^2$ effect size statistic. P values were corrected for multiple testing with Benjamini-Hochberg method. Symptom counts are presented in violin plots. Points represent single observations, orange diamonds with whiskers code for medians and interquartile ranges. Effect size statistics and p values are indicated in the plot caption. Numbers of complete observations are displayed under the plots._
 
 \newpage
 
@@ -349,9 +359,9 @@ suppl$base_clusters$plot
 
 ```
 
-__Figure \@ref(fig:fig-base-clusters). COVID-19 recovery clusters differ in sex distribution, comorbidity and daily medication rates.__
+__Supplementary Figure S\@ref(fig:fig-base-clusters). COVID-19 recovery clusters differ in sex distribution, comorbidity and daily medication rates.__
 
-_The smell and taste disorder recovery (STDR), rapid recovery (RR) and slow recovery (SR) clusters of the survey study participants were identified by semi supervised PAM clustering (partitioning around medoids, Euclidean distance, training cohort: Austria [AT], test cohort: Italy [IT]). Differences in sex distribution (A), frequency of comorbidity (B) and daily medication (C) between the recovery clusters were assessed by $\chi^2$ test with Cramer V effect size statistic. P values were corrected for multiple testing with Benjamini-Hochberg method. The frequencies are presented as bar plots. Effect size statistics and p values are indicated in the plot caption. Numbers of complete observations are displayed under the plots._
+_Clustering of the survey study participants in respect to symptom-specific recovery times was done by the semi-supervised PAM algorithm (partitioning around medoids, Euclidean distance, training cohort: Austria [AT], test cohort: Italy [IT]). Differences in sex distribution (A), frequency of comorbidity (B) and daily medication (C) between the recovery clusters were assessed by $\chi^2$ test with Cramer V effect size statistic. P values were corrected for multiple testing with Benjamini-Hochberg method. The frequencies are presented as bar plots. Effect size statistics and p values are indicated in the plot caption. Numbers of complete observations are displayed under the plots._
 
 \newpage
 
