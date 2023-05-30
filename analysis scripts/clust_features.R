@@ -6,6 +6,12 @@
   
   clust_ft <- list()
   
+# Parallel backend -------
+  
+  insert_msg('Parallel backend')
+  
+  plan('multisession')
+  
 # globals -----
   
   insert_msg('Globals setup')
@@ -43,9 +49,7 @@
     map(~map2_chr(.x[[1]], .x[[2]], paste, sep = ': n = ')) %>% 
     map(paste, collapse = ', ') %>% 
     map(~paste0('\n', .x))
-  
-  plan('multisession')
-  
+
 # Descriptive stats ----
   
   insert_msg('Descriptive stats')
@@ -58,7 +62,8 @@
                         pub_styled = TRUE), 
                .options = furrr_options(seed = TRUE)) %>% 
     map(reduce, left_join, by = 'variable') %>% 
-    map(set_names, c('variable', 'clust_1', 'clust_2', 'clust_3'))
+    map(set_names, 
+        c('variable', levels(clust_ft$analysis_tbl[[1]]$clust_id)))
   
 # Kruskal-Wallis tests ----
   
@@ -78,30 +83,30 @@
   
 # Violin plots for all features -----
   
-  insert_msg('Violin plots for all features')
+  insert_msg('Stack plots for all features')
   
   clust_ft$clust_ft_plots <- list(x = clust_ft$analysis_tbl, 
                                   y = globals$hact_labs, 
-                                  z = clust_ft$clust_ft_test) %>% 
-    pmap(function(x, y, z) list(variable = globals$hact_symptoms, 
-                                plot_subtitle = z$plot_cap, 
-                                plot_title = translate_var(globals$hact_symptoms, 
-                                                           dict = hact$dict) %>% 
-                                  paste(y, sep = ', ')) %>% 
+                                  z = clust_ft$clust_ft_test, 
+                                  v = c('Blues', 'Reds')) %>% 
+    pmap(function(x, y, z, v) list(variable = globals$hact_symptoms, 
+                                   plot_subtitle = z$plot_cap, 
+                                   plot_title = exchange(globals$hact_symptoms, 
+                                                         dict = hact$dict) %>% 
+                                     paste(y, sep = ', ')) %>% 
            pmap(plot_variable, 
                 x, 
                 split_factor = 'clust_id', 
-                type = 'violin', 
+                type = 'stack', 
+                scale = 'percent', 
                 x_lab = 'Cluster', 
                 y_lab = 'Recovery time, days post CoV', 
                 point_hjitter = 2, 
-                cust_theme = globals$common_theme) %>% 
+                cust_theme = globals$common_theme, 
+                x_n_labs = TRUE) %>% 
            map(~.x + 
-                 scale_fill_manual(values = globals$clust_colors) + 
-                 scale_x_discrete(limits = c('STDR', 'RR', 'SR')) + 
-                 labs(tag = .x$labels$tag %>% 
-                        stri_replace_all(fixed = '\n', replacement = ', ') %>% 
-                        paste0('\n', .))) %>% 
+                 scale_fill_brewer(palette = v, 
+                                   name = 'Days after CoV')) %>% 
            set_names(globals$hact_symptoms))
   
 # Summary plots: significance versus effect size ------
@@ -121,14 +126,15 @@
     map(arrange, p_adjusted) %>% 
     map(~mutate(.x, 
                 top_rank = 1:nrow(.x), 
-                variable = translate_var(variable, dict = hact$dict), 
+                variable = exchange(variable, dict = hact$dict), 
                 plot_lab = ifelse(top_rank %in% 1:10, variable, NA)))
   
-  clust_ft$clust_ft_summ <- list(x = clust_ft$clust_ft_summ, 
-                                 plot_subtitle = c('AT, survey study', 
-                                                   'IT, survey study'), 
-                                 point_color = list(c('gray60', globals$hact_colors[1]), 
-                                                    c('gray60', globals$hact_colors[2]))) %>% 
+  clust_ft$clust_ft_summ <- 
+    list(x = clust_ft$clust_ft_summ, 
+         plot_subtitle = c('AT, survey study', 
+                           'IT, survey study'), 
+         point_color = list(c('gray60', globals$hact_colors[1]), 
+                            c('gray60', globals$hact_colors[2]))) %>% 
     pmap(plot, 
          cust_theme = globals$common_theme, 
          show_labels = 'none', 
@@ -162,15 +168,14 @@
          plot_title = 'Symptom recovery', 
          x_lab = 'Mean symptom recovery, days post CoV', 
          cust_theme = globals$common_theme, 
-         alpha = 0.2) %>% 
+         alpha = 0.35) %>% 
     map(~.x + 
           theme(axis.title.y = element_blank()) + 
           scale_fill_manual(values = globals$clust_colors, 
                             name = 'Cluster') + 
           scale_color_manual(values = globals$clust_colors, 
                              name = 'Cluster') + 
-          scale_y_discrete(labels = translate_var(globals$hact_symptoms, 
-                                                  dict = hact$dict), 
+          scale_y_discrete(labels = function(x) exchange(x, dict = hact$dict), 
                            limits = globals$hact_symptom_order))
 
 # END -----

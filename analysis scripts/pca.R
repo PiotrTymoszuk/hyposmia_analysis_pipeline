@@ -9,7 +9,7 @@
 # container list ----
   
   pca <- list()
-  
+
 # globals: analysis tables ------
   
   insert_msg('Globals setup')
@@ -17,11 +17,7 @@
   pca$analysis_tbl <- rec_time[c('north', 'south')] %>% 
     map(~filter(.x, complete.cases(.x))) %>% 
     map(column_to_rownames, 'ID')
-  
-  ## parallel backend
-  
-  plan('multisession')
-  
+
 # PCA -----
   
   insert_msg('PCA and visualizations')
@@ -31,12 +27,13 @@
         kdim = 8, 
         red_fun = 'pca')
   
-  pca$pca_obj$north$loadings <- pca$pca_obj$north$loadings %>% 
-    mutate(variable = translate_var(variable, dict = hact$dict))
-  
-  pca$pca_obj$south$loadings <- pca$pca_obj$south$loadings %>% 
-    mutate(variable = translate_var(variable, dict = hact$dict))
-  
+  for(i in names(pca$pca_obj)) {
+    
+    pca$pca_obj[[i]]$loadings <- pca$pca_obj[[i]]$loadings %>% 
+      mutate(variable = exchange(variable, dict = hact$dict))
+    
+  }
+
   ## Scree plot
   
   pca$pca_scree_plot <- list(x = pca$pca_obj, 
@@ -73,7 +70,11 @@
   
   pca$pca_imp_plot <- pca$pca_obj %>% 
     map(~.x$loadings) %>% 
-    map(mutate, len = sqrt(comp_1^2 + comp_2^2 + comp_3^2 + comp_4^2 + comp_5^2 + comp_6^2 + comp_7^2 + comp_8^2))
+    map(mutate, 
+        len = sqrt(comp_1^2 + comp_2^2 + 
+                     comp_3^2 + comp_4^2 + 
+                     comp_5^2 + comp_6^2 + 
+                     comp_7^2 + comp_8^2))
   
   pca$pca_imp_plot <- list(data = pca$pca_imp_plot, 
                            plot_subtitle = c('AT, survey study', 
@@ -116,7 +117,7 @@
   
   pca$umap_obj <- pca$analysis_tbl %>% 
     map(reduce_data, 
-        distance_method = 'euclidean', 
+        distance_method = 'cosine', 
         kdim = 2, 
         red_fun = 'umap')
   
@@ -129,31 +130,9 @@
     pmap(plot, 
          type = 'scores', 
          cust_theme = globals$common_theme)
-  
-# Clustering tendency -----
-  
-  insert_msg('Investigating the clustering tendency')
-
-  pca$clust_tend <- list(data.north = pca$analysis_tbl$north, 
-                         pca.north = pca$pca_obj$north$component_tbl %>% 
-                           select(-observation), 
-                         mds.north = pca$mds_obj$north$component_tbl %>% 
-                           select(-observation), 
-                         umap.north = pca$umap_obj$north$component_tbl %>% 
-                           select(-observation), 
-                         data.south = pca$analysis_tbl$south, 
-                         pca.south = pca$pca_obj$south$component_tbl %>% 
-                           select(-observation), 
-                         mds.south = pca$mds_obj$south$component_tbl %>% 
-                           select(-observation), 
-                         umap.south = pca$umap_obj$south$component_tbl %>% 
-                           select(-observation)) %>% 
-    future_map(get_clust_tendency, 
-               n = 200, 
-               .options = furrr_options(seed = TRUE))
 
 # END -----
   
-  plan('sequential')
+  rm(i)
   
   insert_tail()

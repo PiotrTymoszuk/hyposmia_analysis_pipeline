@@ -22,7 +22,7 @@
   
   hyp_long$analysis_tbl <-  hyp_long$analysis_tbl %>% 
     map(function(cohort) cohort %>% 
-          dlply(.(ID), as_tibble) %>% 
+          blast(ID) %>% 
           map(select, -ID) %>% 
           map(~map_dfc(.x, function(sympt) switch(as.character(sympt), 
                                                   absent = c(0, 0, 0, 0, 0, 0), 
@@ -33,7 +33,8 @@
                                                   `up to 3 months` = c(1, 1, 1, 1, 1, 0), 
                                                   `up to 6 months` = c(1, 1, 1, 1, 1, 1), 
                                                   `over 6 months` = c(1, 1, 1, 1, 1, 1)))) %>% 
-          map2_dfr(., names(.), ~mutate(.x, ID = .y, time = c(3, 7, 14, 28, 90, 180)))) %>% 
+          map2_dfr(., names(.), 
+                   ~mutate(.x, ID = .y, time = c(3, 7, 14, 28, 90, 180)))) %>% 
     map(as_tibble) %>% 
     map(complete_cases)
 
@@ -88,8 +89,8 @@
                          sub = c('AT, survey study', 'IT, survey study'), 
                          col = globals$hact_colors) %>% 
     pmap(function(mod, sub, col) list(x = mod, 
-                                      plot_title = translate_var(names(mod), 
-                                                                 dict = hact$dict)) %>% 
+                                      plot_title = exchange(names(mod), 
+                                                            dict = hact$dict)) %>% 
            pmap(plot, 
                 type = 'frequency', 
                 plot_subtitle = sub, 
@@ -103,6 +104,11 @@
                  scale_y_continuous(limits = c(0, 100)) + 
                  scale_x_continuous(limits = c(0, 185), 
                                     breaks = c(0, 14, 28, 90, 180))))
+  
+  ## moving n number to the captions
+  
+  hyp_long$plots <- hyp_long$plots %>% 
+    map(~map(.x, tag_to_sub))
   
 # END -----
   

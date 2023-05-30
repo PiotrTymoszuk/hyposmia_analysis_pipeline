@@ -6,14 +6,20 @@
 
   rec_dist <- list()
   
+# Parallel backend -------
+  
+  insert_msg('Parallel backend')
+  
+  plan('multisession')
+  
 # globals -------
   
   insert_msg('Globals setup')
   
   rec_dist$tbl_hact <- rec_time[c('north', 'south')] %>% 
-    map2_dfr(., c('AT', 'IT'), ~mutate(.x, cohort = .y))
-  
-  plan('multisession')
+    compress(names_to = 'cohort') %>% 
+    mutate(cohort = car::recode(cohort, "'north' = 'AT'; 'south' = 'IT'"), 
+           cohort = factor(cohort, c('AT', 'IT')))
   
 # descriptive stats of the recovery: individuals with the symptom present -----  
   
@@ -28,7 +34,7 @@
                             pub_styled = TRUE), 
                    .options = furrr_options(seed = TRUE)) %>% 
     reduce(left_join, by = 'variable') %>% 
-    set_names(c('variable', 'north', 'south'))
+    set_names(c('variable', levels(rec_dist$tbl_hact$cohort)))
   
   rec_dist$stats_covild <- globals$covild_symptoms %>% 
     map_dfr(~explore(rec_time$covild[c('cat_WHO', .x)] %>% 
@@ -38,11 +44,10 @@
                      what = 'table', 
                      pub_styled = TRUE)) %>% 
     reduce(left_join, by = 'variable') %>% 
-    set_names(c('variable', 'A', 'HM', 'HS'))
+    set_names(c('variable', levels(rec_time$covild$cat_WHO)))
 
 # testing, differences between the cohorts or severity strata, symptomatic ----
-  # Mann-Whitney U test or Kruskal-Wallis test
-  
+
   insert_msg('Testing for the differences between the cohorts or severity')
   
   rec_dist$test_hact <- globals$hact_symptoms %>% 
@@ -55,9 +60,7 @@
                                           ci = FALSE, 
                                           pub_styled = TRUE, 
                                           adj_method = 'none'), 
-               .options = furrr_options(seed = TRUE)) %>% 
-    map_dfr(~.x$result) %>% 
-    re_adjust('BH')
+               .options = furrr_options(seed = TRUE))
 
   rec_dist$test_covild <- globals$covild_symptoms %>% 
     map(~safely(compare_variables)(rec_time$covild[c('cat_WHO', .x)] %>% 
@@ -68,14 +71,14 @@
                                    types = 'kruskal_test', 
                                    ci = FALSE, 
                                    pub_styled = TRUE, 
-                                   adj_method = 'none')) %>% 
-    map_dfr(~.x$result) %>%
-    re_adjust('BH')
+                                   adj_method = 'none'))
 
   rec_dist[c('test_hact', 
              'test_covild')] <- rec_dist[c('test_hact', 
                                            'test_covild')] %>% 
-    map(mutate, plot_cap = paste(eff_size, significance))
+    map(~map_dfr(.x, ~.x$result)) %>% 
+    map(re_adjust) %>% 
+    map(mutate, plot_cap = paste(eff_size, significance, sep = ', '))
   
 # Violin plots with the recovery times for the particular symptoms ------
 
@@ -84,47 +87,49 @@
   ## HACT
   
   rec_dist$violin_hact <- list(x = rec_dist$test_hact$variable, 
-                               y = translate_var(rec_dist$test_hact$variable, 
-                                                 dict = hact$dict), 
+                               y = exchange(rec_dist$test_hact$variable, 
+                                            dict = hact$dict), 
                                z = rec_dist$test_hact$plot_cap) %>% 
     pmap(function(x, y, z) plot_variable(rec_dist$tbl_hact[c('cohort', x)] %>% 
                                            filter(.data[[x]] != 0), 
                                          split_factor = 'cohort', 
                                          variable = x, 
-                                         type = 'violin', 
+                                         type = 'stack', 
+                                         scale = 'percent', 
                                          point_alpha = 0.3, 
                                          point_hjitter = 0.4, 
                                          cust_theme = globals$common_theme, 
                                          plot_title = y, 
-                                         plot_subtitle = z)) %>% 
+                                         plot_subtitle = z, 
+                                         x_n_labs = TRUE)) %>% 
     map(~.x + 
-          labs(tag = .x$labels$tag %>% 
-                 stri_replace(fixed = '\n', replacement = ', ') %>% 
-                 paste('\n', .)) + 
-          scale_fill_manual(values = unname(globals$hact_colors))) %>% 
+           scale_fill_brewer(palette = 'Reds', 
+                             name = 'Median recovery, days') + 
+           theme(axis.title.x = element_blank())) %>% 
     set_names(rec_dist$test_hact$variable)
   
   ## CovILD
   
   rec_dist$violin_covild <- list(x = rec_dist$test_covild$variable, 
-                               y = translate_var(rec_dist$test_covild$variable, 
-                                                 dict = covild$dict), 
-                               z = rec_dist$test_covild$plot_cap) %>% 
+                                 y = exchange(rec_dist$test_covild$variable, 
+                                              dict = covild$dict), 
+                                 z = rec_dist$test_covild$plot_cap) %>% 
     pmap(function(x, y, z) plot_variable(rec_time$covild[c('cat_WHO', x)] %>% 
                                            filter(.data[[x]] != 0), 
                                          split_factor = 'cat_WHO', 
                                          variable = x, 
-                                         type = 'violin', 
+                                         type = 'stack', 
+                                         scale = 'percent', 
                                          point_alpha = 0.5, 
                                          point_hjitter = 0.4, 
                                          cust_theme = globals$common_theme, 
                                          plot_title = y, 
-                                         plot_subtitle = z)) %>% 
+                                         plot_subtitle = z,
+                                         x_n_labs = TRUE)) %>% 
     map(~.x + 
-          labs(tag = .x$labels$tag %>% 
-                 stri_replace(fixed = '\n', replacement = ', ') %>% 
-                 paste('\n', .)) + 
-          scale_fill_manual(values = globals$covild_colors)) %>% 
+          scale_fill_brewer(palette = 'Blues', 
+                            name = 'Median recovery, days') + 
+          theme(axis.title.x = element_blank())) %>% 
     set_names(rec_dist$test_covild$variable)
   
 # A summary visualization of the median recovery times -------
@@ -132,12 +137,12 @@
   insert_msg('Summary plot')
   
   ## HACT
-  
+
   rec_dist$summ_plot_hact <- list(data = rec_time[c('north', 'south')] %>% 
                                     map(select, - ID) %>% 
                                     map(~set_names(.x, 
-                                                   translate_var(names(.x), 
-                                                                 dict = hact$dict))), 
+                                                   exchange(names(.x), 
+                                                            dict = hact$dict))), 
                                   plot_subtitle = map2(c('AT, survey study', 
                                                          'IT, survey study'), 
                                                        rec_time[c('north', 
@@ -147,7 +152,7 @@
                                   median_color = globals$hact_colors, 
                                   fill = globals$hact_colors) %>% 
     pmap(draw_quantile_elli, 
-         variables = translate_var(globals$hact_symptoms, dict = hact$dict), 
+         variables = exchange(globals$hact_symptoms, dict = hact$dict), 
          ell_width = 0.3, 
          non_zero = TRUE, 
          alpha = 0.3, 
@@ -160,8 +165,8 @@
   rec_dist$summ_plot_covild <- list(data = rec_time$covild %>% 
                                       dlply('cat_WHO', select, -ID, -cat_WHO) %>% 
                                       map(~set_names(.x, 
-                                                     translate_var(names(.x), 
-                                                                   dict = covild$dict))), 
+                                                     exchange(names(.x), 
+                                                              dict = covild$dict))), 
                                     plot_subtitle = paste0(c('Ambulatory CoV', 
                                                              'Moderate CoV', 
                                                              'Severe CoV'), 
@@ -169,7 +174,7 @@
                                     median_color = globals$covild_colors[1:3], 
                                     fill = globals$covild_colors[1:3]) %>% 
     pmap(draw_quantile_elli, 
-         variables = translate_var(globals$covild_symptoms, dict = covild$dict), 
+         variables = exchange(globals$covild_symptoms, dict = covild$dict), 
          ell_width = 0.3, 
          non_zero = TRUE, 
          alpha = 0.3, 

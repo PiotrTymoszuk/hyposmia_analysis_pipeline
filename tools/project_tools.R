@@ -1,5 +1,62 @@
 # A medley of functional project tools
 
+# packages ------
+
+  library(plyr)
+  library(tidyverse)
+  library(rlang)
+  library(trafo)
+  library(ggtext)
+  library(clipr)
+
+# Sample size calculation ------
+
+  draw_hopkins <- function(data, 
+                           subset_ids, 
+                           n = floor(length(subset_ids) * 0.5), 
+                           seed = 1234) {
+    
+    ## calculates the hopkins stat for the subset of a dataset
+    #ä# defined by the user-provided rownames
+    
+    hopkins <- get_clust_tendency(data = data[subset_ids, ], 
+                                  n = n, 
+                                  seed = seed)[c('hopkins_stat', 'p_value')]
+    
+    hopkins %>% 
+      as_tibble %>% 
+      mutate(n = nrow(data[subset_ids, ]))
+    
+  }
+  
+# Kinetic plot formatting -----
+  
+  tag_to_sub <- function(plot, replace = FALSE) {
+    
+    if(replace) {
+      
+      plot <- plot + 
+        labs(subtitle = stri_replace(plot$labels$tag, 
+                                     fixed = '\n', 
+                                     replacement = ''))
+      
+    } else {
+      
+      plot <- plot + 
+        labs(subtitle = plot$labels$subtitle %>% 
+               paste(stri_replace(plot$labels$tag, 
+                                  fixed = '\n', 
+                                  replacement = ''), 
+                     sep = ', '))
+      
+    }
+     
+    plot + 
+      theme(plot.tag = element_blank())
+    
+  }
+  
+
 # kNN plots -----
 
   draw_knn_course <- function(data, 
@@ -45,16 +102,18 @@
            aes(x = .data[[time_var]], 
                y = .data[[dist_var]], 
                color = .data[[color_var]])) + 
-      geom_line(aes(size = lsize_var)) + 
+      geom_line(aes(linewidth = lsize_var)) + 
       geom_point(shape = 16, 
                  size = point_size) + 
       geom_text_repel(aes(label = sympt_lab), 
                       size = txt_size) + 
       scale_color_manual(values = col_scale, 
                          name = '') + 
-      scale_size_manual(values = c(highlight_size, line_size)) + 
-      guides(color = FALSE, 
-             size = FALSE) +
+      scale_linewidth_manual(values = c(normal = line_size, 
+                                        high = highlight_size)) + 
+      guides(color = 'none', 
+             size = 'none', 
+             linewidth = 'none') +
       cust_theme + 
       labs(title = plot_title, 
            subtitle = plot_subtitle, 
@@ -65,7 +124,7 @@
     
   }
 
-# Symptom frequnecy plots ------
+# Symptom frequency plots ------
   
   draw_freq_bubble <- function(data, 
                                plot_title = NULL, 
@@ -113,7 +172,7 @@
     
     symptoms <- sort(symptoms, decreasing = TRUE)
     
-    sympt_labs <- translate_var(symptoms, dict = dict)
+    sympt_labs <- exchange(symptoms, dict = dict)
     
     data <- data %>% 
       mutate(LHS_lab = LHS, 
@@ -286,31 +345,8 @@
     
   }
 
-# variable:label translation, color setup -----
-  
-  translate_var <- function(variable, 
-                            key = 'variable', 
-                            out_value = 'label', 
-                            dict = globals$var_lexicon, 
-                            unit = F) {
-    
-    naming_vec <- dict[[out_value]]
+# color setup -----
 
-    if(unit) {
-      
-      naming_vec <- ifelse(is.na(dict[['unit']]), 
-                           naming_vec, 
-                           paste(naming_vec, dict[['unit']], sep = ', '))
-      
-    }
-    
-    naming_vec <- set_names(naming_vec, 
-                            dict[[key]])
-    
-    return(naming_vec[variable])
-    
-  }
-  
   set_colors_ <- function(color_no, seed = 123) {
     
     ## picks n colors at random from the standard palette
@@ -332,16 +368,6 @@
     
   }
   
-  complete_cases <- function(data, id_var = 'ID') {
-    
-    ### selects the individuals with the complete variable record
-    
-    dlply(data, id_var) %>% 
-      map_dfr(function(x) if(any(!complete.cases(x))) NULL else x)
-    
-    
-  }
-  
   format_summ_tbl <- function(data, 
                               rm_n = TRUE, 
                               rm_mean = TRUE, 
@@ -358,21 +384,22 @@
       map_dfc(stri_replace, fixed = 'Mean =', replacement = 'mean:') %>% 
       map_dfc(stri_replace, fixed = 'Range', replacement = 'range') %>% 
       map_dfc(stri_replace, fixed = 'Complete', replacement = 'complete') %>% 
-      mutate(variable = translate_var(variable, 
-                                      out_value = out_value, 
-                                      dict = dict))
+      mutate(variable = exchange(variable, 
+                                 value = out_value, 
+                                 dict = dict))
     
     if(rm_n) {
       
       data <- data %>% 
-        map_dfc(stri_replace, regex = '\\nCompl.*$', replacement = '')
+        map_dfc(stri_replace, regex = '\\ncompl.*$', replacement = '')
         
     }
     
     if(rm_mean) {
       
       data <- data %>% 
-        map_dfc(stri_replace, regex = 'mean.*\\n', replacement = '')
+        map_dfc(stri_replace, regex = 'mean.*\\n', replacement = '') %>% 
+        map_dfc(stri_replace, fixed = 'median: ', replacement = '')
       
     }
     
@@ -380,15 +407,15 @@
     
   }
   
-  re_adjust <- function(data, method = 'BH') {
+  re_adjust <- function(data, p_variable = 'p_value', method = 'BH') {
     
     ## adjusts for multiple testing e.g. with the Benjamini-Hochberg method
     
     if(method != 'none') {
       
-      data <- data %>% 
-        mutate(p_adjusted = p.adjust(p_value, method = method))
-      
+      data[['p_adjusted']] <- 
+        p.adjust(data[[p_variable]], method = method)
+
     }
     
     data %>% 
@@ -399,8 +426,6 @@
                                           paste('p =', signif(p_adjusted, 2)))))
     
   }
-  
-  mm_inch <- function(x) 0.0393700787 * x
   
   embolden_scale <- function(x, 
                              highlight,  
@@ -413,19 +438,151 @@
       
       return(ifelse(x %in% highlight, 
                     glue("<b style='color:{color}'>{x}</b>"), 
+                    #paste0("<b style ='color':", color, ">", x, "</b>"), 
                     x))
       
     } else {
       
-      labels <- translate_var(x, dict = dict)
+      labels <- exchange(x, dict = dict)
       
       return(ifelse(x %in% highlight, 
                     glue("<b style='color:{color}'>{labels[x]}</b>"), 
+                    #paste0("<b style ='color':", color, ">", labels[x], "</b>"), 
                     labels[x]))
       
       
     }
     
   }
+  
+  embolden_elli <- function(plot, 
+                            highlight) {
+    
+    ## emboldens selected elements on the Y scale
+    
+    plot_tbl <- plot$data[c('variable', 'plot_order')] %>% 
+      mutate(variable = ifelse(variable %in% highlight, 
+                               paste0('<b>', variable, '</b>'), 
+                               variable))
+    
+    plot + 
+      scale_y_continuous(limits = range(plot_tbl$plot_order), 
+                         breaks = plot_tbl$plot_order, 
+                         labels = set_names(plot_tbl$variable, 
+                                            plot_tbl$plot_order),
+                         expand = expansion(mult = c(0.02, 0.02))) + 
+      theme(axis.text.y = element_markdown())
+    
+  }
 
+  two_panel <- function(plot_list, 
+                        legend.position = c('bottom', 'right', 'none'), 
+                        rel_heights = c(0.87, 0.13)) {
+    
+    legend.position <- match.arg(legend.position[1], c('bottom', 'right', 'none'))
+    
+    plot_panel <- plot_list %>% 
+      map(~.x + theme(legend.position = 'none'))
+    
+    if(legend.position == 'right') {
+      
+      plot_panel <- plot_panel %>% 
+        c(list(get_legend(plot_list[[1]]))) %>% 
+        plot_grid(plotlist = ., 
+                  ncol = 3, 
+                  align = 'hv', 
+                  axis = 'tblr')
+      
+    } else if(legend.position == 'bottom') {
+      
+      plot_panel <- plot_panel %>% 
+        plot_grid(plotlist = ., 
+                  ncol = 2, 
+                  align = 'hv', 
+                  axis = 'tblr') %>% 
+        plot_grid(get_legend(plot_list[[1]] + 
+                               theme(legend.position = 'bottom')), 
+                  nrow = 2, 
+                  rel_heights = rel_heights)
+      
+    } else {
+      
+      plot_panel <- plot_panel %>% 
+        plot_grid(plotlist = ., 
+                  ncol = 2, 
+                  align = 'hv', 
+                  axis = 'tblr') %>% 
+        plot_grid(ggdraw(), 
+                  nrow = 2, 
+                  rel_heights = rel_heights)
+      
+    }
+    
+    plot_panel
+    
+  }
+  
+# Markdown tools ------
+  
+  insert_issue <- function(text = NULL) {
+    
+    if(!is.null(text)) {
+      
+      text <- paste0("<span custom-style = 'reviewer'>", text, "</span>")
+      
+    } else {
+      
+      text <- paste0("<span custom-style = 'reviewer'></span>")
+      
+    }
+    
+    write_clip(content = text,
+               object_type = "character",
+               breaks = "\n")
+    
+    return(text)
+    
+  }
+  
+  insert_quotation <- function(text = NULL) {
+    
+    if(!is.null(text)) {
+      
+      text <- paste0("<span custom-style = 'reference'>", text, "</span>")
+      
+    } else {
+      
+      text <- paste0("<span custom-style = 'reference'></span>")
+      
+    }
+    
+    write_clip(content = text,
+               object_type = "character",
+               breaks = "\n")
+    
+    return(text)
+    
+  }
+  
+  insert_revision <- function(text = NULL) {
+    
+    if(!is.null(text)) {
+      
+      text <- paste0("<span custom-style = 'revision'>", text, "</span>")
+      
+    } else {
+      
+      text <- paste0("<span custom-style = 'revision'></span>")
+      
+    }
+    
+    write_clip(content = text,
+               object_type = "character",
+               breaks = "\n")
+    
+    return(text)
+    
+  }
+  
+  
 # END -----

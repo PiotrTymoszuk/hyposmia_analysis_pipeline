@@ -10,16 +10,17 @@
   
   insert_msg('Figure 1: symptom recovery times')
   
+  ## upper panel: median/IQR recovery times
   ## emboldening the hyposmia and hypogeusia
 
   figures$sympt_recovery$upper_panel <- rec_dist$summ_plot_hact %>% 
-    map(~.x + 
-          scale_y_discrete(labels = function(x) embolden_scale(x, c('OD', 'Hypogeusia/ageusia'))) + 
-          theme(axis.text.y = element_markdown())) %>% 
+    map(embolden_elli, c('OD', 'Hypogeusia/ageusia')) %>% 
     plot_grid(plotlist = ., 
               ncol = 2, 
               align = 'hv',
               axis = 'tblr')
+
+  ## bottom panel: recovery curves for hyposmia and hypo/ageusia
   
   figures$sympt_recovery$bottom_panel <- kin_mod$plots_hact %>% 
     map(~.x[c('anosmia', 'taste_loss')]) %>% 
@@ -37,17 +38,44 @@
                                       figures$sympt_recovery$bottom_panel, 
                                       nrow = 2, 
                                       rel_heights = c(0.7, 0.3), 
-                                      labels = c('A', 'B'), 
+                                      labels = c('a', 'b'), 
                                       label_size = 10) %>% 
     as_figure('figure_1_recovery_times', 
               ref_name = 'sympt_recovery', 
-              caption = 'Symptom-specific recovery times in the ambulatory COVID-19 survey study.', 
+              caption = paste('Symptom-specific recovery times in the', 
+                              'ambulatory COVID-19 survey study.'), 
               w = 180, 
               h = 220)
 
-# Figure 2: symptom distances -----
+# Figure 2: subjective and objective hyposmia -------
   
-  insert_msg('Figure 2: symptom isolation')
+  insert_msg('Figure 2: subjective and objective hyposmia')
+  
+  figures$sniff_test <- 
+    plot_grid(rater$hyposmia_rates$plots$`100` + 
+                theme(legend.position = 'bottom'), 
+              rater$kappa_forests$plots$fup100 + 
+                labs(title = ''), 
+              rater$hyposmia_rates$plots$`360` + 
+                theme(legend.position = 'bottom'), 
+              rater$kappa_forests$plots$fup360 + 
+                labs(title = ''), 
+              ncol = 2, 
+              align = 'hv', 
+              axis = 'tblr', 
+              labels = c('a', '', 'b', ''), 
+              label_size = 10) %>% 
+    as_figure('figure_2_sniffin_test', 
+              ref_name = 'sniff_test', 
+              caption = paste('Rates of subjective and objective hyposmia', 
+                              'in the CovILD cohort two months', 
+                              'and one year after COVID-19.'), 
+              w = 180,
+              h = 180)
+  
+# Figure 3: symptom distances -----
+  
+  insert_msg('Figure 3: symptom isolation')
   
   figures$sympt_mds <- sympt_dist$mds_plots_hact[c('north.long', 
                                                    'south.long', 
@@ -61,52 +89,32 @@
               ncol = 2, 
               align = 'hv', 
               axis = 'tblr', 
-              labels = c('A', '', 'B', ''), 
+              labels = c('a', '', 'b', ''), 
               label_size = 10) %>% 
-    as_figure('figure_2_symptom_isolation', 
+    as_figure('figure_3_symptom_isolation', 
               ref_name = 'sympt_mds', 
-              caption = 'Self-reported olfactory dysfunction and taste disorders are isolated persistent symptoms of COVID-19.', 
+              caption = paste('Self-reported olfactory dysfunction and', 
+                              'taste disorders are isolated persistent', 
+                              'symptoms of COVID-19.'), 
               w = 180, 
               h = 180)
 
-# Figure 3: Apriori -----
-  
-  insert_msg('Figure 3: apriori')
-
-  figures$apriori <- ap_sympt$bubble_plots[c('north.28', 
-                                             'south.28', 
-                                             'north.90', 
-                                             'south.90')] %>% 
-    map(~.x + theme(legend.position = 'none')) %>% 
-    plot_grid(plotlist = ., 
-              ncol = 2, 
-              align = 'hv', 
-              rel_heights = c(0.78, 0.22), 
-              axis = 'tblr', 
-              labels = c('A', '', 'B'), 
-              label_size = 10) %>% 
-    plot_grid(get_legend(ap_sympt$bubble_plots[[1]] + 
-                           theme(legend.position = 'bottom')), 
-              nrow = 2, 
-              rel_heights = c(0.92, 0.08)) %>% 
-    as_figure('figure_3_apriori_analysis', 
-              ref_name = 'apriori', 
-              caption = 'Co-occurrence of self-reported olfactory dysfunction and other symtoms in post-acute COVID-19 sequelae.', 
-              w = 180, 
-              h = 170)
-  
 # Figure 4: symptom duration in the recovery clusters -----
   
   insert_msg('Figure 4: Symptom duration in the recovery clusters')
   
   figures$sympt_clusters <- clust_ft$ribbon_panels %>% 
-    map(~.x + 
-          scale_y_discrete(labels = function(x) embolden_scale(x, 
-                                                               c('anosmia', 'taste_loss'), 
-                                                               translate = TRUE), 
-                           limits = globals$hact_symptom_order) + 
-          theme(axis.text.y = element_markdown(), 
-                legend.position = 'none')) %>% 
+    map2(., 
+         paste0('Symptom recovery, ', c('AT', 'IT'), ', survey study'), 
+         ~.x + 
+           labs(title = .y) + 
+           scale_y_discrete(labels = function(x) embolden_scale(x, 
+                                                                c('anosmia', 'taste_loss'), 
+                                                                translate = TRUE), 
+                            limits = globals$hact_symptom_order) + 
+           theme(axis.text.y = element_markdown(), 
+                 legend.position = 'none')) %>% 
+    map(tag_to_sub, replace = TRUE) %>% 
     plot_grid(plotlist = ., 
               ncol = 2, 
               align = 'hv', 
@@ -118,7 +126,10 @@
               rel_heights = c(0.92, 0.08)) %>% 
     as_figure('figure_4_symptom_duration_clusters', 
               ref_name = 'sympt_clusters', 
-              caption = 'Differing duration of neurocognitive and respiratory symptoms, fatigue, olfactory dysfunction and taste disorders defines the COVID-19 recovery clusters.', 
+              caption = paste('Differing duration of neurocognitive and', 
+                              'respiratory symptoms, fatigue, olfactory', 
+                              'dysfunction and taste disorders defines', 
+                              'the COVID-19 recovery clusters.'), 
               w = 180, 
               h = 180)
   
@@ -127,20 +138,22 @@
   insert_msg('Figure 5: recovery in the recovery clusters')
   
   figures$recovery_clusters <- clust_chara$ribbon_recovery %>% 
-    map(~.x + theme(legend.position = 'none')) %>% 
+    map2(., c('AT, survey study', 'IT, survey study'), 
+         ~.x + 
+           labs(title = .y) + 
+           theme(plot.tag = element_blank(), 
+                 plot.subtitle = element_blank())) %>% 
     plot_grid(plotlist = ., 
-              ncol = 2, 
+              nrow = 2, 
               align = 'hv', 
               axis = 'tblr') %>% 
-    plot_grid(get_legend(clust_chara$ribbon_recovery[[1]] + 
-                           theme(legend.position = 'bottom') + 
-                           guides(fill = FALSE)), 
-              nrow = 2, 
-              rel_heights = c(0.85, 0.15)) %>% 
-    as_figure('figure_5_recovery_clusters', 
-              caption = ' Differing duration of neurocognitive and respiratory symptoms, fatigue, olfactory dysfunction and taste disorders defines the COVID-19 recovery clusters.', 
+    as_figure('figure_5_recovery_clusters',
+              ref_name = 'recovery_clusters', 
+              caption = paste('Physical and mental health,', 
+                              'and quality of life in', 
+                              'the COVID-19 recovery clusters'), 
               w = 180, 
-              h = 120)
+              h = 220)
   
 # Saving the figures ------
   
@@ -157,6 +170,12 @@
          path = './paper/figures eps', 
          format = 'eps', 
          device = cairo_ps)
+  
+  figures %>% 
+    walk(pickle, 
+         path = './paper/figures png', 
+         format = 'png', 
+         type = 'cairo')
   
 # END -----
   

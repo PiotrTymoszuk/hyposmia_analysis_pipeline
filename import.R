@@ -10,6 +10,7 @@
   library(tidyverse)
   library(foreign)
   library(stringi)
+  library(trafo)
   
   insert_head()
   
@@ -98,6 +99,20 @@
                                 fixed = 'Imp. fine motor skills', 
                                 replacement = 'Imp. FMS'))
   
+  ## more informative names for psychometic measures
+  
+  hact$dict[hact$dict$variable == 'life_quality_score', c('label', 'label_short', 'description', 'axis_lab')] <- 
+    tibble(label = 'QoL impairment score', 
+           label_short = 'QoL impairment score', 
+           description = 'Score of impaired quality of life (QoL, 0: excellent QoL; 3: poor QoL)', 
+           axis_lab = 'QoL impairment score')
+  
+  hact$dict[hact$dict$variable == 'mental_health_score', c('label', 'label_short', 'description', 'axis_lab')] <- 
+    tibble(label = 'OMH impairment score', 
+           label_short = 'OMH impairment score', 
+           description = 'Score of impaired self-assessed overall mental health (OMH, 0: excellent QoL; 3: poor QoL)', 
+           axis_lab = 'OMH impairment score')
+  
 # Calculating the times to recovery, HACT -----
   
   insert_msg('Individual times to recovery, HACT')
@@ -124,12 +139,12 @@
   
   rec_time$covild <- covild$data %>% 
     select(ID, time, all_of(globals$covild_symptoms)) %>% 
-    dlply(.(time), as_tibble) %>% 
+    blast(time) %>% 
     map(select, - time) %>% 
     map2_dfr(., c(14, 60, 90, 180, 360), 
              ~map_dfc(.x, 
                       function(x) if(is.factor(x)) ifelse(x == 'yes', .y, 0) else x)) %>% 
-    dlply(.(ID), as_tibble) %>% 
+    blast(ID) %>% 
     map(~map_dfc(.x, 
                  function(x) if(is.numeric(x)) max(x, na.rm = TRUE) else x)) %>% 
     map_dfr(~.x[1, ]) %>% 
@@ -150,7 +165,7 @@
   
   mod_tbl[c('north', 'south')] <- mod_tbl[c('north', 'south')] %>% 
     map(function(cohort) cohort %>% 
-          dlply(.(ID), as_tibble) %>% 
+          blast(ID) %>% 
           map(select, -ID) %>% 
           map(~map_dfc(.x, function(sympt) switch(as.character(sympt), 
                                                   absent = c(0, 0, 0, 0, 0), 

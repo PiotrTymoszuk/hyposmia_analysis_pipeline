@@ -87,9 +87,9 @@
   
   cl_devel$variances <- cl_devel$algos %>% 
     map(var) %>% 
-    map2_dfr(., names(.), 
-             ~tibble(method = .y, 
-                     frac_var = .x$frac_var))
+    map_dbl(~.x$frac_var) %>% 
+    compress(names_to = 'method', 
+             values_to = 'frac_var')
   
 # Cross-validation -----
   
@@ -98,16 +98,20 @@
   cl_devel$cv_objects <- cl_devel$algos %>% 
     map(cv, 
         nfolds = 10, 
-        kNN = 5, 
+        kNN = 7, 
+        resolve_ties = TRUE, 
+        simple_vote = FALSE, 
         seed = 1234, 
         .parallel = TRUE)
   
   cl_devel$cv_results <- cl_devel$cv_objects %>% 
-    map2_dfr(., names(.), ~mutate(.x$summary, method = .y))
+    map(~.x$summary) %>% 
+    compress(names_to = 'method')
   
-  cl_devel$test_results <- left_join(cl_devel$variances, 
-                                     cl_devel$cv_results, 
-                                     by = 'method') %>% 
+  cl_devel$test_results <- 
+    left_join(cl_devel$variances, 
+              cl_devel$cv_results, 
+              by = 'method') %>% 
     mutate(cv_accuracy = 1 - mean_error)
   
 # Plotting the variance and the Cv correct rate for the algorithms ----
@@ -115,15 +119,24 @@
   insert_msg('Variance and CV accuracy plot')
   
   cl_devel$result_plot <-  cl_devel$test_results %>% 
-    gather(key = 'statistic', 
-           value = 'value', 
-           frac_var, 
-           cv_accuracy) %>% 
-    mutate(method = stri_replace(method, fixed = '_', replacement = ', '), 
-           method = stri_replace(method, fixed = 'combi', replacement = 'SOM + HCl'), 
-           method = stri_replace(method, fixed = 'hcl', replacement = 'HCl'), 
-           method = stri_replace(method, fixed = 'kmeans', replacement = 'k-means'), 
-           method = stri_replace(method, fixed = 'pam', replacement = 'PAM'))
+    select(method, frac_var, cv_accuracy) %>% 
+    pivot_longer(cols = c('frac_var', 'cv_accuracy'), 
+                 names_to = 'statistic', 
+                 values_to = 'value') %>% 
+    mutate(method = stri_replace(method, 
+                                 fixed = '_',
+                                 replacement = ', '), 
+           method = stri_replace(method, 
+                                 fixed = 'combi', 
+                                 replacement = 'SOM + HCl'), 
+           method = stri_replace(method, 
+                                 fixed = 'hcl', 
+                                 replacement = 'HCl'), 
+           method = stri_replace(method, 
+                                 fixed = 'kmeans', 
+                                 replacement = 'k-means'), 
+           method = stri_replace(method, fixed = 'pam', 
+                                 replacement = 'PAM'))
   
   
   cl_devel$result_plot <- cl_devel$result_plot %>% 
@@ -143,6 +156,12 @@
     labs(title = 'Performance of clustering algorithms', 
          subtitle = 'training AT, survey study', 
          x = 'Statistic value')
+  
+# saving the results ------
+  
+  insert_msg('Caching the results')
+  
+  save(cl_devel, file = './cache/cl_devel.RData')
   
 # END -----
   

@@ -6,6 +6,12 @@
   
   clust_chara <- list()
   
+# parallel backend ------
+  
+  insert_msg('Parallel backend')
+  
+  plan('multisession')
+  
 # globals ------
   
   insert_msg('Globals setup')
@@ -23,9 +29,9 @@
                     type_plot = ifelse(is.numeric(hact$north[[.x]]), 
                                        'violin', 'stack'), 
                     y_lab = ifelse(is.numeric(hact$north[[.x]]), 
-                                   translate_var(.x, 
-                                                 out_value = 'axis_lab', 
-                                                 dict = hact$dict), 
+                                   exchange(.x, 
+                                            value = 'axis_lab', 
+                                            dict = hact$dict), 
                                    '% of cluster')))
   
   clust_chara$num_vars <- clust_chara$var_types %>% 
@@ -49,11 +55,7 @@
                             'phq_anxiety_score', 
                             'phq_depression_score', 
                             'stress_score')
-  
-  ## parallel backend
-  
-  plan('multisession')
-  
+
 # descriptive stats -------
   
   insert_msg('Descriptive stats')
@@ -119,23 +121,24 @@
                                    'psych_var')] %>% 
           map(~filter(cohort, variable %in% .x))) %>% 
     unlist(recursive = FALSE) %>% 
-    map(mutate, variable = translate_var(variable, dict = hact$dict))
+    map(mutate, variable = exchange(variable, dict = hact$dict))
   
-  clust_chara$summ_plots <- list(x = clust_chara$summ_plots, 
-                                 plot_title = rep(c('Baseline characteristic', 
-                                                    'Medical history', 
-                                                    'COVID-19 course and recovery', 
-                                                    'Psychosocial rating'), 2), 
-                                 plot_subtitle = c(rep('AT, survey study', 4), 
-                                                   rep('IT, survey study', 4)), 
-                                 point_color = list(c('gray60', globals$hact_colors[1]), 
-                                                    c('gray60', globals$hact_colors[1]), 
-                                                    c('gray60', globals$hact_colors[1]), 
-                                                    c('gray60', globals$hact_colors[1]), 
-                                                    c('gray60', globals$hact_colors[2]), 
-                                                    c('gray60', globals$hact_colors[2]), 
-                                                    c('gray60', globals$hact_colors[2]), 
-                                                    c('gray60', globals$hact_colors[2]))) %>% 
+  clust_chara$summ_plots <- 
+    list(x = clust_chara$summ_plots, 
+         plot_title = rep(c('Baseline characteristic', 
+                            'Medical history', 
+                            'COVID-19 course and recovery', 
+                            'Psychosocial rating'), 2), 
+         plot_subtitle = c(rep('AT, survey study', 4), 
+                           rep('IT, survey study', 4)), 
+         point_color = list(c('gray60', globals$hact_colors[1]), 
+                            c('gray60', globals$hact_colors[1]), 
+                            c('gray60', globals$hact_colors[1]), 
+                            c('gray60', globals$hact_colors[1]), 
+                            c('gray60', globals$hact_colors[2]), 
+                            c('gray60', globals$hact_colors[2]), 
+                            c('gray60', globals$hact_colors[2]), 
+                            c('gray60', globals$hact_colors[2]))) %>% 
     pmap(plot, 
          cust_theme = globals$common_theme, 
          show_labels = 'signif', 
@@ -149,39 +152,36 @@
   
   insert_msg('Plots for particular variables')
   
-  clust_chara$plots <- list(x = clust_chara$analysis_tbl, 
-                            y = globals$hact_labs, 
-                            z = clust_chara$test_results) %>% 
+  clust_chara$plots <- 
+    list(x = clust_chara$analysis_tbl, 
+         y = globals$hact_labs, 
+         z = clust_chara$test_results) %>% 
     pmap(function(x, y, z) list(variable = clust_chara$var_types$variable, 
                                 type = clust_chara$var_types$type_plot, 
-                                plot_title = paste(translate_var(clust_chara$var_types$variable, 
-                                                                 dict = hact$dict), 
+                                plot_title = paste(exchange(clust_chara$var_types$variable, 
+                                                            dict = hact$dict), 
                                                    y, sep = ', '), 
                                 plot_subtitle = z$plot_cap, 
                                 y_lab = clust_chara$var_types$y_lab) %>% 
-           pmap(plot_variable, 
-                x, 
-                split_factor = 'clust_id', 
-                scale = 'percent', 
-                cust_theme = globals$common_theme, 
-                x_lab = 'Cluster') %>% 
-           map(~.x + 
-                 scale_x_discrete(limits = c('#1', '#2', '#3')) + 
-                 labs(tag = .x$labels$tag %>% 
-                        stri_replace_all(fixed = '\n', replacement = ', ') %>% 
-                        paste0('\n', .))) %>% 
+           future_pmap(plot_variable, 
+                       x, 
+                       split_factor = 'clust_id', 
+                       scale = 'percent', 
+                       cust_theme = globals$common_theme, 
+                       x_lab = 'Cluster', 
+                       x_n_labs = TRUE, 
+                       .options = furrr_options(seed = TRUE)) %>% 
            set_names(clust_chara$var_types$variable))
   
-  clust_chara$plots$clust_north[clust_chara$num_vars] <- 
-    clust_chara$plots$clust_north[clust_chara$num_vars] %>% 
-    map(~.x + 
-          scale_fill_manual(values = globals$clust_colors))
-  
-  clust_chara$plots$clust_south[clust_chara$num_vars] <- 
-    clust_chara$plots$clust_south[clust_chara$num_vars] %>% 
-    map(~.x + 
-          scale_fill_manual(values = globals$clust_colors))
-  
+  for(i in names(clust_chara$plots)) {
+    
+    clust_chara$plots[[i]][clust_chara$num_vars] <- 
+      clust_chara$plots[[i]][clust_chara$num_vars] %>% 
+      map(~.x + 
+            scale_fill_manual(values = globals$clust_colors))
+    
+  }
+
 # Ribbon plots with the min/max scaled recovery parameters in the clusters -----
   
   insert_msg('Ribbon plots')
@@ -205,18 +205,25 @@
     map(paste, collapse = ', ') %>% 
     map(~paste0('\n', .))
   
-  ## labels of the axes with p values included
+  clust_chara$n_labs <- clust_chara$n_numbers %>% 
+    map(~map2_chr(.x[[1]], .x[[2]], 
+              paste, sep = ', n  = ')) %>% 
+    map2(., clust_chara$n_numbers, 
+         ~set_names(.x, .y[[1]]))
+  
+  ## labels of the axes with effect sizes and p values included
   
   clust_chara$ribbon_labs <- clust_chara$test_results %>% 
     map(filter, variable %in% clust_chara$rec_vars) %>% 
     map(mutate, 
-        var_lab = translate_var(variable, 
-                                out_value = 'label_short', 
-                                dict = hact$dict), 
+        var_lab = exchange(variable, 
+                           value = 'label_short', 
+                           dict = hact$dict), 
         var_lab = stri_replace(var_lab, 
                                fixed = ' ', 
                                replacement = '\n'), 
         var_lab = paste(var_lab, 
+                        eff_size, 
                         significance, 
                         sep = '\n'))
   
@@ -236,14 +243,21 @@
          err_stat = '2se', 
          cust_theme = globals$common_theme, 
          form = 'line', 
-         plot_title = 'Clinical and psychosocial CoV recovery') %>% 
-    map2(., clust_chara$ribbon_labs, 
-         ~.x + 
+         plot_title = 'Clinical and psychosocial CoV recovery')
+  
+  
+  clust_chara$ribbon_recovery <- 
+    list(x = clust_chara$ribbon_recovery, 
+         y = clust_chara$ribbon_labs,
+         z = clust_chara$n_labs) %>% 
+    pmap(function(x, y, z) x + 
            scale_fill_manual(values = globals$clust_colors, 
+                             labels = z, 
                              name = 'Cluster') + 
            scale_color_manual(values = globals$clust_colors, 
+                              labels = z, 
                               name = 'Cluster') + 
-           scale_y_discrete(labels = .y, 
+           scale_y_discrete(labels = y, 
                             limits = clust_chara$rec_vars) + 
            scale_x_continuous(breaks = seq(0.1, 0.8, by = 0.1)) + 
            theme(axis.title = element_blank(), 
@@ -252,7 +266,7 @@
                  axis.text.y = element_blank()) + 
            coord_polar(theta = 'y', 
                        clip = 'off'))
-  
+
   ## adding the breaks
   
   for(i in seq(0, 0.8, by = 0.2)) {
