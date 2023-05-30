@@ -1,0 +1,148 @@
+---
+title: "Distinct smell and taste disorder phenotype of post-acute COVID-19 sequelae"
+subtitle: "Rebuttal Letter"
+author: "Health after COVID-19 in Tyrol and CovILD study teams"
+date: "`r format(Sys.time(), '%Y-%m-%d')`"
+
+output: 
+  bookdown::word_document2:   
+    reference_docx: ms_template.docx
+    
+bibliography: hyposmia_biblio.bib
+csl: european-archives-of-oto-rhino-laryngology.csl
+header-includes:
+  \usepackage{longtable}
+  \usepackage{tabu}
+  \usepackage{caption}
+  \usepackage{makecell}
+  \usepackage{pdflscape}
+  \usepackage{array}
+  \usepackage{booktabs}
+  \usepackage{threeparttable}
+  \usepackage{threeparttablex}
+  \usepackage{wrapfig}
+  \usepackage{multirow}
+  \usepackage[normalem]{ulem}
+  \usepackage{colortbl}
+  \usepackage{xcolor}
+  \usepackage{float} \floatplacement{figure}{H} \floatplacement{table}{H}
+  \newcommand{\beginsupplement}{\setcounter{table}{0}  \renewcommand{\thetable}{S\arabic{table}}       \setcounter{figure}{0} \renewcommand{\thefigure}{S\arabic{figure}}}
+---
+
+```{r, setup, include = FALSE}
+
+library(bookdown)
+
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE, 
+                      dev = "png", dpi = 600, 
+                      tab.cap.style = 'Table Heading')
+
+set_flextable_defaults(font.family = 'Cambria', font.size = 10)
+
+
+```
+
+\newpage
+
+# Reviewer #1
+
+<span custom-style = 'reviewer'>I had the pleasure of reviewing your manuscript entitled "Distinct smell and taste disorder phenotype of post-acute COVID-19 sequelae". I have several comments in respect to your manuscript:</span>
+
+We thank the Reviewer for the careful lecture of our text and valuable feedback. 
+We did our best to address your issues by introducing changes in the text, figures and Supplementary Material. 
+The details are listed below (grey: Reviewers issue, black plain: our response, black italic and red: quotation of the altered manuscript text). 
+These changes in the main text are marked in red. 
+Please mind the new numbering of the main text Figures and Supplementary Figures which were changes to accommodate new analysis results and meet the journal's requirements. 
+Additionally, we introduced few changes in the analysis pipeline and text, which, as we believe, make interpretation of our data more straightforward for an interested reader: 
+
+* we analyzed kinetic of symptom resolution with Cochran's Q test with Kendall's W effect size statistic instead of second-term modeling and present those statistical testing results in __Supplementary Table S3__ and __Supplementary Table S4__. We use this data to underline the persistent character of self-reported hyposmia in ambulatory COVID-19 and interpret them in __Results/Longitudinal course of COVID-19 symptom resolution__.
+
+* we changed the format of __Tables__ and __Supplementary Tables__ to reduce the number of footnotes.
+
+* to observe the figure number limit of the journal (up to five figures), we moved the figure with apriori analysis results to Supplementary Material
+
+* related to your issue with differences between the AT and IT cohort, we included now additional information on how and where the cohorts were recruited and specified inclusion/exclusion criteria (__Methods/Study design and approval__). 
+
+* pertaining to the two-cohort analysis strategy of the survey study, we elaborate semi-supervised clustering procedure, cluster definition in the training AT cohort and quality of cluster assignment in the test IT collective in __Results/Smell and taste disorder phenotype of COVID-19 recovery__.
+
+* we provide a short information on how numeric and categorical variables are presented in the manuscript (__Methods/Statistical analysis__ and __Supplementary Methods__).
+
+* assignment of the test IT cohort participants (survey study) to the recovery clusters defined in the training AT cohort was done with the inverse distance-weighted 7-nearest neighbors classifier. Distance weighting, employed also in our recent papers [@Sonnweber2023; @Pichler2023], slightly improved stability of our clustering structure in cross-validation and semi-supervised clustering (__Supplementary Figure S15__).
+
+## Issue 1
+
+<span custom-style = 'reviewer'>Your abstract is misleading. 
+In the introduction it reads as if you compared OD in wild type and alpha-subtype SARS-CoV-2 virus.</span>
+
+Thank you for the comment. 
+We accordingly updated the abstract and clarified it for the reader. 
+We state now clearly the abstract (__Abstract/Purpose__ and __Methods/Study design and approval__) that the investigated population of COVID-19 patients were infected with the wild-type and alpha-variant of the SARS-CoV-2 pathogen.
+
+## Issue 2
+
+<span custom-style = 'reviewer'>The abbreviations AT/IT are introduced without clarification in the manuscript.</span>
+
+We thank for the thorough review and give the information in the __Methods/Study design and approval__ section and additionally expand the abbreviations in __Results/Study cohorts__.
+
+## Issue 3
+
+<span custom-style = 'reviewer'>The limitations need more thorough discussion. In particular the fact that subjective report of OD is extremely unreliable. In turn, the objective measurements need to be more present throughout the manuscript. I found data on the objective measurements hard to find.</span>
+
+We would like to thank the reviewer for this comment. 
+We agree that subjective reports may suffer from some degree of unreliability. 
+The discrepancy between subjective and objective OD irrespective of COVID-19 has been shown in other studies [@Oleszkiewicz2019; @Desiato2021], which calls for robust and reliable screening tools to assess for OD. 
+To address this issue more prominently, we present rates of objective and subjective OD along with the assessment of inter-rater reliability with Cohen's $\kappa$ in the CovILD study in the new main text __Figure 2__. 
+Additionally, we computed sensitivity and specificity of objective DO detection by the self-reported OD and present these data in __Supplementary Figures S9__ and __S10__. 
+Finally, we investigated in details individual trajectories of objective OD diagnosed with the Sniffin' Stick test in a subset of the longitudinal CovILD study participants with complete testing results at the three-month and one-year follow-up (n = `r length(sst_kinet$complete_ids)`). 
+As presented in __Supplementary Figure S11__, there were no significant differences either in numeric results of the Sniffin' Stick Test or frequency of objective OD in this participant subset. 
+Quite surprisingly, a substantial fraction of COVID-19 convalescents without objective OD at the three-month follow-up developed objective OD at the one-year follow-up. 
+
+Collectively, in contrary to subjective OD, which displayed a clear resolution trend in the first year after COVID-19 (__Supplementary Figure S8__), we could not detect any significant differences in objective OD rates between the three-month and one-year follow-up (__Figure 2__, __Supplementary Figure S11__). 
+Furthermore, self-reported OD was an extremely unreliable (entire CovILD cohort, 
+three-month follow-up: $\kappa$ = `r rater$rater_stats %>% filter(comparison == 'fup100.cohort') %>% .$Kappa %>% signif(2)`, 
+one-year follow-up: $\kappa$ = `r rater$rater_stats %>% filter(comparison == 'fup360.cohort') %>% .$Kappa %>% signif(2)`) and 
+insensitive tool to assess objective OD (entire CovILD cohort, 
+three-month follow-up: sensitivity = `r rater$rater_stats %>% filter(comparison == 'fup100.cohort') %>% .$Sens %>% signif(2)`, 
+one-year follow-up: sensitivity = `r rater$rater_stats %>% filter(comparison == 'fup360.cohort') %>% .$Sens %>% signif(2)`). 
+The discrepancy between the objective and subjective OD in the CovILD cohort was particularly large for the one-year follow-up and severe COVID-19 patients (__Figure 2__, __Supplementary Figures S9__ and __S10__). 
+Finally, objective OD may follow a remission/relapse pattern during long term convalescence, in line with literature [@Tipirdamaz2022].
+We discuss these findings in more details in __Results/Subjective and objective OD during COVID-19 recovery__ and __Discussion__. 
+
+## Issue 4
+
+<span custom-style = 'reviewer'>I would strongly recommend to elaborate on the Sniffin' Sticks, as these are not an internationally used standard. Why not use the UPSIT? And please elaborate what version of the Sniffin' Sticks were used and what the respective cutoff values are</span>
+
+Thank you for your comment. We used the 16-item Sniffin’ Sticks Identification test and defined hyposmia at a cut-off of <13 correctly identified odorants, as per manufacturer criteria. 
+Overall, there is wide heterogeneity in the usage of tests elaborating objective hyposmia [@Desiato2021]. 
+There are several studies using the Sniffin’ Sticks test including post-viral hyposmia [@Whitcroft2016; @Masala2022; @Damm2014]. We provide now additional details on the method and literature references in __Methods/Procedures and study variables__.
+
+## Issue 5
+
+<span custom-style = 'reviewer'>Why were the results presented separately for Austria and South Tyrol, despite the obvious geographical, social and economical similarities? Please elaborate or present as one.</span>
+
+We are grateful for this interesting and important issue. 
+There are multiple study design-inherent, sociodemographic and mathematical arguments for keeping the AT and IT cohorts separate. 
+First, the survey was designed as a two cohort study, this implicated differences in recruitment of participants (AT: via media call, IT: via media call and general practitioners), two language versions (German and Italian) and differences in recruitment start. 
+The cohorts were recruited independently and the datasets curated by two collaborating teams (AT: Medical University of Innsbruck, IT: Claudiana College of Bozen/Bolzano) [@Sahanic2021]. 
+Second, although the survey was conducted in neighboring regions, Austria and Italy pursued different strategies of pandemic management reflected by differing strategies of contact tracing (AT: state authority, IT: medical staff), testing and quarantine duration [@Sahanic2021]. 
+Dynamics of case numbers differed substantially between the countries as well and, notably, there was little exchange of Tyrol and South Tyrol inhabitants due to the closed border. 
+In our data, there were several differences in baseline characteristics, symptoms and mental health of the AT and IT cohort, which we present in __Supplementary Figures S3__ and __S5__ of the revised manuscript and discuss in more details in __Results/Study cohorts__. 
+Third, as a part of exploratory analysis, we checked if the AT and ITR cohort sizes were sufficient for analyses presented in the manuscript. 
+As demonstrated in __Supplementary Figure S2__, the minimal sample size required for reliable clustering analysis, which is the most complex analysis task of the  project, was n = 400 as estimated by Hopkins statistic of clustering tendency. 
+The sizes of each AT (n = `r nrow(part_clust$analysis_tbl$north)`) and IT cohort (n = `r nrow(part_clust$analysis_tbl$south)`) treated separately were sufficient for reliable clustering, and no differences in clustering results are expected in case of the pooled AT + IT dataset. 
+Hence, there is likely none or little qualitative benefit in analysis of the pooled dataset. 
+We provide this information in __Methods/Statistical Analysis__ and __Supplementary Methods/Estimation of minimal sample size for clustering analysis__. 
+Fourth, multi-cohort setting including a training, in our case AT cohort, and one or more test collectives, in our case the IT cohort, is considered paramount in any statistical analysis, as it allows for bias-free validation of modeling or clustering results. 
+This was also suggested by Reviewers of our previous papers with the survey study [@Hufner2022; @Sahanic2021]. 
+To accentuate this 'mathematical' aspect of our analysis strategy, we present the readouts of clustering 'goodness' (fraction of clustering variance, distribution of the clusters) in __Supplementary Figure S15AB__ and elaborate on it in __Results/Smell and taste disorder phenotype of COVID-19 recovery__.
+
+## Issue 6
+
+<span custom-style = 'reviewer'>Even though the English is generally acceptable, there are still quite a few typos that should be corrected before the manuscript is suitable for publication.</span>
+
+Thanks for the careful lecture. 
+We paid attention for typos and grammar of the revised manuscript.
+
+\newpage
+
+# References

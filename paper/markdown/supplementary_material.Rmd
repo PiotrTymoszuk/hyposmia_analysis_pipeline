@@ -32,9 +32,10 @@ header-includes:
 ```{r, setup, include = FALSE}
 
 library(bookdown)
+library(Cairo)
 
 knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE, 
-                      dev = "png", dpi = 600, 
+                      dev = "CairoPNG", dpi = 600, 
                       tab.cap.style = 'Table Heading')
 
 set_flextable_defaults(font.family = 'Cambria', font.size = 10)
@@ -53,159 +54,311 @@ The complete list of study variables and stratification scheme is provided in __
 
 ### COVID-19 symptoms
 
-A total of self-reported `r length(globals$hact_symptoms)` symptoms were recorded in the survey study cohorts (__Supplementary Figure S\@ref(fig:fig-hact-freq)__ and __Supplementary Table S\@ref(tab:tab-hact-vars)__). The symptom duration was coded as follows: absent: 0 days, 1 - 3 days: 3 days, up to 1 week: 7 days, up to 2 weeks: 14 days, up to 4 weeks: 28 days, up to or greater than 3 months: 3 months. Acute symptoms were defined as complaints present during the first 14 days after clinical onset of COVID-19.
+A total of `r length(globals$hact_symptoms)` self-reported symptoms were recorded in the survey study cohorts 
+(__Supplementary Figure S\@ref(fig:fig-hact-freq)__ and __Supplementary Table S\@ref(tab:tab-hact-vars)__).
+The symptom duration was coded as follows: absent: 0 days, 1 - 3 days: 3 days, up to 1 week: 7 days, up to 2 weeks: 14 days, up to 4 weeks: 28 days, up to or greater than 3 months: 3 months. 
+Acute symptoms were defined as complaints present during the first 14 days after clinical onset of COVID-19.
 
-In the observatory CovILD cohort, a total of self-reported `r length(globals$covild_symptoms)` symptoms (reduced physical performance, olfactory dysfunction, dyspnea, sleep problems, cough, fever, night sweating, gastrointestinal symptoms) were recorded with a standardized questionnaire at each of 60-, 100-, 180- and 360-day post COVID-19 follow-up (__Supplementary Figure S\@ref(fig:fig-covild-freq)__ and __Supplementary Table S\@ref(tab:tab-covild-vars)__). Acute COVID-19 symptoms were assessed retrospectively at the 60-day follow-up [@Sonnweber2020; @Sonnweber2022].
+In the observatory CovILD cohort, a total of `r length(globals$covild_symptoms)` self-reported symptoms 
+(reduced physical performance, olfactory dysfunction, dyspnea, sleep problems, cough, fever, night sweating, gastrointestinal symptoms) were recorded with a standardized questionnaire at each of 60-, 100-, 180- and 360-day post COVID-19 follow-up (__Supplementary Figure S\@ref(fig:fig-covild-freq)__ and __Supplementary Table S\@ref(tab:tab-covild-vars)__). 
+Acute COVID-19 symptoms were assessed retrospectively at the 60-day follow-up [@Sonnweber2020; @Sonnweber2022].
 
 ### Rating of physical recovery, mental health and quality of life in the survey study
 
-Self-perceived complete recovery, rehabilitation need and new medication since COVID-19 at the time of study participation were surveyed as single yes/no items. Percentage of physical performance loss as compared with the time before COVID-19 was rated with a 0 - 100% scale [@Hufner2022; @Sahanic2021]. Quality of life impairment (QoL) and overall mental health impairment (OMH) were rated with a 4 item Likert scale each (possible answers: “excellent,” “good,” “fair,” “poor,” scored: 0, 1, 2, and 3) [@Hufner2022; @Sahanic2021]. Anxiety (ANX) and depression (DPR) were assessed with the Patient Health Questionnaire (PHQ-4) [@Hufner2022; @Sahanic2021; @Lowe2010]. Psychosocial stress was scored with a modified 7 item PHQ stress module as described before [@Hufner2022; @Sahanic2021; @Grafe2004].
+Self-perceived complete recovery, rehabilitation need and new medication since COVID-19 at the time of study participation were surveyed as single yes/no items. 
+Percentage of physical performance loss as compared with the time before COVID-19 was rated with a 0 - 100% scale [@Hufner2022; @Sahanic2021]. 
+Quality of life impairment (QoL) and overall mental health impairment (OMH) were rated with a 4 item Likert scale each (possible answers: “excellent,” “good,” “fair,” “poor,” scored: 0, 1, 2, and 3) [@Hufner2022; @Sahanic2021]. 
+Anxiety (ANX) and depression (DPR) were assessed with the Patient Health Questionnaire (PHQ-4) [@Hufner2022; @Sahanic2021; @Lowe2010]. 
+Mental stress was scored with a modified 7 item PHQ stress module as described before [@Hufner2022; @Sahanic2021; @Grafe2004].
 
-### Rating of olfactory dysfunction with sniffing stick test
+### Rating of olfactory dysfunction with Sniffin' Stick Test
 
-Objective olfactory dysfunction at the 100-day and 360-day follow-up in the CovILD study participants was investigated with the 16-item sniffing stick test as described [@Rass2021]. Clinically relevant olfactory dysfunction was defined as $\leq$ 12 correct answers [@Rass2021; @Hummel2007]. In the analysis, participants with the complete answers concerning self-reported olfactory dysfunction and complete test results were included.
+Objective olfactory dysfunction at the 100-day and 360-day follow-up in the CovILD study participants was investigated with the 16-item Sniffn' Stick Identification Test as described [@Rass2021; @Whitcroft2016; @Masala2022; @Damm2014]. 
+In brief, the nasal chemosensory performance was investigated using pen-like odor-dispensing devices for odor identification of 16 common odorants (multiple forced‐choice from four verbal items per test odorant).
+Clinically relevant olfactory dysfunction was defined as < 13 correct answers (points) [@Rass2021; @Hummel2007]. 
+In the analysis, participants with the complete answers concerning self-reported olfactory dysfunction and complete test results were included.
 
-## Statistical analysis
-### Data transformation, descriptive statistic
+## Data analysis
 
-Data transformation and statistical analysis was done with R version 4.2.0 with _tidyverse_ data science environment [@Wickham2019]. Analysis results were visualized with _ggplot2_ [@Wickham2016], _cowplot_ [@Wilke2019] as well as in-house developed _ExDA_ (https://github.com/PiotrTymoszuk/ExDA) and _figur_ (https://github.com/PiotrTymoszuk/figur) packages.
+### Software
 
-Descriptive statistics including median with interquartile ranges and frequency of complete answers for numeric and categorical variables were calculated with base R functions and _ExDA_ package.
+Analysis was done with R version 4.2.3 (The R Project for Statistical Computing).
 
-### Statistical hypothesis testing
+Import of raw study data was accomplished with the packages _foreign_ [@RCoreTeam] and _readxl_ [@Wickham2022]. 
+Tabular data was handled with the _tidyverse_ package bundle [@Wickham2019], and the _rlang_ [@Henry2022] and [_trafo_](https://github.com/PiotrTymoszuk/trafo) packages. 
+Search and transformation of text data was done with _stringi_ [@Gagolewski2021]. 
+For exploratory data analysis, descriptive statistic and statistical hypothesis testing, packages _rstatix_ [@Kassambara2021], _vcd_ [@Meyer2021], _rcompanion_ [@Mangiafico2022] and [_ExDA_](https://github.com/PiotrTymoszuk/ExDA) were used. 
+For modeling of symptom recovery, packages _lme_ [@Bates2015], _lmerTest_ [@Kuznetsova2017] and [_kinet_](https://github.com/PiotrTymoszuk/kinet) were employed. 
+Multi-dimensional scaling was performed with the base R's _stats_ package and [_clustTools_](https://github.com/PiotrTymoszuk/clustTools). 
+Apriori analysis was done with _arules_ [@Hahsler2005]. 
+Clustering analysis was performed with the packages _cluster_ [@Schubert2019], _philentropy_ [@Drost2018], _scrime_ [@Schwender2018], _factoextra_ [@Kassambara2020] and [_clustTools_](https://github.com/PiotrTymoszuk/clustTools). 
+Inter-rater analysis and receiver operating characteristic (ROC) were done with the packages _caret_ [@Kuhn2008] and _vcd_ [@Meyer2021]. 
+Parallelization of analysis tasks was accomplished with the package _furrr_ package [@Vaughan2022].
 
-Since multiple study variables were non-normally distributed as assessed by Shapiro-Wilk test and visual assessment of their distribution (quantile-quantile plots), statistical significance for differences in outcome numeric variables were assessed with Mann-Whitney U test with r effect size statistic (two groups) or Kruskal-Wallis test with $\eta^2$ effect size statistic. Differences in frequency distribution for categorical outcome variables were assessed by $\chi^2$ test with Cramer V effect size statistic. Inter-rater assessment of self-reported and sniffing test olfactory dysfunction was accomplished with Cohen's $\kappa$ statistic [@Fleiss1969]. $\kappa$ significance ($\kappa\neq0$) was estimated with Wald Z test. P values were adjusted for multiple testing with Benjamini-Hochberg method [@Benjamini1995] separately for each analysis task and cohort. 
-Packages _rstatix_ [@Kassambara2021], _vcd_ [@Meyer2021] and _Exda_ (https://github.com/PiotrTymoszuk/ExDA) were used for statistical hypothesis testing.
+Analysis results were visualized with _ggplot_ [@Wickham2016] (bar, scatter and bubble plots, heat maps of confusion matrices), [_ExDA_](https://github.com/PiotrTymoszuk/ExDA) (ellipse plots, radar, ribbon, stack and violin plots), [_kinet_](https://github.com/PiotrTymoszuk/kinet) (kinetic of symptom resolution), 
+_plotROC_ [@Sachs2017] (ROC plots), [_clustTools_](https://github.com/PiotrTymoszuk/clustTools) (multi-dimensional scaling projection/scatter plots, heat maps of clustering features, within-cluster sum of squares). 
+HTML elements within the plots were handled with tools provided by the package _ggtext_ [@Wilke2022].
 
-### Modeling of symptom recovery kinetic
+Figures were generated with _cowplot_ [@Wilke2019]. 
+Tables were rendered with the _flextable_ package [@Gohel2022]. 
+Supplementary Material and parts of the manuscript were written in the _rmarkdown_ environment [@Allaire2022] and were rendered as Word documents with the _knitr_ [@Xie2022] and _bookdown_ [@Xie2016] packages. 
+Management of figures and tables within the _rmarkdown_ documents was accomplished with the development package [_figur_](https://github.com/PiotrTymoszuk/figur).
 
-To model recovery kinetics for binary symptom variables (0: absent, 1: present), second-order mixed-effect logistic (categorical features) modeling was applied (packages: _lme4_, _lmerTest_ and development package _kinet_ [https://github.com/PiotrTymoszuk/kinet]) [@Bates2015; @Kuznetsova2017; @Box1978]. Each model followed the general formula:
+### Data import and formatting
 
-$$Response \sim time + time^2 + (1|individual)$$
+Data of the survey study [@Sahanic2021; @Hufner2022] were imported from SPSS files with the _foreign_ package (function `read.spss()`). 
+The CovILD study data set [@Sahanic2023] was imported from an Excel file with the function `read_xlsx()` (package _readxl_). 
+Formatting of the raw data sets was done with in-house developed scripts available from the [project's GitHub repository](https://github.com/PiotrTymoszuk/hyposmia_analysis_pipeline).
 
-where $(1|individual)$ indicates the random effect of the individual and $time$ and $time^2$ indicate the first- and second-order time effect terms. The first-order term estimate was interpreted as a measure of the recovery speed and the second-order term estimate was used to assess the plateau/rebound effect. Significance of the accuracy gain of the full second-order model compared with the nested null model was determined by likelihood ratio test (LRT) versus the nested first-order and null models, respectively. Likelihood ratio $\lambda$ statistic (full versus null model) was used as an effect size measure. 
-Individuals from the survey study or the CovILD cohort with the complete longitudinal symptom record were included in the kinetic modeling tasks. Results of the kinetic modeling were adjusted for multiple comparisons with Benjamini-Hochberg method [@Benjamini1995].
+### Estimation of minimal sample size for clustering analysis
+
+To assess the minimal sample size of the survey study required for reliable clustering analysis, random subsets of the pooled Austria and Italy cohort COVID-19 symptom data set with differing observation numbers (50, 100, 200, 300, 400, 500, 600, 700, 800, 900 observations, 20 random subsets per sample size) were generated and their clustering tendency was assessed with Hopkins statistic (H). 
+Possible H values span from 0 to 1, where H = 0 indicates an ideal uniform distribution and H = 1 suggests a highly clustered data. 
+Beginning from the sample size of n = 400, no improvement of the clustering tendency (plateau) could be observed. 
+This suggest n = 400 as minimal sample size required for reproducible clustering analysis results (__Supplementary Figure S\@ref(fig:fig-sample-size)__). 
+Given the size of the Austria and Italy cohorts 
+(n = `r nrow(part_clust$analysis_tbl$north)` and n = `r nrow(part_clust$analysis_tbl$south)`, respectively) and their H values being very close to the H plateau value in the random subset analysis 
+(Austria: H = `r signif(eda_size$tendency_cohorts$north$hopkins_stat, 2)`, 
+Italy: H = `r signif(eda_size$tendency_cohorts$south$hopkins_stat, 2)`), we inferred that the size of single study cohorts was sufficient for reliable and reproducible clustering analysis and hence abstained from pooling the survey study cohorts. 
+
+### Descriptive statistic and effect size
+
+If not indicated otherwise, numeric values are presented in the manuscript text and tables as medians with interquartile ranges (IQR) and ranges. 
+Qualitative variables are presented as percentages and counts of their categories within the complete observation set. 
+Descriptive statistic values were computed with the function `explore()` from the [_ExDA_](https://github.com/PiotrTymoszuk/ExDA) package. 
+
+Effects sizes were assessed following the scheme proposed by Cohen [@Cohen2013]. 
+Effect size for comparison of categorical variables was measured with Cramer's V statistic (weak: < 0.3, moderate: 0.3 - 0.5, large effect: $\geq$ 0.5). 
+Effect size for two-group comparisons of numeric variables was assessed with r statistic (weak: < 0.3, moderate: 0.3 - 0.5, large effect: $\geq$ 0.5). 
+Effect size for multi-group comparison of numeric variables was assessed with $\eta^2$ (weak: < 0.13, moderate: 0.13 - 0.26, large effect: $\geq$ 0.26). 
+Effect size for comparison of paired proportions (2 $\times$ 2 contingency table) was assessed with Cohen's g (weak: < 0.15, moderate: 0.15 - 0.25, large effect: $\geq$ 0.25). 
+Effect size for comparison of study participant-matched proportions (multi-dimensional contingency table) was assessed with Kendall's W (weak: < 0.3, moderate: 0.3 - 0.5, large effect: $\geq$ 0.5). 
+Effect size for inter-rate reliability was measures with Cohen's $\kappa$ statistic was interpreted as follows: 0.01 – 0.20 as none to slight, 0.21 – 0.40 as fair, 0.41 – 0.60 as moderate, 0.61 – 0.80 as substantial, and 0.81 – 1.00 as strong [@McHugh2012]. 
+Effect sizes were computed with the function `compare_variables()` from the development package [_ExDA_](https://github.com/PiotrTymoszuk/ExDA) employing tools introduced by the _rstatix_ and _vcd_ packages (Cramer's V, r, $\eta^2$, Cohen's $\kappa$, Cohen's g) or with the function `cohenG()` from the package _rcompanion_ [@Mangiafico2022].
+
+### Statistical hypothesis testing and inter-rater reliability
+
+Since multiple study variables were non-normally distributed as assessed by Shapiro-Wilk test and visual assessment of their distribution (quantile - quantile plots), statistical significance for differences in outcome numeric variables were assessed with Mann-Whitney U test with r effect size statistic (two groups, independent data), paired Wilcoxon test with r effect size statistic (two groups, paired data) or Kruskal-Wallis test with $\eta^2$ effect size statistic. 
+Differences in frequency distribution for categorical outcome variables were assessed by $\chi^2$ test with Cramer V effect size statistic. 
+Significance of differences of paired proportions (2 $\times$ 2 contingency table) was determined with McNemar test with Cohen's g effect size statistic. 
+Mann-Whitney, Kruskal-Wallis, $\chi^2$ tests were accomplished with the function `compare_variables()` (package [_ExDA_](https://github.com/PiotrTymoszuk/ExDA)) employing algorithms from the package _rstatix_ [@Kassambara2021]. 
+McNemar tests and Cohen's g were calculated with the functions `mcnemar_test()` (package _rstatix_) [@Kassambara2021] and `cohenG()` (package _rcompanion_) [@Mangiafico2022], respectively. 
+Significance of symptom resolution (longitudinal, participant-matched binary data) was determined by Cochran's Q test with Kendall's W effect size statistic (function `cochran_qtest()`, package _rstatix_) [@Serlin1982; @Kassambara2021]. 
+
+Inter-rater assessment of self-reported and Sniffin Test olfactory dysfunction was accomplished with Cohen's $\kappa$ statistic [@Fleiss1969; @McHugh2012]. 
+$\kappa$ significance ($\kappa\neq0$) was estimated with Wald Z test (function `correlate_variable()`, package [_ExDA_](https://github.com/PiotrTymoszuk/ExDA) employing the _vcd_ package) [@Meyer2021]. 
+Additionally, reliability of detection of objective olfactory dysfunction (Sniffin' Stick Test) was additionally assessed by ROC analysis. 
+Overall accuracy, sensitivity and specificity was computed with the functions `defaultSummary()` and `twoClassSummary()` from the package _caret_ [@Kuhn2008]. 
+
+P values were adjusted for multiple testing with Benjamini-Hochberg method [@Benjamini1995] separately for each analysis task and cohort. 
+Effects with p < 0.05 were considered significant.
 
 ### Symptom-symptom distances and multi-dimensional scaling
 
-To assess co-occurrence or exclusivity of symptoms, simple matching distances between manifestations during the first 14 days, at $\geq$ 28 days and at $\geq$ 3 months after clinical onset in the survey study cohorts were calculated (package _scrime_ and development package _clustTools_ [https://github.com/PiotrTymoszuk/clustTools]) [@Boriah2008; @Schwender2018]. Subsequently, the distance matrix was subjected to multi-dimensional scaling (MDS, k = 2 dimensions, package _stats_, function _cmdscale()_). Association of specific symptoms was assessed by visual analysis of MDS coordinate plots.
+To assess co-occurrence or exclusivity of symptoms, simple matching distances between manifestations during the first 14 days, at 28 days and at 3 months after clinical onset in the survey study cohorts were calculated (function `calculate_dist()`, package [_clustTools_](https://github.com/PiotrTymoszuk/clustTools) employing tools from packages _scrime_ and _philentropy_) [@Boriah2008; @Schwender2018; @Drost2018]. 
+Subsequently, the distance matrix was subjected to multi-dimensional scaling (MDS, k = 2 dimensions, package _stats_, function `cmdscale()`). 
+Association of specific symptoms was assessed by visual analysis of MDS coordinate plots.
 
 ### Apriori analysis of COVID-19 symptoms in the survey study
 
-Frequent combinations of symptoms during the first 14 days, at $\geq$ 28 days and at $\geq$ 3 months after clinical onset in the survey study cohorts were identified with the apriori algorithm (package _arules_) [@Agrawal1993; @Hahsler2005] with the minimal support cutoff of 0.15, 2 - 10 item transaction length, confidence > 0.6 and lift > 2. The support statistic were used to estimate the symptom combination frequency. The confidence value was treated as an estimate of conditional probability of the symptom co-occurrence. The lift statistic was interpreted as a measure of the symptom dependence (lift = 1, symptoms are independent).
+Frequent combinations of symptoms during the first 14 days, at 28 days and at 3 months after clinical onset in the survey study cohorts were identified with the apriori algorithm (function `apriori()`, package _arules_) [@Agrawal1993; @Hahsler2005] with the minimal support cutoff of 0.15, 2 - 10 item transaction length, confidence > 0.6 and lift > 2. 
+The support statistic were used to estimate the symptom combination frequency. 
+The confidence value was treated as an estimate of conditional probability of the symptom co-occurrence. 
+The lift statistic was interpreted as a measure of the symptom dependence (lift = 1, symptoms are independent). 
+Frequency of symptom combination in the survey study cohorts and percentage of co-occurrence of the symptoms within the given symptom combination were displayed in bobble plots.
 
 ### Clustering analysis
 
-COVID-19 recovery clusters of the training Autria (AT) survey cohort participants in respect to symptom-specific recovery times (__Figure 1A__) were defined with the PAM (partitioning around medoids) algorithm and Euclidean distance statistic (packages _cluster_, _philentropy_ and development package _clustTools_ [https://github.com/PiotrTymoszuk/clustTools]) [@Drost2018; @Schubert2019]. The set of participants with the complete clustering variable set was included in the analysis. The symptom recovery times were not subjected to any type of pre-processing. The choice of the clustering procedure was motivated by the analysis of the clustering variance (ratio of the total between-cluster to total sum of squares) and clustering structure stability in 10-fold cross-validation (metric: rate of correct cluster assignment, cluster assignment predicted by k = 5 nearest neighbors label propagation algorithm, package _clustTools_) [@Lange2004; @Leng2014] for several clustering algorithms as presented in __Supplementary Figure S\@ref(fig:fig-clust-devel)A__. The optimal number of clusters was determined by the bend of the total within-cluster sum of squares curve (__Supplementary Figure S\@ref(fig:fig-clust-devel)B__, package _factoextra_) [@Kassambara2020]. 
-Permutation importance of specific clustering variables was investigated by calculating difference in clustering variance (ratio of total between-cluster sum of squares to total sum of squares) between the initial clustering object and the clustering object with the given variable reshuffled at random (package _clustTools_). 
-Assignment of the Italy survey cohort participants to the recovery clusters was accomplished with k-nearest neighbors label propagation algorithm (k = 5) [@Leng2014]. The clustering efficacy in the training AT cohort and the test IT cohort measured by clustering variance statistic defined above was similar (AT: `r clustTools::var(part_clust$clust_north)$frac_var %>% signif(2)`, IT: `r clustTools::var(part_clust$clust_south)$frac_var %>% signif(2)`).
+COVID-19 recovery clusters of the training Austria survey cohort participants in respect to symptom-specific recovery times (__Figure 1A__) were defined with the PAM (partitioning around medoids) algorithm and Euclidean distance statistic [@Drost2018; @Schubert2019]. 
+The set of participants with the complete clustering variable set (COVID-19 symptom recovery times) was included in the analysis. 
+The symptom recovery times were not subjected to any type of pre-processing. 
+The clustering objects were generated with the function `kcluster(clust_fun = 'pam')` from the package [_clustTools_](https://github.com/PiotrTymoszuk/clustTools).
+
+The choice of the clustering procedure was motivated by the analysis of the fraction of explained clustering variance (ratio of the total between-cluster to total sum of squares) and clustering structure stability in 10-fold cross-validation (metric: rate of correct cluster assignment, cluster assignment predicted by inverse distance-weighted 7-nearest neighbors label propagation algorithm) [@Lange2004; @Leng2014] for several clustering algorithms as presented in __Supplementary Figure S\@ref(fig:fig-clust-devel)A__. 
+The fractions of explained clustering variance and cross-validated cluster assignment accuracy were calculated with the methods `var()` and `cv()` from the package [_clustTools_](https://github.com/PiotrTymoszuk/clustTools).
+
+The optimal number of clusters was determined by the bend of the total within-cluster sum of squares curve 
+(__Supplementary Figure S\@ref(fig:fig-clust-devel)B__, method `plot()`, package [_clustTools_](https://github.com/PiotrTymoszuk/clustTools), employing the genuine _factoextra_ algorithm) [@Kassambara2020]. 
+Permutation importance of specific clustering variables was investigated by calculating difference in clustering variance (ratio of total between-cluster sum of squares to total sum of squares) between the initial clustering object and the clustering object with the given variable reshuffled at random (function `impact()`, package [_clustTools_](https://github.com/PiotrTymoszuk/clustTools)). 
+The permutation importance statistics were computed for 20 random permutations of each clustering variable.
+
+Assignment of the Italy survey cohort participants to the recovery clusters was accomplished with the inverse distance-weighted 7-nearest neighbors label propagation classifier [@Leng2014]. 
+The clustering efficacy in the training Austria cohort and the test Italy cohort measured by clustering variance statistic defined above was similar 
+(Austria: `r clustTools::var(part_clust$clust_north)$frac_var %>% signif(2)`, 
+Italy: `r clustTools::var(part_clust$clust_south)$frac_var %>% signif(2)`), which indicate good reproducibility of the clustering structure developed in the training Austria cohort.
 
 ## Data and source code availability
 
-The raw data files will be made available upon request. The entire analysis pipeline was published at https://github.com/PiotrTymoszuk/hyposmia_analsis_pipeline.
+The raw data files will be made available upon request. The entire analysis pipeline was published at https://github.com/PiotrTymoszuk/hyposmia_analysis_pipeline.
 
 \newpage
 
 # Supplementary Tables {#sec:tables}
 
-```{r tab-hact-vars, tab.cap = 'Survey study variables.'}
+```{r tab-hact-vars, tab.cap = 'Survey study variables. The table is available as a supplementary Excel sheet.'}
 
-suppl_tbl$hact_vars %>% 
-  select(- Stratification) %>% 
-  flextable %>% 
-  width(1, width = 3.7, unit = 'cm') %>% 
-  width(2, width = 3.9, unit = 'cm') %>% 
-  width(3, width = 1.8, unit = 'cm')  %>% 
-  width(4, width = 8.7, unit = 'cm') %>% 
-  theme_vanilla
+suppl_tbl$hact_vars[1, 1] %>% 
+  mutate(`Variable name` = '') %>% 
+  set_names(' ') %>% 
+  flextable
 
 ```
 
 \newpage
 
-```{r tab-covild-vars, tab.cap = 'CovILD study variables.'}
+```{r tab-covild-vars, tab.cap = 'CovILD study variables. The table is available as a supplementary Excel sheet.'}
 
-suppl_tbl$covild_vars %>% 
-  flextable %>% 
-  width(1, width = 4.5, unit = 'cm') %>% 
+suppl_tbl$covild_vars[1, 1] %>% 
+  mutate(`Variable name` = '') %>% 
+  set_names(' ') %>% 
+  flextable
+
+```
+
+\newpage
+
+```{r tab-hact-kinetic, tab.cap = 'Results of statistical hypothesis testing for significant recovery of the most frequent COVID-19 symptoms in the Austria (AT) and Italy cohort (IT) of the survey study.'}
+
+flextable::flextable(suppl_tbl$hact_kinetic) %>% 
+  width(1, width = 2.5, unit = 'cm') %>% 
   width(2, width = 4.5, unit = 'cm') %>% 
-  width(3, width = 2, unit = 'cm')  %>% 
+  width(3:4, width = 3, unit = 'cm') %>% 
+  merge_v(1) %>% 
+  footnote(1, 2, 
+           value = as_paragraph('OD: self-reported olfactory dysfunction; Dim. appetite: diminished appetite.'), 
+           part = 'header', 
+           ref_symbols = 'a') %>% 
+  footnote(1, 3:4, 
+           value = as_paragraph("Cochran's Q test with Kendall's W effect size statistic. P values corrected for multiple testing with Benjamini-Hochberg method."), 
+           part = 'header', 
+           ref_symbols = 'b') %>% 
   theme_vanilla
 
 ```
 
 \newpage
 
-```{r tab-clust-base-at, tab.cap = 'Demographic and baseline clinical characteristic at the COVID-19 onset of the survey study participants assigned to the recovery clusters, Austria (AT) cohort.'}
+```{r tab-covild-kinetic, tab.cap = 'Results of statistical hypothesis testing for significant recovery of COVID-19 symptoms in COVID-19 severity strata of the CovILD study.'}
 
-suppl_tbl$baseline_clusters_north %>% 
-  flextable %>% 
-  width(1, width = 3.5, unit = 'cm') %>% 
-  width(2:4, width = 3.7, unit = 'cm') %>% 
-  width(5, width = 2.6, unit = 'cm') %>% 
-  width(6, width = 2.2, unit = 'cm') %>% 
-  footnote(1, 5:6, value = as_paragraph('Categorical variables: \u03C7\u00B2 test with Cramer V effect size statistic. Numeric variables: Kruskal-Wallis test with \u03B7\u00B2 effect size statistic. P values corrected form multiple testing with Benjamini-Hochberg method.'), ref_symbols = 'a', part = 'header') %>% 
-  footnote(3, 1, value = as_paragraph('BMI: body mass index, overweight > 25 kg/m\u00B2, obesity > 30 kg/m\u00B2,'), ref_symbols = 'b', part = 'body') %>% 
-  footnote(15, 1, value = as_paragraph('Frequent respiratory infections, > 2 per year.'), ref_symbols = 'c', part = 'body') %>% 
-  footnote(16, 1, value = as_paragraph('Frequent bacterial infections with antibiotic therapy, > 2 per year.'), ref_symbols = 'd', part = 'body') %>% 
+flextable::flextable(suppl_tbl$covild_kinetic) %>% 
+  width(1, width = 3, unit = 'cm') %>% 
+  width(2, width = 4.5, unit = 'cm') %>% 
+  width(3:4, width = 3, unit = 'cm') %>% 
+  merge_v(1) %>% 
+  footnote(1, 2, 
+           value = as_paragraph('OD: self-reported olfactory dysfunction.'), 
+           part = 'header', 
+           ref_symbols = 'a') %>% 
+  footnote(1, 3:4, 
+           value = as_paragraph("Cochran's Q test with Kendall's W effect size statistic. P values corrected for multiple testing with Benjamini-Hochberg method."), 
+           part = 'header', 
+           ref_symbols = 'b') %>% 
   theme_vanilla
 
 ```
 
 \newpage
 
-```{r tab-clust-base-it, tab.cap = 'Demographic and baseline clinical characteristic at the COVID-19 onset of the survey study participants assigned to the recovery clusters, Italy (IT) cohort.'}
+```{r tab-od-kinetic, tab.cap = "Results of the Sniffin' Stick Test in the CovILD study subset with the complete longitudinal follow-up data. Numeric variables are presented as medians with interquartile ranges (IQR) and ranges. Categorical variables are presented as percentages and counts within the complete observation set."}
 
-suppl_tbl$baseline_clusters_south %>% 
-  flextable %>% 
+flextable::flextable(suppl_tbl$od_kinetic) %>% 
+  width(1, width = 4, unit = 'cm') %>% 
+  width(2:3, width = 4.5, unit = 'cm') %>% 
+  width(4, width = 2.7, unit = 'cm') %>% 
+  width(5, width = 2.5, unit = 'cm') %>% 
+  footnote(1, 1, 
+           value = as_paragraph('OD: olfactory dysfunction.'), 
+           part = 'header', 
+           ref_symbols = 'a') %>% 
+  footnote(1, 3:4, 
+           value = as_paragraph("Categorical variables: McNemar test with Cohen's g effect size statistic. Numeric variables: paired Wilcoxon test with r effect size statistic. P values corrected for multiple testing with Benjamini-Hochberg method."), 
+           part = 'header', 
+           ref_symbols = 'b') %>% 
+  theme_vanilla
+
+```
+
+
+\newpage
+
+```{r tab-clust-base-at, tab.cap = 'Demographic and baseline clinical characteristic at the COVID-19 onset of the survey study participants assigned to the recovery clusters, Austria (AT) cohort. Numeric variables are presented as medians with interquartile ranges (IQR) and ranges. Categorical variables are presented as percentages and counts within the complete observation set.'}
+
+flextable::flextable(suppl_tbl$baseline_clusters_north) %>% 
   width(1, width = 3.5, unit = 'cm') %>% 
   width(2:4, width = 3.7, unit = 'cm') %>% 
   width(5, width = 2.6, unit = 'cm') %>% 
   width(6, width = 2.2, unit = 'cm') %>% 
-  footnote(1, 5:6, value = as_paragraph('Categorical variables: \u03C7\u00B2 test with Cramer V effect size statistic. Numeric variables: Kruskal-Wallis test with \u03B7\u00B2 effect size statistic. P values corrected form multiple testing with Benjamini-Hochberg method.'), ref_symbols = 'a', part = 'header') %>% 
-  footnote(3, 1, value = as_paragraph('BMI: body mass index, overweight > 25 kg/m\u00B2, obesity > 30 kg/m\u00B2,'), ref_symbols = 'b', part = 'body') %>% 
-  footnote(15, 1, value = as_paragraph('Frequent respiratory infections, > 2 per year.'), ref_symbols = 'c', part = 'body') %>% 
-  footnote(16, 1, value = as_paragraph('Frequent bacterial infections with antibiotic therapy, > 2 per year.'), ref_symbols = 'd', part = 'body') %>% 
+  footnote(1, 1, 
+           value = as_paragraph('BMI: body mass index, normal: BMI < 25 kg/m\u00B2, overweight: BMI 25 - 30 kg/m\u00B2, obesity: BMI > 30 kg/m\u00B2; Pre-CoV depression/anxiety: depression or anxiety before COVID-19; Freq. resp. infections: frequent (> 2 per year) respiratory infections; Freq. bact. Infections: frequent (> two per year) bacterial infections with antibiotic therapy; Pre-CoV sleep disorders: sleep disorders before COVID-19.'),
+           part = 'header', 
+           ref_symbols = 'a') %>% 
+  footnote(1, 5:6, 
+           value = as_paragraph('Categorical variables: \u03C7\u00B2 test with Cramer V effect size statistic. Numeric variables: Kruskal-Wallis test with \u03B7\u00B2 effect size statistic. P values corrected form multiple testing with Benjamini-Hochberg method.'),
+           part = 'header', 
+           ref_symbols = 'b') %>% 
   theme_vanilla
 
 ```
 
 \newpage
 
-```{r tab-clust-reco-at, tab.cap = 'COVID-19 course and recovery in the survey study participants assigned to the recovery clusters, Austria (AT) cohort.'}
+```{r tab-clust-base-it, tab.cap = 'Demographic and baseline clinical characteristic at the COVID-19 onset of the survey study participants assigned to the recovery clusters, Italy (IT) cohort. Numeric variables are presented as medians with interquartile ranges (IQR) and ranges. Categorical variables are presented as percentages and counts within the complete observation set.'}
 
-suppl_tbl$cov_clusters_north %>% 
-  flextable %>% 
-  width(1, width = 3.5, unit = 'cm') %>% 
+flextable::flextable(suppl_tbl$baseline_clusters_south) %>% 
+   width(1, width = 3.5, unit = 'cm') %>% 
   width(2:4, width = 3.7, unit = 'cm') %>% 
   width(5, width = 2.6, unit = 'cm') %>% 
   width(6, width = 2.2, unit = 'cm') %>% 
-  footnote(1, 5:6, value = as_paragraph('Categorical variables: \u03C7\u00B2 test with Cramer V effect size statistic. Numeric variables: Kruskal-Wallis test with \u03B7\u00B2 effect size statistic. P values corrected form multiple testing with Benjamini-Hochberg method.'), ref_symbols = 'a', part = 'header') %>% 
-  footnote(4, 1, value = as_paragraph('Self-reported incomplete recovery.'), ref_symbols = 'd', part = 'body') %>% 
-  footnote(8, 1, value = as_paragraph('ANX: anxiety.'), ref_symbols = 'e', part = 'body') %>% 
-  footnote(9, 1, value = as_paragraph('DPR: depression.'), ref_symbols = 'f', part = 'body') %>% 
-  footnote(11, 1, value = as_paragraph('OMH score: overall mental health impairment score'), ref_symbols = 'g', part = 'body') %>% 
-  footnote(12, 1, value = as_paragraph('QoL score: quality of life impairment score'), ref_symbols = 'h', part = 'body') %>%
+  footnote(1, 1, 
+           value = as_paragraph('BMI: body mass index, normal: BMI < 25 kg/m\u00B2, overweight: BMI 25 - 30 kg/m\u00B2, obesity: BMI > 30 kg/m\u00B2; Pre-CoV depression/anxiety: depression or anxiety before COVID-19; Freq. resp. infections: frequent (> 2 per year) respiratory infections; ;Freq. bact. Infections: frequent (> two per year) bacterial infections with antibiotic therapy; Pre-CoV sleep disorders: sleep disorders before COVID-19.'),
+           part = 'header', 
+           ref_symbols = 'a') %>% 
+  footnote(1, 5:6, 
+           value = as_paragraph('Categorical variables: \u03C7\u00B2 test with Cramer V effect size statistic. Numeric variables: Kruskal-Wallis test with \u03B7\u00B2 effect size statistic. P values corrected form multiple testing with Benjamini-Hochberg method.'),
+           part = 'header', 
+           ref_symbols = 'b') %>% 
   theme_vanilla
 
 ```
 
 \newpage
 
-```{r tab-clust-reco-it, tab.cap = 'COVID-19 course and recovery in the survey study participants assigned to the recovery clusters, Italy (IT) cohort.'}
+```{r tab-clust-reco-at, tab.cap = 'COVID-19 course and recovery in the survey study participants assigned to the recovery clusters, Austria (AT) cohort. Numeric variables are presented as medians with interquartile ranges (IQR) and ranges. Categorical variables are presented as percentages and counts within the complete observation set.'}
 
-suppl_tbl$cov_clusters_south %>% 
-  flextable %>% 
+flextable::flextable(suppl_tbl$cov_clusters_north) %>% 
   width(1, width = 3.5, unit = 'cm') %>% 
   width(2:4, width = 3.7, unit = 'cm') %>% 
   width(5, width = 2.6, unit = 'cm') %>% 
   width(6, width = 2.2, unit = 'cm') %>% 
- footnote(1, 5:6, value = as_paragraph('Categorical variables: \u03C7\u00B2 test with Cramer V effect size statistic. Numeric variables: Kruskal-Wallis test with \u03B7\u00B2 effect size statistic. P values corrected form multiple testing with Benjamini-Hochberg method.'), ref_symbols = 'a', part = 'header') %>% 
-  footnote(4, 1, value = as_paragraph('Self-reported incomplete recovery.'), ref_symbols = 'd', part = 'body') %>% 
-  footnote(8, 1, value = as_paragraph('ANX: anxiety.'), ref_symbols = 'e', part = 'body') %>% 
-  footnote(9, 1, value = as_paragraph('DPR: depression.'), ref_symbols = 'f', part = 'body') %>% 
-  footnote(11, 1, value = as_paragraph('OMH score: overall mental health impairment score'), ref_symbols = 'g', part = 'body') %>% 
-  footnote(12, 1, value = as_paragraph('QoL score: quality of life impairment score'), ref_symbols = 'h', part = 'body') %>%
+  footnote(1, 1, 
+           value = as_paragraph('Incomplete recovery: self-reported incomplete recovery from COVID-19; Physical performance loss: self-rated physical performance loss after COVID-19, before COVID-19: 100%; ANX score: anxiety score, Patient Health Questionnaire, PHQ-4; DPR: depression score, Patient Health Questionnaire, PHQ-4; Stress score: mental stress score; 7 item PHQ stress module; OMH impairment score: score of overall mental health impairment; QoL impairment score: score of impaired quality of life.'),
+           part = 'header', 
+           ref_symbols = 'a') %>% 
+  footnote(1, 5:6, 
+           value = as_paragraph('Categorical variables: \u03C7\u00B2 test with Cramer V effect size statistic. Numeric variables: Kruskal-Wallis test with \u03B7\u00B2 effect size statistic. P values corrected form multiple testing with Benjamini-Hochberg method.'), 
+           part = 'header', 
+           ref_symbols = 'a') %>% 
+  theme_vanilla
+
+```
+
+\newpage
+
+```{r tab-clust-reco-it, tab.cap = 'COVID-19 course and recovery in the survey study participants assigned to the recovery clusters, Italy (IT) cohort. Numeric variables are presented as medians with interquartile ranges (IQR) and ranges. Categorical variables are presented as percentages and counts within the complete observation set.'}
+
+flextable::flextable(suppl_tbl$cov_clusters_south) %>% 
+   width(1, width = 3.5, unit = 'cm') %>% 
+  width(2:4, width = 3.7, unit = 'cm') %>% 
+  width(5, width = 2.6, unit = 'cm') %>% 
+  width(6, width = 2.2, unit = 'cm') %>% 
+  footnote(1, 1, 
+           value = as_paragraph('Incomplete recovery: self-reported incomplete recovery from COVID-19; Physical performance loss: self-rated physical performance loss after COVID-19, before COVID-19: 100%; ANX score: anxiety score, Patient Health Questionnaire, PHQ-4; DPR: depression score, Patient Health Questionnaire, PHQ-4; Stress score: mental stress score; 7 item PHQ stress module; OMH impairment score: score of overall mental health impairment; QoL impairment score: score of impaired quality of life.'),
+           part = 'header', 
+           ref_symbols = 'a') %>% 
+  footnote(1, 5:6, 
+           value = as_paragraph('Categorical variables: \u03C7\u00B2 test with Cramer V effect size statistic. Numeric variables: Kruskal-Wallis test with \u03B7\u00B2 effect size statistic. P values corrected form multiple testing with Benjamini-Hochberg method.'), 
+           part = 'header', 
+           ref_symbols = 'a') %>% 
   theme_vanilla
 
 ```
@@ -214,154 +367,239 @@ suppl_tbl$cov_clusters_south %>%
 
 # Supplementary Figures {#sec:figures}
 
-```{r fig-consort, fig.width = mm_inch(suppl$consort$w), fig.height = mm_inch(suppl$consort$h), fig.cap = 'Flow diagram of the analysis inclusion process for the longitudinal CovILD cohort and the Health after COVID-19 survey study.'}
+```{r fig-consort, fig.width = figur::convert(suppl$consort, to = 'in')$w, fig.height = figur::convert(suppl$consort, to = 'in')$h, fig.cap = 'Flow diagram of the analysis inclusion process for the observational CovILD cohort and the Health after COVID-19 survey study.'}
 
 suppl$consort$plot
 
 ```
 
-__Supplementary Figure S\@ref(fig:fig-consort). Flow diagram of the analysis inclusion process for the longitudinal CovILD cohort and the Health after COVID-19 survey study.__
+__Supplementary Figure S\@ref(fig:fig-consort). Flow diagram of the analysis inclusion process for the observational CovILD cohort and the Health after COVID-19 survey study.__ 
 
 \newpage
 
-```{r fig-hact-freq, fig.width = mm_inch(suppl$hact_freq$w), fig.height = mm_inch(suppl$hact_freq$h), fig.cap = 'Frequency of COVID-19 symptoms in the survey study.'}
+```{r fig-sample-size, fig.width = figur::convert(suppl$sample_size, to = 'in')$w, fig.height = figur::convert(suppl$sample_size, to = 'in')$h, fig.cap = 'Estimation of sample size for clustering analysis with the survey study datasets.'}
+
+suppl$sample_size$plot
+
+```
+
+__Supplementary Figure S\@ref(fig:fig-sample-size). Estimation of sample size for clustering analysis with the survey study datasets.__ 
+
+_To assess the minimal sample size of the survey study for clustering, random subsets of the pooled Austria (AT) and Italy (IT) COVID-19 symptom data set with differing observation numbers (50, 100, 200, 300, 400, 500, 600, 700, 800, 900 observations, 20 random subsets [draws] per sample size) were generated and their clustering tendency was assessed with Hopkins statistic (H). Median H values per sample size with interquartile ranges (IQR) are visualized as boxes. Whiskers span over the 150% IQR. Single H values are depicted as points. Blue line with gray ribbon represents the LOESS trend with 95% confidence interval. Dashed lines represent sample sizes of the AT (blue) and IT cohort (blue). Sample sizes and H values for the AT and IT collectives are displayed in the plot. Note: beginning from the sample size of n = 400, no improvement of the clustering tendency could be observed. This suggest n = 400 as minimal sample size required for reproducible clustering analysis results._
+
+\newpage
+
+```{r fig-hact-differences, fig.width = figur::convert(suppl$hact_differences, to = 'in')$w, fig.height = figur::convert(suppl$hact_differences, to = 'in')$h, fig.cap = 'The largest significant differences in demographic, clinical and recovery variables between the Austria and Italy cohorts of the survey study.'}
+
+suppl$hact_differences$plot
+
+```
+
+__Supplementary Figure S\@ref(fig:fig-hact-differences). The largest significant differences in demographic, clinical and recovery variables between the Austria and Italy cohorts of the survey study.__ 
+
+_Differences in numeric variables between the Austria (AT) and Italy (IT) survey study cohorts were assessed by Mann-Whitney test with r effect size statistic. Differences in categorical variables were investigated by $\chi^2$ test with Cramer's V effect size statistic. P values were corrected for multiple testing with Benjamini-Hochberg method. Significant numeric variables are presented in violin plots with medians and interquartile ranges depicted as diamonds and whiskers and single observations visualized as points. Percentages of categories of qualitative variables within the AT and IT cohorts are displayed as stack plots. Effect sizes and p values are presented in the plot captions. Numbers of complete observations are indicated in the plot axes._
+
+_BMI before COVID-19: body mass index before COVID-19, normal: BMI < 25 kg/m\u00B2, overweight: BMI 25 - 30 kg/m\u00B2, obesity: BMI > 30 kg/\u00B2; Freq. bact. Infections: frequent (> 2 per year) bacterial infection requiring an antibiotic treatment; DPR score: depression score, Patient Health Questionnaire, PHQ-4; ANX score: anxiety score, Patient Health Questionnaire, PHQ-4; QoL impairment score: score of impairment of quality of life._
+
+\newpage
+
+```{r fig-hact-freq, fig.width = figur::convert(suppl$hact_freq, to = 'in')$w, fig.height = figur::convert(suppl$hact_freq, to = 'in')$h, fig.cap = 'Frequency of COVID-19 symptoms in the survey study.'}
 
 suppl$hact_freq$plot
 
 ```
 
-__Supplementary Figure S\@ref(fig:fig-hact-freq). Frequency of COVID-19 symptoms in the survey study.__
+__Supplementary Figure S\@ref(fig:fig-hact-freq). Frequency of COVID-19 symptoms in the survey study.__ 
 
-_Frequency of symptoms in first 14 days, $\geq$ 28 days and $\geq$ 3 months after clinical onset of COVID-19 in the Austria (AT, A) and Italy (IT, B) survey study cohorts expressed as percentages of the cohort. Point size and color represents the percentage. Numbers of complete observations are indicated under the plot._
+_Frequency of symptoms in first 14 days, at 28 days and at three months after clinical onset of COVID-19 in the Austria (AT) and Italy (IT) survey study cohorts expressed as percentages of the cohort. Point size and color represents the percentage. Numbers of complete observations are indicated in the plot captions._
 
-_OD: self-reported olfactory dysfunction, Dim. appetite: diminished appetite, Imp. concentration: impaired concentration, Imp. walk: impaired walk, Imp. FMS: impaired fine motor skills._
+_OD: self-reported olfactory dysfunction; Dim. appetite: diminished appetite; Imp. concentration: impaired concentration; Imp. walk: impaired walk; Imp. FMS: impaired fine motor skills._
 
 \newpage
 
-```{r fig-hact-recovery, fig.width = mm_inch(suppl$hact_recovery$w), fig.height = mm_inch(suppl$hact_recovery$h), fig.cap = 'Kinetic of recovery from leading acute COVID-19 symptoms in the survey study.'}
+```{r fig-hact-signif-sympt, fig.width = figur::convert(suppl$hact_signif_sympt, to = 'in')$w, fig.height = figur::convert(suppl$hact_signif_sympt, to = 'in')$h, fig.cap = 'Significant differences in frequency of COVID-19 symptoms in the survey study.'}
+
+suppl$hact_signif_sympt$plot
+
+```
+
+__Supplementary Figure S\@ref(fig:fig-hact-signif-sympt). Significant differences in frequency of COVID-19 symptoms in the survey study.__ 
+
+_Differences in frequency of COVID-19-related symptoms between the Austria (AT) and Italy (IT) cohorts of the survey study in the first 14 days, at 28 days and at 3 months after clinical onset were assessed by $\chi^2$ test with Cramer's V effect size statistic. P values were adjusted for multiple testing with Benjamini-Hochberg method. Significant effects for the 14 and 28 day time points are plotted. No significant differences in symptom frequency at the 3-month time point could be observed. Symptom percentages within the cohort are displayed in bar plots. Effect sizes and p values are displayed in the Y axes. Numbers of complete observations are shown in the plot captions._
+
+\newpage
+
+```{r fig-hact-recovery, fig.width = figur::convert(suppl$hact_recovery, to = 'in')$w, fig.height = figur::convert(suppl$hact_recovery, to = 'in')$h, fig.cap = 'Kinetic of recovery from leading acute COVID-19 symptoms in the survey study.'}
 
 suppl$hact_recovery$plot
 
 ```
 
-__Supplementary Figure S\@ref(fig:fig-hact-recovery). Kinetic of recovery from leading acute COVID-19 symptoms in the survey study.__
+__Supplementary Figure S\@ref(fig:fig-hact-recovery). Kinetic of recovery from leading acute COVID-19 symptoms in the survey study.__ 
 
-_Percentages of individuals with fever (A), diminished appetite (B), joint pain (C), muscle pain (D), fatigue (E) and tachypnea (F) in the AT (Austria) and IT (Italy) survey study cohorts at particular time points after clinical onset. Numbers of complete observations are indicated under the plots._
+_Percentages of individuals with fever (a), diminished appetite (b), joint pain (c), muscle pain (d), fatigue (e) and tachypnea (f) in the AT (Austria) and IT (Italy) survey study cohorts at particular time points after clinical onset. Numbers of complete observations are indicated under the plots._
 
 \newpage
 
-```{r fig-covild-freq, fig.width = mm_inch(suppl$covild_freq$w), fig.height = mm_inch(suppl$covild_freq$h), fig.cap = 'Symptom frequency in ambulatory, moderate and severe COVID-19 subsets of the CovILD study.'}
+```{r fig-covild-freq, fig.width = figur::convert(suppl$covild_freq, to = 'in')$w, fig.height = figur::convert(suppl$covild_freq, to = 'in')$h, fig.cap = 'Symptom frequency in ambulatory, moderate and severe COVID-19 subsets of the CovILD study.'}
 
 suppl$covild_freq$plot
 
 ```
 
-__Supplementary Figure S\@ref(fig:fig-covild-freq). Symptom frequency in ambulatory, moderate and severe COVID-19 subsets of the CovILD study.__
+__Supplementary Figure S\@ref(fig:fig-covild-freq). Symptom frequency in ambulatory, moderate and severe COVID-19 subsets of the CovILD study.__ 
 
-_Frequency of symptoms during acute COVID-19 and at the 60-, 100-, 180- and 360-day follow-ups in ambulatory (A), moderate (B) and severe COVID-19 (C) participants expressed as percentages of individuals with the complete longitudinal data set. Point size and color represents the percentage. Numbers of complete observations are indicated under the plots._
+_Frequency of symptoms during acute COVID-19 and at the 60-, 100-, 180- and 360-day follow-ups in ambulatory, moderate and severe COVID-19 participants expressed as percentages of individuals with the complete longitudinal data set. Point size and color represents the percentage. Numbers of complete observations are indicated under the plots._
 
 \newpage
 
-```{r fig-covild-recovery, fig.width = mm_inch(suppl$covild_recovery$w), fig.height = mm_inch(suppl$covild_recovery$h), fig.cap = 'Kinetic of recovery from olfactory dysfunction, reduced performance and dyspnea in ambulatory, moderate and severe COVID-19 subsets of the CovILD study.'}
+```{r fig-covild-recovery, fig.width = figur::convert(suppl$covild_recovery, to = 'in')$w, fig.height = figur::convert(suppl$covild_recovery, to = 'in')$h, fig.cap = 'Kinetic of recovery from olfactory dysfunction, reduced performance and dyspnea in ambulatory, moderate and severe COVID-19 subsets of the CovILD study.'}
 
 suppl$covild_recovery$plot
 
 ```
 
-__Supplementary Figure S\@ref(fig:fig-covild-recovery). Kinetic of recovery from olfactory dysfunction, reduced performance and dyspnea in ambulatory, moderate and severe COVID-19 subsets of the CovILD study.__
+__Supplementary Figure S\@ref(fig:fig-covild-recovery). Kinetic of recovery from olfactory dysfunction, reduced performance and dyspnea in ambulatory, moderate and severe COVID-19 subsets of the CovILD study.__ 
 
-_Percentages of individuals with the complete longitudinal data set suffering from olfactory dysfunction (OD) (A), reduced physical performance (B) and dyspnea (C) in the ambulatory, moderate and severe COVID-19 subsets during acute COVID-19 and at the 60-, 100-, 180- and 360-day follow-ups. Numbers of complete observations are indicated under the plots._
+_Percentages of individuals with the complete longitudinal data set suffering from olfactory dysfunction (OD) (a), reduced physical performance (b) and dyspnea (c) in the ambulatory, moderate and severe COVID-19 subsets during acute COVID-19 and at the 60-, 100-, 180- and 360-day follow-ups. Numbers of complete observations are indicated under the plots._
 
 \newpage
 
-```{r fig-hyposmia-rater100, fig.width = mm_inch(suppl$hyposmia_rater100$w), fig.height = mm_inch(suppl$hyposmia_rater100$h), fig.cap = 'Rates of self-reported olfactory dysfunction and olfactory dysfunction in the sniffing stick test at 3-month post COVID-19 follow-up in the ambulatory, moderate and severe COVID-19 subsets of the CovILD study.'}
+```{r fig-hyposmia-rater100, fig.width = figur::convert(suppl$hyposmia_rater100, to = 'in')$w, fig.height = figur::convert(suppl$hyposmia_rater100, to = 'in')$h, fig.cap = 'Rates of self-reported olfactory dysfunction and olfactory dysfunction in the sniffing stick test at 3-month post COVID-19 follow-up in the ambulatory, moderate and severe COVID-19 subsets of the CovILD study.'}
 
 suppl$hyposmia_rater100$plot
 
 ```
 
-__Supplementary Figure S\@ref(fig:fig-hyposmia-rater100). Rates of self-reported olfactory dysfunction and olfactory dysfunction in the sniffing stick test at 3-month post COVID-19 follow-up in the ambulatory, moderate and severe COVID-19 subsets of the CovILD study.__
+__Supplementary Figure S\@ref(fig:fig-hyposmia-rater100). Rates of self-reported olfactory dysfunction and olfactory dysfunction in the Sniffin' Stick Test at 3-month post COVID-19 follow-up in the ambulatory, moderate and severe COVID-19 subsets of the CovILD study.__
 
-_Association of self-reported and sniffing stick test rates of olfactory dysfunction (OD) was investigated with Cohen's $\kappa$ statistic. Statistical significance was assessed with Wald's Z test corrected for multiple testing with Benjamini-Hochberg method. Percentages of individuals with self-reported and test OD within the entire cohort (A), the ambulatory (B), moderate (C) and severe (D) COVID-19 subsets are presented in bubble plots. Point size and color represents the percentage. $\kappa$ values with 95$\%$ confidence intervals, p values and numbers of complete observations are indicated in the plot captions._
+_Objective olfactory dysfunction (OD) was diagnosed in CovILD study participants with < 13 correctly identified odorants in the 16-item Sniffin' Sticks Identification Test. Frequencies of objective and self-reported OD were compared at the two-month follow-up after COVID-19 in the entire cohort and the ambulatory, hospitalized moderate COVID-19 and hospitalized severe COVID-19 patients._
+
+_(a) Rates of objective (test) and self-reported OD presented in heat maps of confusion matrices. The overall concordance between the objective and subjective OD was assessed with Cohen's $\kappa$ inter-rater reliability statistic. Significance of $\kappa$ was determined by Wald's Z test corrected for multiple testing with Benjamini-Hochberg method. $\kappa$ values with 95% confidence intervals, p values and numbers of complete observations are displayed in the plot captions._
+
+_(b) Reliability of detection of objective OD by self-reported OD was assessed by receiver-operating characteristic (ROC). Sensitivity and specificity was visualized as ROC curves. numbers of complete observations, percentages of objective (test) and self-reported OD are displayed in the plot captions. Overall accuracy, sensitivity and specificity were are shown in the plots._
 
 \newpage
 
-```{r fig-hyposmia-rater360, fig.width = mm_inch(suppl$hyposmia_rater360$w), fig.height = mm_inch(suppl$hyposmia_rater360$h), fig.cap = 'Rates of self-reported olfactory dysfunction and olfactory dysfunction in the sniffing stick test at 1-year post COVID-19 follow-up in the ambulatory, moderate and severe COVID-19 subsets of the CovILD study.'}
+```{r fig-hyposmia-rater360, fig.width = figur::convert(suppl$hyposmia_rater360, to = 'in')$w, fig.height = figur::convert(suppl$hyposmia_rater360, to = 'in')$h, fig.cap = "Rates of self-reported olfactory dysfunction and olfactory dysfunction in the Sniffin' Stick Test at 1-year post COVID-19 follow-up in the ambulatory, moderate and severe COVID-19 subsets of the CovILD study."}
 
 suppl$hyposmia_rater360$plot
 
 ```
 
-__Supplementary Figure S\@ref(fig:fig-hyposmia-rater360). Rates of self-reported olfactory dysfunction and olfactory dysfunction in the sniffing stick test at 1-year post COVID-19 follow-up in the ambulatory, moderate and severe COVID-19 subsets of the CovILD study.__
+__Supplementary Figure S\@ref(fig:fig-hyposmia-rater360). Rates of self-reported olfactory dysfunction and olfactory dysfunction in the Sniffin' Stick Test at 1-year post COVID-19 follow-up in the ambulatory, moderate and severe COVID-19 subsets of the CovILD study.__ 
 
-_Association of self-reported and sniffing stick test rates of olfactory dysfunction (OD) was investigated with Cohen's $\kappa$ statistic. Statistical significance was assessed with Wald's Z test corrected for multiple testing with Benjamini-Hochberg method. Percentages of individuals with self-reported and test OD within the entire cohort (A), the ambulatory (B), moderate (C) and severe (D) COVID-19 subsets are presented in bubble plots. Point size and color represents the percentage. $\kappa$ values with 95$\%$ confidence intervals, p values and numbers of complete observations are indicated in the plot captions._
+_Objective olfactory dysfunction (OD) was diagnosed in CovILD study participants with < 13 correctly identified odorants in the 16-item Sniffin' Sticks Identification Test. Frequencies of objective and self-reported OD were compared at the one-year follow-up after COVID-19 in the entire cohort and the ambulatory, hospitalized moderate COVID-19 and hospitalized severe COVID-19 patients._
+
+_(a) Rates of objective (test) and self-reported OD presented in heat maps of confusion matrices. The overall concordance between the objective and subjective OD was assessed with Cohen's $\kappa$ inter-rater reliability statistic. Significance of $\kappa$ was determined by Wald's Z test corrected for multiple testing with Benjamini-Hochberg method. $\kappa$ values with 95% confidence intervals, p values and numbers of complete observations are displayed in the plot captions._
+
+_(b) Reliability of detection of objective OD by self-reported OD was assessed by receiver-operating characteristic (ROC). Sensitivity and specificity was visualized as ROC curves. numbers of complete observations, percentages of objective (test) and self-reported OD are displayed in the plot captions. Overall accuracy, sensitivity and specificity were are shown in the plots._
 
 \newpage
 
-```{r fig-mds-acute, fig.width = mm_inch(suppl$mds_acute$w), fig.height = mm_inch(suppl$mds_acute$h), fig.cap = 'Multi-dimensional scaling analysis of acute COVID-19 symptoms in the survey study.'}
+```{r fig-od-kinetic, fig.width = figur::convert(suppl$od_kinetic, to = 'in')$w, fig.height = figur::convert(suppl$od_kinetic, to = 'in')$h, fig.cap = 'Individuals trajectories of objective olfactory dysfunction in the CovILD study subset with the complete longitudinal follow-up data.'}
+
+suppl$od_kinetic$plot
+
+```
+
+__Supplementary Figure S\@ref(fig:fig-od-kinetic). Individuals trajectories of objective olfactory dysfunction in the CovILD study subset with the complete longitudinal follow-up data.__ 
+
+_Objective olfactory dysfunction (OD) assessed in CovILD study participants with the Sniffin' Stick Identification test at the three-month and one-year follow-up after COVID-19. Objective olfactory dysfunction (OD) was diagnosed for < 13 correctly identified odorants in the 16-item Sniffin' Sticks Identification Test. A subset of the CovILD study participant with the complete Sniffin' Stick Test data for both follow-ups was analyzed. _
+
+_(a) Comparison of numeric Sniffin' Stick Test results was done with paired Wilcoxon test with r effect size statistic. Results are presented as a before - after plot (left) and box plot (right). Medians with interquartile ranges (IQR) are visualized as boxes, whiskers span over 150% IQR. Single observations are depicted as points. Observations obtained for the same participant are connected with a line. Effect sizes, p values are displayed in the plot caption. Numbers of complete observations are indicated i the X axis._ 
+
+_(b) Comparison of frequencies of objective OD expressed as paired proportions was done with McNemar test with Cohen's q effect size statistic. Percentages of participants with objective OD at the three-month and one-year follow-up are displayed in an alluvial plot. The odds ratio of objective OD (one-year vs three months), effect size, p value and the number of participants are displayed in the plot caption._
+
+\newpage
+
+```{r fig-mds-acute, fig.width = figur::convert(suppl$mds_acute, to = 'in')$w, fig.height = figur::convert(suppl$mds_acute, to = 'in')$h, fig.cap = 'Multi-dimensional scaling analysis of acute COVID-19 symptoms in the survey study.'}
 
 suppl$mds_acute$plot
 
 ```
 
-__Supplementary Figure S\@ref(fig:fig-mds-acute). Multi-dimensional scaling analysis of acute COVID-19 symptoms in the survey study.__
-_Symptom data for acute COVID-19 (first 14 days after clinical onset) in the Austria (AT) and Italy (IT) survey study cohorts were subjected to two-dimensional multi-dimensional scaling (MDS) with simple matching distance (SMD) between the symptoms. MDS coordinates are presented in point plots. Selected data points are labeled with the symptom names. Percentages of the data set variance associated with the MDS dimensions are indicated in the plot axes. Numbers of complete observations are indicated under the plots. OD: self-reported olfactory dysfunction._
+__Supplementary Figure S\@ref(fig:fig-mds-acute). Multi-dimensional scaling analysis of acute COVID-19 symptoms in the survey study.__ 
+
+_Symptom data for acute COVID-19 (first 14 days after clinical onset) in the Austria (AT) and Italy (IT) survey study cohorts were subjected to two-dimensional multi-dimensional scaling (MDS) with simple matching distance (SMD) between the symptoms. MDS coordinates are presented in point plots. Selected data points are labeled with the symptom names. Percentages of the data set variance associated with the MDS dimensions are indicated in the plot axes. Numbers of complete observations are indicated in the plot captions._
+
+_Dim. appetite: diminished appetite; OD: self-reported olfactory dysfunction._
 
 \newpage
 
-```{r fig-clust-devel, fig.width = mm_inch(suppl$clust_devel$w), fig.height = mm_inch(suppl$clust_devel$h), fig.cap = 'Definition of the COVID-19 recovery clusters and clustering feature importance in the survey study.'}
+```{r fig-apriori, fig.width = figur::convert(suppl$apriori, to = 'in')$w, fig.height = figur::convert(suppl$apriori, to = 'in')$h, fig.cap = 'Co-occurrence of self-reported olfactory dysfunction and other symptoms in post-acute COVID-19 sequelae.'}
+
+suppl$apriori$plot
+
+```
+
+__Supplementary Figure S\@ref(fig:fig-apriori). Co-occurrence of self-reported olfactory dysfunction and other symptoms in post-acute COVID-19 sequelae.__ 
+
+_Frequent combinations (present in >15% of cohort participants) of self-reported olfactory dysfunction (OD) and other symptoms at 28 days (a) and 3 months (b) after clinical onset in the Austria (AT) and Italy (IT) survey study cohorts were identified with the apriori algorithm. Symptom combination frequency and co-occurrence (support statistic) are presented in bubble plots. Point size and color corresponds to co-occurrence, points are labeled with percentages of co-occurrence. Imp. concentration: impaired concentration._
+
+\newpage
+
+```{r fig-clust-devel, fig.width = figur::convert(suppl$clust_devel, to = 'in')$w, fig.height = figur::convert(suppl$clust_devel, to = 'in')$h, fig.cap = 'Definition of the COVID-19 recovery clusters and clustering feature importance in the survey study.'}
 
 suppl$clust_devel$plot
 
 ```
 
-__Supplementary Figure S\@ref(fig:fig-clust-devel). Definition of the COVID-19 recovery clusters and clustering feature importance in the survey study.__
+__Supplementary Figure S\@ref(fig:fig-clust-devel). Definition of the COVID-19 recovery clusters and clustering feature importance in the survey study.__ 
 
-_Individuals of the training Austria (AT) study survey cohort were subjected to clustering in respect to symptom-specific recovery times with the PAM (partitioning around medoids) algorithm and Euclidean distance measure._
+_Individuals of the training Austria (AT) study survey cohort were clustered in respect to symptom-specific recovery times with the PAM (partitioning around medoids) algorithm and Euclidean distance measure._
 
-_(A) Comparison of performance of various algorithms (HCl: hierarchical clustering, SOM + HCl: combined self-organizing map and hierarchical clustering, k-means) and distance statistic in clustering of the training data set investigated by clustering variance (ratio of total between-cluster sum of squares to total sum of squares) and cluster assignment accuracy in 10-fold cross-validation (CV)._
+_(a) Comparison of performance of various algorithms (HCl: hierarchical clustering, SOM + HCl: combined self-organizing map and hierarchical clustering, k-means) and distance statistic in clustering of the training data set investigated by clustering variance (ratio of total between-cluster sum of squares to total sum of squares) and cluster assignment accuracy in 10-fold cross-validation (CV)._
 
-_(B) Determination of the optimal cluster number in the PAM clustering of the training cohort by the bend of the total within-cluster sum of squares curve._
+_(b) Determination of the optimal cluster number in the PAM clustering of the training cohort by the bend of the total within-cluster sum of squares curve._
 
-_(C) Permutation importance of the clustering features (symptoms) for clustering of the training cohort expressed as the difference in clustering variance (ratio of total between-cluster sum of squares to total sum of squares) between the initial clustering object and the clustering object with the given variable reshuffled at random. Imp. concentration: impaired concentration, OD: self-reported olfactory dysfunction, Dim. appetite: diminished appetite, Imp. walk: impaired walk, Imp. FMS: impaired fine motor skills._
+_(c) Permutation importance of the clustering features (symptoms) for clustering of the training cohort expressed as the difference in clustering variance (ratio of total between-cluster sum of squares to total sum of squares) between the initial clustering object and the clustering object with the given variable reshuffled at random. Importance metrics were computed for 20 random permutations of each clustering factor. Median importance metrics with interquartile ranges (IQR) are visualized as boxes, whiskers span over 150% IQR._
+
+_OD: self-reported olfactory dysfunction; Dim. appetite: diminished appetite; Imp. concentration: impaired concentration; Imp. walk: impaired walk; Imp. FMS: impaired fine motor skills._
 
 \newpage
 
-```{r fig-clustering, fig.width = mm_inch(suppl$clustering$w), fig.height = mm_inch(suppl$clustering$h), fig.cap = 'Clustering of ambulatory COVID-19 individuals by symptom-specific recovery times.'}
+```{r fig-clustering, fig.width = figur::convert(suppl$clustering, to = 'in')$w, fig.height = figur::convert(suppl$clustering, to = 'in')$h, fig.cap = 'Clustering of ambulatory COVID-19 individuals in the survey study by symptom-specific recovery times.'}
 
 suppl$clustering$plot
 
 ```
 
-__Supplementary Figure S\@ref(fig:fig-clustering). Clustering of ambulatory COVID-19 individuals by symptom-specific recovery times.__
+__Supplementary Figure S\@ref(fig:fig-clustering). Clustering of ambulatory COVID-19 individuals in the survey study by symptom-specific recovery times.__ 
 
-_Individuals of the training Austria (AT) survey study cohort were subjected to clustering in respect to symptom-specific recovery times with the PAM (partitioning around medoids) algorithm and Euclidean distance measure (Supplementary Figure S\@ref(fig:fig-clust-devel)). Cluster assignment in the test Italy (IT) survey cohort was done with k-NN label propagation algorithm. Recovery times for particular COVID-19 symptoms in the COVID-19 recovery clusters are presented as heat maps. Numbers of individuals assigned to the recovery clusters are indicated under the plots._
+_Individuals of the training Austria (AT) survey study cohort were subjected to clustering in respect to symptom-specific recovery times with the PAM (partitioning around medoids) algorithm and Euclidean distance measure (Supplementary Figure S\@ref(fig:fig-clust-devel)). Cluster assignment in the test Italy (IT) survey cohort was done with an inverse weighted 7-nearest neighbor (7-NN) classification algorithm._
 
-_OD: self-reported olfactory dysfunction, Dim. appetite: diminished appetite, Imp. concentration: impaired concentration, Imp. walk: impaired walk, Imp. FMS: impaired fine motor skills._
+_(a) Fraction of explained clustering variance was computed as a ratio of total between-cluster sum of squares to total sum of squares for the clustering structures in the training AT and test IT cohort. Note similar fractions of explained clustering variances in both cohorts, which suggests good reproducibility of the clustering structure._
+
+_(b) Percentages of observations assigned to clusters in the training AT and test IT cohort. Total numbers of complete observations are displayed in the Y axis._ 
+
+_(c) Recovery times for particular COVID-19 symptoms in the COVID-19 recovery clusters presented as heat maps. Numbers of individuals assigned to the recovery clusters are indicated in the plot captions._
+
+_OD: self-reported olfactory dysfunction; Dim. appetite: diminished appetite; Imp. concentration: impaired concentration; Imp. walk: impaired walk; Imp. FMS: impaired fine motor skills._
 
 \newpage
 
-```{r fig-cov-clusters, fig.width = mm_inch(suppl$cov_clusters$w), fig.height = mm_inch(suppl$cov_clusters$h), fig.cap = 'Numbers of COVID-19 symptoms in the survey study clusters.'}
+```{r fig-cov-clusters, fig.width = figur::convert(suppl$cov_clusters, to = 'in')$w, fig.height = figur::convert(suppl$cov_clusters, to = 'in')$h, fig.cap = 'Numbers of COVID-19 symptoms in the survey study recovery clusters.'}
 
 suppl$cov_clusters$plot
 
 ```
 
-__Supplementary Figure S\@ref(fig:fig-cov-clusters). Numbers of COVID-19 symptoms in the survey study clusters.__
+__Supplementary Figure S\@ref(fig:fig-cov-clusters). Numbers of COVID-19 symptoms in the survey study recovery clusters.__ 
 
-_Clustering of the survey study participants in respect to symptom-specific recovery times was done by the semi-supervised PAM algorithm (partitioning around medoids, Euclidean distance, training cohort: Austria [AT], test cohort: Italy [IT]). Differences in numbers of symptoms in the first 14 days (A) and at $\geq$ 28 days (B) after clinical onset between the clusters were assessed by Kruskal-Wallis test and $\eta^2$ effect size statistic. P values were corrected for multiple testing with Benjamini-Hochberg method. Symptom counts are presented in violin plots. Points represent single observations, orange diamonds with whiskers code for medians and interquartile ranges. Effect size statistics and p values are indicated in the plot caption. Numbers of complete observations are displayed under the plots._
+_Clustering of the survey study participants in respect to symptom-specific recovery times was done by the semi-supervised PAM algorithm (partitioning around medoids, Euclidean distance, training cohort: Austria [AT], test cohort: Italy [IT]). Differences in numbers of symptoms in the first 14 days (a) and at 28 days (b) after clinical onset between the clusters were assessed by Kruskal-Wallis test and $\eta^2$ effect size statistic. P values were corrected for multiple testing with Benjamini-Hochberg method. Symptom counts are presented in violin plots. Points represent single observations, orange diamonds with whiskers code for medians and interquartile ranges. Effect sizes and p values are indicated in the plot caption. Numbers of complete observations are displayed in the X axes._
 
 \newpage
 
-```{r fig-base-clusters, fig.width = mm_inch(suppl$base_clusters$w), fig.height = mm_inch(suppl$base_clusters$h), fig.cap = 'COVID-19 recovery clusters differ in sex distribution, comorbidity and daily medication rates.'}
+```{r fig-base-clusters, fig.width = figur::convert(suppl$base_clusters, to = 'in')$w, fig.height = figur::convert(suppl$base_clusters, to = 'in')$h, fig.cap = 'COVID-19 recovery clusters of the survey study differ in age, sex distribution, comorbidity and daily medication rates.'}
 
 suppl$base_clusters$plot
 
 ```
 
-__Supplementary Figure S\@ref(fig:fig-base-clusters). COVID-19 recovery clusters differ in sex distribution, comorbidity and daily medication rates.__
+__Supplementary Figure S\@ref(fig:fig-base-clusters). COVID-19 recovery clusters of the survey study differ in age, sex distribution, comorbidity and daily medication rates.__ 
 
-_Clustering of the survey study participants in respect to symptom-specific recovery times was done by the semi-supervised PAM algorithm (partitioning around medoids, Euclidean distance, training cohort: Austria [AT], test cohort: Italy [IT]). Differences in sex distribution (A), frequency of comorbidity (B) and daily medication (C) between the recovery clusters were assessed by $\chi^2$ test with Cramer V effect size statistic. P values were corrected for multiple testing with Benjamini-Hochberg method. The frequencies are presented as bar plots. Effect size statistics and p values are indicated in the plot caption. Numbers of complete observations are displayed under the plots._
+_Clustering of the survey study participants in respect to symptom-specific recovery times was done by the semi-supervised PAM algorithm (partitioning around medoids, Euclidean distance, training cohort: Austria [AT], test cohort: Italy [IT]). Differences in age (a), sex distribution (b), frequency of comorbidity (c) and daily medication (d) between the recovery clusters were assessed by Kruskal-Wallis test with $\eta^2$ effect size statistic (age) and $\chi^2$ test with Cramer V effect size statistic (remaining variables). P values were corrected for multiple testing with Benjamini-Hochberg method. The frequencies are presented as bar plots. Effect sizes and p values are indicated in the plot caption. Numbers of complete observations are displayed in the X axes._
 
 \newpage
 

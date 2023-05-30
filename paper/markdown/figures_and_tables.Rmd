@@ -1,7 +1,7 @@
 ---
 title: "Distinct smell and taste disorder phenotype of post-acute COVID-19 sequelae"
 subtitle: "Tables and figures"
-author: "Distinct smell and taste disorder phenotype of post-acute COVID-19 sequelae"
+author: "Health after COVID-19 in Tyrol and CovILD study team"
 date: "`r format(Sys.time(), '%Y-%m-%d')`"
 
 output: 
@@ -46,34 +46,42 @@ set_flextable_defaults(font.family = 'Cambria', font.size = 10)
 
 # Tables
 
-```{r tab-hact, tab.cap = 'Baseline characteristic of the Austria (AT) and Italy (IT) survey study cohorts.'}
+```{r tab-hact, tab.cap = 'Baseline characteristic of the Austria (AT) and Italy (IT) survey study cohorts. Numeric variables are presented as medians with interquartile ranges (IQR) and ranges. Categorical variables are presented as percentages and counts within the complete observation set.'}
 
-paper_tbl$hact_baseline %>% 
-  flextable %>% 
+flextable::flextable(paper_tbl$hact_baseline) %>% 
   width(1, width = 3.7, unit = 'cm') %>% 
-  width(2:3, width = 4, unit = 'cm') %>% 
+  width(2:3, width = 4.8, unit = 'cm') %>% 
   width(4, width = 2.6, unit = 'cm') %>% 
   width(5, width = 2.2, unit = 'cm') %>% 
-  footnote(1, 4:5, value = as_paragraph('Categorical variables: \u03C7\u00B2 test with Cramer V effect size statistic. Numeric variables: Mann-Whitney U test with wilcoxon r effect size statistic. P values corrected form multiple testing with Benjamini-Hochberg method.'), ref_symbols = 'a', part = 'header') %>% 
-  footnote(3, 1, value = as_paragraph('BMI: body mass index, overweight > 25 kg/m\u00B2, obesity > 30 kg/m\u00B2.'), ref_symbols = 'b', part = 'body') %>% 
-  footnote(15, 1, value = as_paragraph('Frequent respiratory infections, > 2 per year.'), ref_symbols = 'c', part = 'body') %>% 
-  footnote(16, 1, value = as_paragraph('Frequent bacterial infections with antibiotic therapy, > 2 per year.'), ref_symbols = 'd', part = 'body') %>% 
+  footnote(1, 1, 
+           value = as_paragraph('BMI: body mass index, normal: BMI < 25 kg/m\u00B2, overweight: BMI 25 - 30 kg/m\u00B2, obesity: BMI > 30 kg/m\u00B2; Pre-CoV depression/anxiety: depression or anxiety before COVID-19; Freq. resp. infections: frequent (> 2 per year) respiratory infections; Freq. bact. Infections: frequent (> two per year) bacterial infections with antibiotic therapy; Pre-CoV sleep disorders: sleep disorders before COVID-19.'), 
+           ref_symbols = 'a', 
+           part = 'header') %>% 
+  footnote(1, 4:5, 
+           value = as_paragraph('Categorical variables: \u03C7\u00B2 test with Cramer V effect size statistic. Numeric variables: Mann-Whitney U test with wilcoxon r effect size statistic. P values corrected form multiple testing with Benjamini-Hochberg method.'), 
+           ref_symbols = 'b', 
+           part = 'header') %>% 
   theme_vanilla
 
 ```
 
 \newpage
 
-```{r tab-covild, tab.cap = 'Baseline characteristic of the CovILD study cohort and the study participants stratified by COVID-19 severity.'}
+```{r tab-covild, tab.cap = 'Baseline characteristic of the CovILD study cohort and the study participants stratified by COVID-19 severity. Numeric variables are presented as medians with interquartile ranges (IQR) and ranges. Categorical variables are presented as percentages and counts within the complete observation set.'}
 
-paper_tbl$covild_baseline %>% 
-  flextable %>% 
-  width(1, width = 3, unit = 'cm') %>% 
-  width(2:5, width = 2.7, unit = 'cm') %>% 
+flextable::flextable(paper_tbl$covild_baseline) %>% 
+  width(1, width = 2.8, unit = 'cm') %>% 
+  width(2:5, width = 3.3, unit = 'cm') %>% 
   width(6, width = 2.6, unit = 'cm') %>% 
   width(7, width = 2.2, unit = 'cm') %>% 
-  footnote(1, 6:7, value = as_paragraph('Comparison of ambulatory, moderate and severe COVID-19 individuals. Categorical variables: \u03C7\u00B2 test with Cramer V effect size statistic. Numeric variables: Kruskal-Wallis test with \u03B7\u00B2 effect size statistic. P values corrected form multiple testing with Benjamini-Hochberg method.'), ref_symbols = 'a', part = 'header') %>% 
-  footnote(3, 1, value = as_paragraph('BMI: body mass index, overweight > 25 kg/m\u00B2, obesity > 30 kg/m\u00B2,'), ref_symbols = 'b', part = 'body') %>% 
+  footnote(1, 1, 
+           value = as_paragraph('BMI at CoV onset: body mass index at COVID-19 onset, normal: BMI < 25 kg/m\u00B2, overweight: BMI 25 - 30 kg/m\u00B2, obesity: BMI > 30 kg/m\u00B2.'), 
+           part = 'header', 
+           ref_symbols = 'a') %>% 
+  footnote(1, 6:7, 
+           value = as_paragraph('Comparison of ambulatory, moderate and severe COVID-19 individuals. Categorical variables: \u03C7\u00B2 test with Cramer V effect size statistic. Numeric variables: Kruskal-Wallis test with \u03B7\u00B2 effect size statistic. P values corrected form multiple testing with Benjamini-Hochberg method.'), 
+           part = 'header', 
+           ref_symbols = 'b') %>% 
   theme_vanilla
 
 ```
@@ -82,74 +90,72 @@ paper_tbl$covild_baseline %>%
 
 # Figures {#sec:figures}
 
-\newpage
-
-```{r fig-sympt-recovery, fig.width = mm_inch(figures$sympt_recovery$w), fig.height = mm_inch(figures$sympt_recovery$h), fig.cap = 'Symptom-specific recovery times in ambulatory COVID-19 survey study.'}
+```{r fig-sympt-recovery, fig.width = figur::convert(figures$sympt_recovery, to = 'in')$w, fig.height = figur::convert(figures$sympt_recovery, to = 'in')$h, fig.cap = 'Symptom-specific recovery times in the ambulatory COVID-19 survey study.'}
 
 figures$sympt_recovery$plot
 
 ```
 
-__Figure \@ref(fig:fig-sympt-recovery). Symptom-specific recovery times in ambulatory COVID-19 survey study.__
+__Figure \@ref(fig:fig-sympt-recovery). Symptom-specific recovery times in the ambulatory COVID-19 survey study.__ 
 
-_Symptom-specific recovery times were calculated for each participants of the survey study cohorts (Austria: AT, Italy: IT)._
+_Symptom-specific recovery times were calculated for each participant of the survey study cohorts (Austria: AT, Italy: IT)._
 
-_(A) Distribution of the recovery times in the individuals with the indicated symptoms present during acute COVID-19 (first 14 days after clinical onset). Diamonds represent median recovery times, tinted ellipses code for interquartile ranges. Numbers of complete observations are indicated in the plot captions._
+_(a) Distribution of the recovery times in the individuals with the indicated symptoms present during acute COVID-19 (first 14 days after clinical onset). Diamonds represent median recovery times, tinted ellipses code for interquartile ranges. Numbers of complete observations are indicated in the plot captions._
 
-_(B) Percentages of individuals with self-reported olfactory dysfunction and taste disorders in the AT (Austria) and IT (Italy) survey study cohorts at particular time points after clinical onset. Numbers of complete observations are indicated under the plots._
+_(b) Percentages of individuals with self-reported olfactory dysfunction and taste disorders in the AT and IT survey study cohorts at particular time points after clinical onset. Numbers of complete observations are indicated under the plots._
 
-_OD: self-reported olfactory dysfunction, Imp. concentration: impaired concentration, Dim. appetite: diminished appetite, Imp. walk: impaired walk, Imp. FMS: impaired fine-motor skills._
+_OD: self-reported olfactory dysfunction; Imp. concentration: impaired concentration; Dim. appetite: diminished appetite; Imp. walk: impaired walk; Imp. FMS: impaired fine-motor skills._
 
 \newpage
 
-```{r fig-sympt-mds, fig.width = mm_inch(figures$sympt_mds$w), fig.height = mm_inch(figures$sympt_mds$h), fig.cap = 'Self-reported olfactory dysfunction and taste disorders are isolated persistent symptoms of COVID-19.'}
+```{r fig-sniff-test, fig.width = figur::convert(figures$sniff_test, to = 'in')$w, fig.height = figur::convert(figures$sniff_test, to = 'in')$h, fig.cap = 'Rates of subjective and objective hyposmia in the CovILD cohort two months and one year after COVID-19.'}
+
+figures$sniff_test$plot
+
+```
+
+__Figure \@ref(fig:fig-sniff-test). Rates of subjective and objective hyposmia in the CovILD cohort two months and one year after COVID-19.__ 
+
+_Objective olfactory dysfunction (OD) was diagnosed in CovILD study participants with < 13 correctly identified odorants in the 16-item Sniffin' Sticks Identification Test. Frequencies of objective and self-reported olfactory dysfunction were compared at the three-month (a) and one-year follow-up (b) after COVID-19 in the entire cohort and the ambulatory (A), hospitalized moderate COVID-19 (HM) and hospitalized severe COVID-19 (HS) subset of the cohort. Concordance between the self-reported and objective olfactory dysfunction was assessed by Cohen's $\kappa$ inter-rater reliability statistic. Percentages of individuals with self-reported and objective hyposmia within the cohort or COVID-19 severity strata are presented in bar plots. Cohen's $\kappa$ with 95% confidence intervals (CI) are displayed in Forest plots._
+
+\newpage
+
+```{r fig-sympt-mds, fig.width = figur::convert(figures$sympt_mds, to = 'in')$w, fig.height = figur::convert(figures$sympt_mds, to = 'in')$h, fig.cap = 'Self-reported olfactory dysfunction and taste disorders are isolated persistent symptoms of COVID-19.'}
 
 figures$sympt_mds$plot
 
 ```
 
-__Figure \@ref(fig:fig-sympt-mds). Self-reported olfactory dysfunction and taste disorders are isolated persistent symptoms of COVID-19.__
+__Figure \@ref(fig:fig-sympt-mds). Self-reported olfactory dysfunction and taste disorders are isolated persistent symptoms of COVID-19.__ 
 
-_Symptom data during at $\geq$ 28 days (A) and $\geq$ 3 moths (B) after clinical onset in the Austria (AT) and Italy (IT) survey study cohorts were subjected to two-dimensional multi-dimensional scaling (MDS) with simple matching distance (SMD) between the symptoms. MDS coordinates are presented in point plots. Selected data points are labeled with the symptom names. Percentages of the data set variance associated with the MDS dimensions are indicated in the plot axes. Numbers of complete observations are indicated under the plots._
+_Symptom data during at 28 days (a) and 3 months (b) after clinical onset in the Austria (AT) and Italy (IT) survey study cohorts were subjected to two-dimensional multi-dimensional scaling (MDS) with simple matching distance (SMD) between the symptoms. MDS coordinates are presented in scatter plots. Selected data points are labeled with the symptom names. Percentages of the data set variance associated with the MDS dimensions are indicated in the plot axes. Numbers of complete observations are indicated in the plot captions._
 
-_OD: self-reported olfactory dysfunction, Imp. concentration: impaired concentration._
-
-\newpage
-
-```{r fig-apriori, fig.width = mm_inch(figures$apriori$w), fig.height = mm_inch(figures$apriori$h), fig.cap = 'Co-occurrence of self-reported olfactory dysfunction and other symptoms in post-acute COVID-19 sequelae.'}
-
-figures$apriori$plot
-
-```
-
-__Figure \@ref(fig:fig-apriori). Co-occurrence of self-reported olfactory dysfunction and other symptoms in post-acute COVID-19 sequelae.__
-
-_Frequent combinations (>15% of cohort) of self-reported olfactory dysfunction (OD) and other symptoms at $\geq$ 28 days (A) and $\geq$ 3 months (B) after clinical onset in the Austria (AT) and Italy (IT) survey study cohorts were identified with the apriori algorithm. Symptom combination frequency (support statistic) and co-occurrence (support statistic) are presented in bubble plots. Point size and color corresponds to co-occurrence, points are labeled with percentages of co-occurrence. Imp. concentration: impaired concentration._
+_OD: self-reported olfactory dysfunction; Imp. concentration: impaired concentration._
 
 \newpage
 
-```{r fig-sympt-clusters, fig.width = mm_inch(figures$sympt_clusters$w), fig.height = mm_inch(figures$sympt_clusters$h), fig.cap = 'Differing duration of neurocognitive and respiratory symptoms, fatigue, olfactory dysfunction and taste disorders defines the COVID-19 recovery clusters.'}
+```{r fig-sympt-clusters, fig.width = figur::convert(figures$sympt_clusters, to = 'in')$w, fig.height = figur::convert(figures$sympt_clusters, to = 'in')$h, fig.cap = 'Differing duration of neurocognitive and respiratory symptoms, fatigue, olfactory dysfunction and taste disorders defines the COVID-19 recovery clusters.'}
 
 figures$sympt_clusters$plot
 
 ```
 
-__Figure \@ref(fig:fig-sympt-clusters). Differing duration of neurocognitive and respiratory symptoms, fatigue, olfactory dysfunction and taste disorders defines the COVID-19 recovery clusters.__
+__Figure \@ref(fig:fig-sympt-clusters). Differing duration of neurocognitive and respiratory symptoms, fatigue, olfactory dysfunction and taste disorders defines the COVID-19 recovery clusters.__ 
 
-_Clustering of the survey study participants in respect to symptom-specific recovery times was done by semi-supervised PAM algorithm (partitioning around medoids, Euclidean distance, training cohort: Austria [AT], test cohort: Italy [IT]). Mean recovery times in the recovery clusters are presented as lines, 2 $\times$ SEM intervals are displayed as tinted regions. Numbers of individuals assigned to the recovery clusters are indicated under the plots._
+_Clustering of the survey study participants in respect to symptom-specific recovery times was done by semi-supervised PAM algorithm (partitioning around medoids, Euclidean distance, training cohort: Austria [AT], test cohort: Italy [IT]). Mean recovery times in the recovery clusters are presented as lines, 2 $\times$ SEM intervals are displayed as tinted regions. Numbers of individuals assigned to the recovery clusters are indicated in the plot captions._
 
-_OD: self-reported olfactory dysfunction, Dim. appetite: diminished appetite, Imp. concentration: impaired concentration, Imp. walk: impaired walk, Imp. FMS: impaired fine motor skills._
+_OD: self-reported olfactory dysfunction; Dim. appetite: diminished appetite; Imp. concentration: impaired concentration; Imp. walk: impaired walk; Imp. FMS: impaired fine motor skills._
 
 \newpage
 
-```{r fig-recovery-clusters, fig.width = mm_inch(figures$recovery_clusters$w), fig.height = mm_inch(figures$recovery_clusters$h), fig.cap = 'Good clinical and mental health status and quality of life at the survey completion in individuals with persistent smell and taste disorders.'}
+```{r fig-recovery-clusters, fig.width = figur::convert(figures$recovery_clusters, to = 'in')$w, fig.height = figur::convert(figures$recovery_clusters, to = 'in')$h, fig.cap = 'Physical and mental health, and quality of life in the COVID-19 recovery clusters'}
 
 figures$recovery_clusters$plot
 
 ```
 
-__Figure \@ref(fig:fig-recovery-clusters). Good clinical and mental health status and quality of life at the survey completion in individuals with persistent smell and taste disorders.__
+__Figure \@ref(fig:fig-recovery-clusters). Physical and mental health, and quality of life in the COVID-19 recovery clusters__ 
 
-_Clustering of the survey study participants in respect to symptom-specific recovery times was done by the semi-supervised PAM algorithm (partitioning around medoids, Euclidean distance, training cohort: Austria [AT], test cohort: Italy [IT]). Minimum/maximum scaled readouts of clinical and physical recovery, mental health and quality of life at the time of survey completion in the clusters in the Austria (AT) and Italy (IT) survey study cohorts are presented. Dichotomous items (incomplete convalescence, weight loss, new medication and need for rehabilitation) were binarized (yes: 1, no: 0) prior to visualization. Statistical significance for differences between the clusters was assessed by Kruskal-Wallis (numeric readouts) or $\chi^2$ test (dichotomous readouts). P values were corrected for multiple testing with Benjamini-Hochberg method. Lines represent mean values, 2 $\times$ SEM intervals are displayed as tinted regions. Numbers of individuals assigned to the recovery clusters are indicated under the plots._
+_Clustering of the survey study participants in respect to symptom-specific recovery times was done by the semi-supervised PAM algorithm (partitioning around medoids, Euclidean distance, training cohort: Austria [AT], test cohort: Italy [IT]). Minimum/maximum scaled readouts of clinical and physical recovery, mental health and quality of life at the time of survey completion in the clusters in the Austria (AT) and Italy (IT) survey study cohorts are presented. Dichotomous items (incomplete convalescence, weight loss, new medication and need for rehabilitation) were binarized (yes: 1, no: 0) prior to visualization. Statistical significance for differences between the clusters was assessed by Kruskal-Wallis with $\eta^2$ effect size statistic (numeric variables) or $\chi^2$ test with Cramer V effect size statistic (categorical variables). P values were corrected for multiple testing with Benjamini-Hochberg method. Lines represent mean values, 2 $\times$ SEM intervals are displayed as tinted regions. Effect sizes and p values are shown in the plots. Numbers of individuals assigned to the recovery clusters are indicated in the plot legends._
 
-_incomplete recovery: self-reported incomplete recovery, # persist. symptoms: number of symptoms at $\geq$ 28 days after clinical onset, phys. performance loss: physical performance loss as compared with the time before COVID-19, QoL score: quality of life impairment score, OMH score: overall mental health impairment score, ANX score: anxiety score, DPR: depression score._
+_incomplete recovery: self-reported incomplete recovery; # persist. symptoms: number of symptoms at 28 days after clinical onset; phys. performance loss: physical performance loss as compared with the time before COVID-19; QoL impairment score: score of impaired quality of life; OMH impairment score: overall mental health impairment score; ANX score: anxiety score, Patient Health Questionnaire, PHQ-4; DPR: depression score, Patient Health Questionnaire, PHQ-4; stress score: mental stress score, 7 item PHQ stress module._
