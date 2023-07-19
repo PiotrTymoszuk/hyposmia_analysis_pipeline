@@ -1,0 +1,84 @@
+---
+title: "Distinct smell and taste disorder phenotype of post-acute COVID-19 sequelae"
+subtitle: "Rebuttal Letter, 2^nd^ revision"
+author: "Health after COVID-19 in Tyrol and CovILD study teams"
+date: "`r format(Sys.time(), '%Y-%m-%d')`"
+
+output: 
+  bookdown::word_document2:   
+    reference_docx: ms_template.docx
+    
+bibliography: hyposmia_biblio.bib
+csl: european-archives-of-oto-rhino-laryngology.csl
+header-includes:
+  \usepackage{longtable}
+  \usepackage{tabu}
+  \usepackage{caption}
+  \usepackage{makecell}
+  \usepackage{pdflscape}
+  \usepackage{array}
+  \usepackage{booktabs}
+  \usepackage{threeparttable}
+  \usepackage{threeparttablex}
+  \usepackage{wrapfig}
+  \usepackage{multirow}
+  \usepackage[normalem]{ulem}
+  \usepackage{colortbl}
+  \usepackage{xcolor}
+  \usepackage{float} \floatplacement{figure}{H} \floatplacement{table}{H}
+  \newcommand{\beginsupplement}{\setcounter{table}{0}  \renewcommand{\thetable}{S\arabic{table}}       \setcounter{figure}{0} \renewcommand{\thefigure}{S\arabic{figure}}}
+---
+
+```{r, setup, include = FALSE}
+
+library(bookdown)
+
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE, 
+                      dev = "png", dpi = 600, 
+                      tab.cap.style = 'Table Heading')
+
+set_flextable_defaults(font.family = 'Cambria', font.size = 10)
+
+
+```
+
+\newpage
+
+# Reviewer #1
+
+<span custom-style = 'reviewer'>Thank you for the revised version of the above mentioned manuscript "Distinct smell and taste disorder phenotype of post-acute COVID-19 sequelae". I feel that the revision has helped greatly in improvising the manuscript.</span>
+
+We thank the Reviewer for appreciation of our work and the constructive feedback. 
+In the revised text, we addressed the issue concerning the Sniffin' Stick methodology, its strengths, limitation and comparison with other, more popular methods like UPSIT. 
+Changes in the main manuscript text introduced during this second round of revision are highlighted in blue.
+
+## Issue 1
+
+<span custom-style = 'reviewer'>There is one point that I feel that still needs to be addressed: The Limitations (and potential strengths) of the Sniffin Sticks. Sniffin Sticks are not an international standard, while the UPSIT has been validated in huge collectives. Nonetheless, the Sniffin Sticks offer dimensions that cannot be addressed with single use test kits like the UPSIT (Discrimination and Thresholds). However, these were not included in the study at hand. This needs clarification and I feel that this has not been addressed appropriately in this revision.</span>
+
+We agree with the Reviewer that among the number of available tools for testing of the olfactory function, the UPSIT (University of Pennsylvania Smell Identification Test) is the one with the best age- and sex-specific normative data [@Doty1984a; @Doty2007] and an excellent test-retest reliability [@Doty1989]. 
+It serves also as the 'gold standard' especially in North America and English-speaking countries [@Doty2007]. 
+Still, the Sniffin' Stick tool and in particular its 'sub-tool' used here, the Sniffin' Stick Identification test [@Hummel1997], is popular in Europe and especially in German-speaking countries. 
+Its features are good test-retest reliability (r = 0.73) and increasing amount of normative data for age groups and genders [@Hummel1997; @Hummel2007; @Oleszkiewicz2019a]. 
+Interestingly, 13 out of 16 smells of the Sniffin' Stick Identification Test are common with the 40-item UPSIT. 
+This allowed for development of robust conversion tools between these two tools as reported by Lawton and colleagues [@Lawton2016]. 
+As noted by Lawton et al., results of the Sniffin' Stick Identification Test and UPSIT were generally highly concordant in a cohort of Parkinson disease patients (r = 0.81) and the olfactory function tended to be rated slightly better with the UPSIT than with the Sniffin' Stick Identification test [@Lawton2016]. 
+However, the larger set of test items in the UPSIT (40 smells) as compared with the Sniffin' Stick Identification test (16 smells) may amount to a better sensitivity and test-retest reliability of the UPSIT tool [@Doty2007; @Lawton2016]. 
+
+To address this methodological issue, we introduced several changes to the revised manuscript:
+
+* We state clearly in __Methods__ and __Supplementary Methods__, that the discrimination and threshold dimensions of the Sniffin' Stick test were not evaluated in the CovILD cohort
+
+* We indicate in __Methods__ and __Supplementary Methods__, that the manufacturer's cutoff for definition of hyposmia applied to the CovILD cohort corresponded approximately to the 25^th^ percentile of correct answers in pooled healthy females and males reported by two large normative studies [@Hummel2007; @Oleszkiewicz2019a]. Accordingly, we state in the __Discussion__ section, that as per definition of hyposmia with the 13 point cutoff, 25% of individuals without any subjective smell impairment would be diagnosed with objective olfactory dysfunction.
+
+* We indicate the significant enrichment of males and elderly participants among the severe COVID-19 subset of the CovILD cohort another factor that may explain the large discrepancy between the subjective and objective olfactory dysfunction in this group [@Doty1984; @Hummel2007; @Oleszkiewicz2019a].  
+
+* Furthermore, we state in the main part __Discussion__, that due to the lacking widely accepted definition of objective olfactory dysfunction, its prevalence vary substantially [@Kanavou2021]. In particular, the discrepancy between subjective and objective olfactory dysfunction in the CovILD cohort and, especially, in the severe COVID-19 subset, may be addressed by age- and sex-corrected cutoffs of the Sniffin' Stick Identification Test [@Hummel2007; @Oleszkiewicz2019a]. 
+
+* We point out in the limitations of out study listed in the final paragraph of __Discussion__, that because of methodological differences and varying definitions, caution is required while comparing the rates of objective OD in the CovILD cohort with other studies.
+
+* In __Discussion__, we compare the Sniffin' Stick Identification Test and UPSIT by pointing out the similarities (forced-choice, shared smells) and inter-convertibility [@Lawton2016] as well as higher sensitivity and reliability of the UPSIT [@Lawton2016; @Doty2007].
+
+\newpage
+
+# References

@@ -71,11 +71,13 @@ Quality of life impairment (QoL) and overall mental health impairment (OMH) were
 Anxiety (ANX) and depression (DPR) were assessed with the Patient Health Questionnaire (PHQ-4) [@Hufner2022; @Sahanic2021; @Lowe2010]. 
 Mental stress was scored with a modified 7 item PHQ stress module as described before [@Hufner2022; @Sahanic2021; @Grafe2004].
 
-### Rating of olfactory dysfunction with Sniffin' Stick Test
+### Rating of olfactory dysfunction with Sniffin' Stick Identification Test
 
-Objective olfactory dysfunction at the 100-day and 360-day follow-up in the CovILD study participants was investigated with the 16-item Sniffn' Stick Identification Test as described [@Rass2021; @Whitcroft2016; @Masala2022; @Damm2014]. 
+Objective olfactory dysfunction at the 100-day and 360-day follow-up in the CovILD study participants was investigated with the 16-item Sniffn' Stick Identification Test as described [@Hummel1997; @Rass2021; @Whitcroft2016; @Masala2022; @Damm2014]. 
+Note that the threshold and discrimination dimensions of the Sniffin' Stick test [@Hummel1997] were not investigated. 
 In brief, the nasal chemosensory performance was investigated using pen-like odor-dispensing devices for odor identification of 16 common odorants (multiple forced‐choice from four verbal items per test odorant).
 Clinically relevant olfactory dysfunction was defined as < 13 correct answers (points) [@Rass2021; @Hummel2007]. 
+The 13 point cutoff of the identification test corresponded approximately to the 25^th^ percentile of correct answers in the identification test in healthy adult subjects of both sexes reported in two large normative studies [@Hummel2007; @Oleszkiewicz2019a]. 
 In the analysis, participants with the complete answers concerning self-reported olfactory dysfunction and complete test results were included.
 
 ## Data analysis
@@ -465,13 +467,13 @@ _Percentages of individuals with the complete longitudinal data set suffering fr
 
 \newpage
 
-```{r fig-hyposmia-rater100, fig.width = figur::convert(suppl$hyposmia_rater100, to = 'in')$w, fig.height = figur::convert(suppl$hyposmia_rater100, to = 'in')$h, fig.cap = 'Rates of self-reported olfactory dysfunction and olfactory dysfunction in the sniffing stick test at 3-month post COVID-19 follow-up in the ambulatory, moderate and severe COVID-19 subsets of the CovILD study.'}
+```{r fig-hyposmia-rater100, fig.width = figur::convert(suppl$hyposmia_rater100, to = 'in')$w, fig.height = figur::convert(suppl$hyposmia_rater100, to = 'in')$h, fig.cap = "Rates of self-reported olfactory dysfunction and olfactory dysfunction in the Sniffin' Stick Identification Test at 3-month post COVID-19 follow-up in the ambulatory, moderate and severe COVID-19 subsets of the CovILD study."}
 
 suppl$hyposmia_rater100$plot
 
 ```
 
-__Supplementary Figure S\@ref(fig:fig-hyposmia-rater100). Rates of self-reported olfactory dysfunction and olfactory dysfunction in the Sniffin' Stick Test at 3-month post COVID-19 follow-up in the ambulatory, moderate and severe COVID-19 subsets of the CovILD study.__
+__Supplementary Figure S\@ref(fig:fig-hyposmia-rater100). Rates of self-reported olfactory dysfunction and olfactory dysfunction in the Sniffin' Stick Identification Test at 3-month post COVID-19 follow-up in the ambulatory, moderate and severe COVID-19 subsets of the CovILD study.__
 
 _Objective olfactory dysfunction (OD) was diagnosed in CovILD study participants with < 13 correctly identified odorants in the 16-item Sniffin' Sticks Identification Test. Frequencies of objective and self-reported OD were compared at the two-month follow-up after COVID-19 in the entire cohort and the ambulatory, hospitalized moderate COVID-19 and hospitalized severe COVID-19 patients._
 
