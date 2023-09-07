@@ -12,7 +12,7 @@ The complete analysis pipeline for the hyposmia project by Health After COVID-19
 
 ## Terms of use
 
-Please cite the repository, and our [preprint](https://www.medrxiv.org/content/10.1101/2022.06.02.22275932v1) (DOI: 10.1101/2022.06.02.22275932) or the peer-reviewed publication of the analysis results when available. The raw .RData data files will be made upon request to the study authors, [Prof. Judith Löffler-Ragg](mailto:judith.loeffler@i-med.ac.at) and [Prof. Raimund Helbok](mailto:raimund.helbok@tirol-kliniken.at).
+Please cite the repository, and our [preprint](https://www.medrxiv.org/content/10.1101/2022.06.02.22275932v1) (DOI: 10.1101/2022.06.02.22275932) or the [peer-reviewed publication of the analysis results](https://link.springer.com/article/10.1007/s00405-023-08163-x) (DOI: 10.1007/s00405-023-08163-x). The raw .RData data files will be made available upon request to the study authors, [Prof. Judith Löffler-Ragg](mailto:judith.loeffler@i-med.ac.at) and [Prof. Raimund Helbok](mailto:raimund.helbok@tirol-kliniken.at).
 
 ## Usage
 
